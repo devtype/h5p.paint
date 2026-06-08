@@ -1,0 +1,117 @@
+{
+  "semantics": [
+    {
+      "label": "Task description",
+      "description": "Prompt shown above the drawing canvas. May contain HTML."
+    },
+    {
+      "label": "Media",
+      "fields": [
+        {
+          "label": "Background image",
+          "description": "Optional image displayed behind the learner's drawing (e.g. graph paper, photo to annotate, or outline to trace)."
+        },
+        {
+          "label": "Reference / solution image",
+          "description": "Optional image revealed when the learner clicks 'Show solution'. Use this to show the expected drawing."
+        },
+        {
+          "label": "Drawing alternative text",
+          "description": "Describes the canvas for screen reader users. Empty falls back to the task description."
+        }
+      ]
+    },
+    {
+      "label": "Canvas options",
+      "fields": [
+        {
+          "label": "Canvas base width (px)",
+          "description": "The canvas scales responsively but uses this value to set its internal aspect."
+        },
+        {
+          "label": "Aspect ratio",
+          "options": [
+            { "label": "4:3" },
+            { "label": "16:9" },
+            { "label": "1:1 (square)" },
+            { "label": "3:4 (portrait)" },
+            { "label": "Match background image" }
+          ]
+        },
+        {
+          "label": "Canvas background color",
+          "description": "CSS color used when no background image is set."
+        },
+        {
+          "label": "Available tools",
+          "description": "Tools shown in the toolbar.",
+          "options": [
+            { "label": "Pencil" },
+            { "label": "Brush" },
+            { "label": "Eraser" },
+            { "label": "Line" },
+            { "label": "Rectangle" },
+            { "label": "Ellipse" },
+            { "label": "Text" },
+            { "label": "Color picker" },
+            { "label": "Brush size" },
+            { "label": "Undo" },
+            { "label": "Redo" },
+            { "label": "Clear" }
+          ]
+        },
+        { "label": "Default brush color" },
+        { "label": "Default brush size (px)" }
+      ]
+    },
+    {
+      "label": "Behavioural settings",
+      "fields": [
+        { "label": "Enable submit button" },
+        {
+          "label": "Enable 'Show solution' button",
+          "description": "Only effective if a reference image is configured."
+        },
+        { "label": "Enable 'Retry' button" },
+        {
+          "label": "Lock canvas after submit",
+          "description": "Prevents further editing once the drawing has been submitted (until retry)."
+        }
+      ]
+    },
+    {
+      "label": "User interface translations",
+      "fields": [
+        { "label": "Submit" },
+        { "label": "Show solution" },
+        { "label": "Hide solution" },
+        { "label": "Retry" },
+        { "label": "Submitted message" },
+        { "label": "No drawing yet" },
+        { "label": "Solution title" },
+        { "label": "Your drawing title" }
+      ]
+    },
+    {
+      "label": "Accessibility translations",
+      "fields": [
+        { "label": "Canvas label" },
+        { "label": "Toolbar label" },
+        { "label": "Pencil" },
+        { "label": "Brush" },
+        { "label": "Eraser" },
+        { "label": "Line" },
+        { "label": "Rectangle" },
+        { "label": "Ellipse" },
+        { "label": "Text" },
+        { "label": "Color" },
+        { "label": "Brush size" },
+        { "label": "Undo" },
+        { "label": "Redo" },
+        { "label": "Clear" },
+        { "label": "Solution shown" },
+        { "label": "Solution hidden" }
+      ]
+    }
+  ]
+}

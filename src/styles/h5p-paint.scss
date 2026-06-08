@@ -1,0 +1,178 @@
+.h5p-paint {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75em;
+  font-family: inherit;
+  color: inherit;
+
+  &__stage {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  // Toolbar
+  &__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25em;
+    padding: 0.4em 0.5em;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+  }
+
+  &__tool {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25em;
+    min-height: 2.25em;
+    padding: 0.2em 0.5em;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    line-height: 1;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+
+    &:hover:not([disabled]) {
+      background: #eef2ff;
+      border-color: #6366f1;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    &.is-active {
+      background: #1f6feb;
+      border-color: #1f6feb;
+      color: #ffffff;
+    }
+
+    &[disabled],
+    &[aria-disabled="true"] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__tool-icon {
+    font-size: 1.1em;
+    line-height: 1;
+  }
+
+  &__color,
+  &__size {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25em;
+    padding: 0 0.25em;
+  }
+
+  &__color-input {
+    inline-size: 2em;
+    block-size: 2em;
+    padding: 0;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background: #ffffff;
+    cursor: pointer;
+
+    &::-webkit-color-swatch {
+      border: none;
+      border-radius: 3px;
+    }
+
+    &::-moz-color-swatch {
+      border: none;
+      border-radius: 3px;
+    }
+  }
+
+  &__size-input {
+    inline-size: 8em;
+  }
+
+  // Canvas
+  &__canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__canvas-host {
+    position: relative;
+    inline-size: 100%;
+    background: repeating-conic-gradient(#f8fafc 0% 25%, #ffffff 0% 50%) 50% / 18px 18px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    overflow: hidden;
+
+    canvas {
+      display: block;
+      max-inline-size: 100%;
+      block-size: auto;
+      touch-action: none;
+    }
+
+    .canvas-container {
+      max-inline-size: 100%;
+    }
+  }
+
+  // Solution overlay
+  &__solution {
+    margin-block-start: 0.75em;
+    padding: 0.75em;
+    background: #fff7ed;
+    border: 1px dashed #f59e0b;
+    border-radius: 6px;
+  }
+
+  &__solution-title {
+    margin: 0 0 0.5em;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  &__solution-image {
+    display: block;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    block-size: auto;
+    border-radius: 4px;
+  }
+
+  &__solution-empty {
+    margin: 0;
+    color: #6b7280;
+    font-style: italic;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .h5p-paint__toolbar {
+    background: #ffffff;
+    border-color: #000000;
+  }
+  .h5p-paint__tool {
+    background: #ffffff;
+    border-color: #000000;
+    color: #000000;
+
+    &.is-active {
+      background: #000000;
+      color: #ffffff;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .h5p-paint__tool {
+    transition: none;
+  }
+}

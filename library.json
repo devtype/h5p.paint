@@ -1,0 +1,30 @@
+{
+  "title": "Paint",
+  "description": "Lets learners draw on a canvas in response to a prompt. Supports optional background and reference images. Drawings are submitted as images for manual review via xAPI.",
+  "machineName": "H5P.Paint",
+  "majorVersion": 0,
+  "minorVersion": 1,
+  "patchVersion": 0,
+  "runnable": 1,
+  "embedTypes": ["iframe"],
+  "author": "H5P Paint contributors",
+  "license": "MIT",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Question",
+      "majorVersion": 1,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "H5P.Image",
+      "majorVersion": 1,
+      "minorVersion": 1
+    }
+  ],
+  "preloadedJs": [
+    { "path": "dist/h5p-paint.js" }
+  ],
+  "preloadedCss": [
+    { "path": "dist/h5p-paint.css" }
+  ]
+}

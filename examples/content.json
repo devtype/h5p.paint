@@ -1,0 +1,61 @@
+{
+  "taskDescription": "<p>Sketch a flowchart that explains how an HTTP request travels from a browser to a server and back.</p>",
+  "media": {
+    "alternativeText": "Empty drawing area for the learner's flowchart"
+  },
+  "canvas": {
+    "width": 900,
+    "aspectRatio": "16:9",
+    "backgroundColor": "#ffffff",
+    "tools": [
+      "pencil",
+      "brush",
+      "eraser",
+      "line",
+      "rect",
+      "ellipse",
+      "text",
+      "color",
+      "size",
+      "undo",
+      "redo",
+      "clear"
+    ],
+    "defaultColor": "#1f6feb",
+    "defaultBrushSize": 4
+  },
+  "behaviour": {
+    "enableSubmit": true,
+    "enableSolution": true,
+    "enableRetry": true,
+    "lockAfterSubmit": true
+  },
+  "l10n": {
+    "submit": "Submit drawing",
+    "showSolution": "Show reference",
+    "hideSolution": "Hide reference",
+    "retry": "Try again",
+    "submitted": "Your drawing has been submitted to your teacher.",
+    "noDrawing": "Please draw something before submitting.",
+    "solutionTitle": "Reference flowchart",
+    "yourDrawingTitle": "Your drawing"
+  },
+  "a11y": {
+    "canvasLabel": "Drawing area for the flowchart",
+    "toolbarLabel": "Drawing tools",
+    "tool_pencil": "Pencil",
+    "tool_brush": "Brush",
+    "tool_eraser": "Eraser",
+    "tool_line": "Line",
+    "tool_rect": "Rectangle",
+    "tool_ellipse": "Ellipse",
+    "tool_text": "Add text",
+    "tool_color": "Color",
+    "tool_size": "Brush size",
+    "tool_undo": "Undo",
+    "tool_redo": "Redo",
+    "tool_clear": "Clear canvas",
+    "solutionShown": "Reference solution shown.",
+    "solutionHidden": "Reference solution hidden."
+  }
+}

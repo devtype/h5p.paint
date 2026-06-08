@@ -1,0 +1,222 @@
+[
+  {
+    "name": "taskDescription",
+    "label": "Task description",
+    "description": "Prompt shown above the drawing canvas. May contain HTML.",
+    "type": "text",
+    "widget": "html",
+    "importance": "high",
+    "default": "<p>Draw your answer below.</p>",
+    "enterMode": "p",
+    "tags": [
+      "strong",
+      "em",
+      "u",
+      "a",
+      "ul",
+      "ol",
+      "h2",
+      "h3",
+      "hr",
+      "pre",
+      "code"
+    ]
+  },
+  {
+    "name": "media",
+    "type": "group",
+    "label": "Media",
+    "importance": "medium",
+    "expanded": true,
+    "fields": [
+      {
+        "name": "backgroundImage",
+        "type": "image",
+        "label": "Background image",
+        "description": "Optional image displayed behind the learner's drawing (e.g. graph paper, photo to annotate, or outline to trace).",
+        "optional": true
+      },
+      {
+        "name": "referenceImage",
+        "type": "image",
+        "label": "Reference / solution image",
+        "description": "Optional image revealed when the learner clicks 'Show solution'. Use this to show the expected drawing.",
+        "optional": true
+      },
+      {
+        "name": "alternativeText",
+        "type": "text",
+        "label": "Drawing alternative text",
+        "description": "Describes the canvas for screen reader users. Empty falls back to the task description.",
+        "optional": true
+      }
+    ]
+  },
+  {
+    "name": "canvas",
+    "type": "group",
+    "label": "Canvas options",
+    "importance": "medium",
+    "expanded": false,
+    "fields": [
+      {
+        "name": "width",
+        "type": "number",
+        "label": "Canvas base width (px)",
+        "description": "The canvas scales responsively but uses this value to set its internal aspect.",
+        "default": 800,
+        "min": 200,
+        "max": 4000
+      },
+      {
+        "name": "aspectRatio",
+        "type": "select",
+        "label": "Aspect ratio",
+        "default": "4:3",
+        "options": [
+          { "value": "4:3", "label": "4:3" },
+          { "value": "16:9", "label": "16:9" },
+          { "value": "1:1", "label": "1:1 (square)" },
+          { "value": "3:4", "label": "3:4 (portrait)" },
+          { "value": "background", "label": "Match background image" }
+        ]
+      },
+      {
+        "name": "backgroundColor",
+        "type": "text",
+        "label": "Canvas background color",
+        "description": "CSS color used when no background image is set.",
+        "default": "#ffffff",
+        "optional": true
+      },
+      {
+        "name": "tools",
+        "type": "select",
+        "label": "Available tools",
+        "description": "Tools shown in the toolbar.",
+        "multiple": true,
+        "default": [
+          "pencil",
+          "brush",
+          "eraser",
+          "line",
+          "rect",
+          "ellipse",
+          "text",
+          "color",
+          "size",
+          "undo",
+          "redo",
+          "clear"
+        ],
+        "options": [
+          { "value": "pencil", "label": "Pencil" },
+          { "value": "brush", "label": "Brush" },
+          { "value": "eraser", "label": "Eraser" },
+          { "value": "line", "label": "Line" },
+          { "value": "rect", "label": "Rectangle" },
+          { "value": "ellipse", "label": "Ellipse" },
+          { "value": "text", "label": "Text" },
+          { "value": "color", "label": "Color picker" },
+          { "value": "size", "label": "Brush size" },
+          { "value": "undo", "label": "Undo" },
+          { "value": "redo", "label": "Redo" },
+          { "value": "clear", "label": "Clear" }
+        ]
+      },
+      {
+        "name": "defaultColor",
+        "type": "text",
+        "label": "Default brush color",
+        "default": "#222222"
+      },
+      {
+        "name": "defaultBrushSize",
+        "type": "number",
+        "label": "Default brush size (px)",
+        "default": 4,
+        "min": 1,
+        "max": 60
+      }
+    ]
+  },
+  {
+    "name": "behaviour",
+    "type": "group",
+    "label": "Behavioural settings",
+    "importance": "low",
+    "expanded": false,
+    "fields": [
+      {
+        "name": "enableSubmit",
+        "type": "boolean",
+        "label": "Enable submit button",
+        "default": true
+      },
+      {
+        "name": "enableSolution",
+        "type": "boolean",
+        "label": "Enable 'Show solution' button",
+        "description": "Only effective if a reference image is configured.",
+        "default": true
+      },
+      {
+        "name": "enableRetry",
+        "type": "boolean",
+        "label": "Enable 'Retry' button",
+        "default": true
+      },
+      {
+        "name": "lockAfterSubmit",
+        "type": "boolean",
+        "label": "Lock canvas after submit",
+        "description": "Prevents further editing once the drawing has been submitted (until retry).",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "l10n",
+    "type": "group",
+    "label": "User interface translations",
+    "common": true,
+    "importance": "low",
+    "expanded": false,
+    "fields": [
+      { "name": "submit", "type": "text", "label": "Submit", "default": "Submit" },
+      { "name": "showSolution", "type": "text", "label": "Show solution", "default": "Show solution" },
+      { "name": "hideSolution", "type": "text", "label": "Hide solution", "default": "Hide solution" },
+      { "name": "retry", "type": "text", "label": "Retry", "default": "Retry" },
+      { "name": "submitted", "type": "text", "label": "Submitted message", "default": "Your drawing has been submitted." },
+      { "name": "noDrawing", "type": "text", "label": "No drawing yet", "default": "Please draw something before submitting." },
+      { "name": "solutionTitle", "type": "text", "label": "Solution title", "default": "Reference" },
+      { "name": "yourDrawingTitle", "type": "text", "label": "Your drawing title", "default": "Your drawing" }
+    ]
+  },
+  {
+    "name": "a11y",
+    "type": "group",
+    "label": "Accessibility translations",
+    "common": true,
+    "importance": "low",
+    "expanded": false,
+    "fields": [
+      { "name": "canvasLabel", "type": "text", "label": "Canvas label", "default": "Drawing area" },
+      { "name": "toolbarLabel", "type": "text", "label": "Toolbar label", "default": "Drawing tools" },
+      { "name": "tool_pencil", "type": "text", "label": "Pencil", "default": "Pencil" },
+      { "name": "tool_brush", "type": "text", "label": "Brush", "default": "Brush" },
+      { "name": "tool_eraser", "type": "text", "label": "Eraser", "default": "Eraser" },
+      { "name": "tool_line", "type": "text", "label": "Line", "default": "Line" },
+      { "name": "tool_rect", "type": "text", "label": "Rectangle", "default": "Rectangle" },
+      { "name": "tool_ellipse", "type": "text", "label": "Ellipse", "default": "Ellipse" },
+      { "name": "tool_text", "type": "text", "label": "Text", "default": "Add text" },
+      { "name": "tool_color", "type": "text", "label": "Color", "default": "Color" },
+      { "name": "tool_size", "type": "text", "label": "Brush size", "default": "Brush size" },
+      { "name": "tool_undo", "type": "text", "label": "Undo", "default": "Undo" },
+      { "name": "tool_redo", "type": "text", "label": "Redo", "default": "Redo" },
+      { "name": "tool_clear", "type": "text", "label": "Clear", "default": "Clear canvas" },
+      { "name": "solutionShown", "type": "text", "label": "Solution shown", "default": "Reference solution shown." },
+      { "name": "solutionHidden", "type": "text", "label": "Solution hidden", "default": "Reference solution hidden." }
+    ]
+  }
+]

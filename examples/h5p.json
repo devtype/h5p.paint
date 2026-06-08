@@ -1,0 +1,24 @@
+{
+  "title": "Demo: HTTP request flowchart",
+  "language": "en",
+  "mainLibrary": "H5P.Paint",
+  "embedTypes": ["iframe"],
+  "license": "U",
+  "preloadedDependencies": [
+    {
+      "machineName": "H5P.Paint",
+      "majorVersion": 0,
+      "minorVersion": 1
+    },
+    {
+      "machineName": "H5P.Question",
+      "majorVersion": 1,
+      "minorVersion": 5
+    },
+    {
+      "machineName": "H5P.Image",
+      "majorVersion": 1,
+      "minorVersion": 1
+    }
+  ]
+}
