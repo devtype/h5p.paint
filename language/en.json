@@ -8,10 +8,6 @@
       "label": "Media",
       "fields": [
         {
-          "label": "Background image",
-          "description": "Optional image displayed behind the learner's drawing (e.g. graph paper, photo to annotate, or outline to trace)."
-        },
-        {
           "label": "Reference / solution image",
           "description": "Optional image revealed when the learner clicks 'Show solution'. Use this to show the expected drawing."
         },
@@ -39,8 +35,18 @@
           ]
         },
         {
-          "label": "Canvas background color",
-          "description": "CSS color used when no background image is set."
+          "label": "Background",
+          "fields": [
+            { "label": "Background type" },
+            {
+              "label": "Background color",
+              "description": "Used when background type is Solid color."
+            },
+            {
+              "label": "Background image",
+              "description": "Used when background type is Image (e.g. graph paper, photo to annotate)."
+            }
+          ]
         },
         {
           "label": "Available tools",

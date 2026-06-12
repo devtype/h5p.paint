@@ -7,14 +7,17 @@ import XapiService from './services/xapi.js';
 const DEFAULTS = {
   taskDescription: '',
   media: {
-    backgroundImage: null,
     referenceImage: null,
     alternativeText: ''
   },
   canvas: {
     width: 800,
     aspectRatio: '4:3',
-    backgroundColor: '#ffffff',
+    background: {
+      type: 'color',
+      color: '#ffffff',
+      image: null
+    },
     tools: [
       'pencil', 'brush', 'eraser', 'line', 'rect', 'ellipse',
       'text', 'color', 'size', 'undo', 'redo', 'clear'
@@ -77,6 +80,40 @@ function mergeDefaults(target, source) {
 }
 
 /**
+ * Resolve background config from new semantics or legacy fields.
+ *
+ * @param {object} params - Merged authoring parameters.
+ * @returns {{ type: 'color'|'image', color: string, image?: object|null }}
+ */
+function resolveBackground(params) {
+  const bg = params.canvas && params.canvas.background;
+  if (bg && bg.type === 'image' && bg.image && bg.image.path) {
+    return {
+      type: 'image',
+      image: bg.image,
+      color: bg.color || '#ffffff'
+    };
+  }
+  if (bg && bg.type === 'color') {
+    return {
+      type: 'color',
+      color: bg.color || '#ffffff'
+    };
+  }
+  if (params.media && params.media.backgroundImage && params.media.backgroundImage.path) {
+    return {
+      type: 'image',
+      image: params.media.backgroundImage,
+      color: '#ffffff'
+    };
+  }
+  return {
+    type: 'color',
+    color: (params.canvas && params.canvas.backgroundColor) || '#ffffff'
+  };
+}
+
+/**
  * H5P.Paint question type.
  *
  * Uses the standard H5P constructor + prototype pattern required by
@@ -133,6 +170,7 @@ Paint.prototype.registerDomElements = function () {
   self.paintCanvas = new PaintCanvas({
     contentId: self.contentId,
     canvasParams: self.params.canvas,
+    background: resolveBackground(self.params),
     media: self.params.media,
     a11y: self.params.a11y,
     onChange: () => self._onCanvasChange()

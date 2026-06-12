@@ -18,6 +18,7 @@ class PaintCanvas {
    * @param {object} opts - Construction options.
    * @param {number} opts.contentId - H5P content id (for media URL resolution).
    * @param {object} opts.canvasParams - Authoring canvas group params.
+   * @param {object} opts.background - Resolved background config (type, color, image).
    * @param {object} opts.media - Authoring media group params.
    * @param {object} opts.a11y - Accessibility translations.
    * @param {Function} [opts.onChange] - Callback fired after canvas mutations.
@@ -25,6 +26,7 @@ class PaintCanvas {
   constructor(opts) {
     this.contentId = opts.contentId;
     this.canvasParams = opts.canvasParams;
+    this.background = opts.background || { type: 'color', color: '#ffffff' };
     this.media = opts.media || {};
     this.a11y = opts.a11y || {};
     this.onChange = opts.onChange || (() => {});
@@ -73,7 +75,7 @@ class PaintCanvas {
     this.canvas = new fabric.Canvas(this.canvasEl, {
       width: baseWidth,
       height: baseHeight,
-      backgroundColor: this.canvasParams.backgroundColor || '#ffffff',
+      backgroundColor: this.background.color || '#ffffff',
       preserveObjectStacking: true,
       selection: false,
       enableRetinaScaling: true
@@ -153,7 +155,7 @@ class PaintCanvas {
   }
 
   _snapshot() {
-    const json = JSON.stringify(this.canvas.toJSON(['selectable', 'evented']));
+    const json = JSON.stringify(this.canvas.toJSON(['selectable', 'evented', 'globalCompositeOperation']));
     this.history.push(json);
     if (this.history.length > HISTORY_LIMIT) {
       this.history.shift();
@@ -181,9 +183,17 @@ class PaintCanvas {
 
   _loadBackgroundImage() {
     return new Promise((resolve) => {
-      const bg = this.media.backgroundImage;
+      if (this.background.type !== 'image') {
+        this._fit();
+        this._snapshot();
+        resolve();
+        return;
+      }
+
+      const bg = this.background.image;
       if (!bg || !bg.path) {
         this._fit();
+        this._snapshot();
         resolve();
         return;
       }
@@ -292,7 +302,7 @@ class PaintCanvas {
     this.history = [];
     this.future = [];
     this.canvas.clear();
-    this.canvas.backgroundColor = this.canvasParams.backgroundColor || '#ffffff';
+    this.canvas.backgroundColor = this.background.color || '#ffffff';
     this._readyPromise = this._loadBackgroundImage();
     this.canvas.requestRenderAll();
     this.onChange();
@@ -307,7 +317,7 @@ class PaintCanvas {
   }
 
   toJSON() {
-    return this.canvas.toJSON(['selectable', 'evented']);
+    return this.canvas.toJSON(['selectable', 'evented', 'globalCompositeOperation']);
   }
 
   loadFromJSON(json) {

@@ -18,9 +18,11 @@ Exercise_ idea.
 - Fabric.js canvas with **pencil**, **brush**, **eraser**, **line**,
   **rectangle**, **ellipse**, **text**, **color picker**, **brush size**,
   **undo / redo**, and **clear**.
-- Optional **background image** (e.g. graph paper, photo to annotate, outline
-  to trace) and optional **reference / solution image** revealed via
-  _Show solution_.
+- Optional **background** — solid color (default white) or **background image**
+  (e.g. graph paper, photo to annotate, outline to trace) — and optional
+  **reference / solution image** revealed via _Show solution_.
+- **Eraser** removes learner drawing only; the authored background image or
+  color shows through again (does not paint over the background).
 - Saves and restores learner progress through the standard H5P
   `getCurrentState` / `setCurrentState` mechanism.
 - Manual / teacher scoring: no auto-grading. The drawing PNG is sent as an
@@ -35,7 +37,9 @@ Exercise_ idea.
 | Field | Purpose |
 | ----- | ------- |
 | `taskDescription` | HTML prompt rendered above the canvas. |
-| `media.backgroundImage` | Optional image painted behind the learner's drawing. |
+| `canvas.background.type` | `color` (default) or `image`. |
+| `canvas.background.color` | Solid background color when type is `color` (default `#ffffff`). |
+| `canvas.background.image` | Background image when type is `image`. |
 | `media.referenceImage` | Optional image revealed via _Show solution_. |
 | `media.alternativeText` | Screen-reader description of the canvas. |
 | `canvas.width` / `canvas.aspectRatio` | Base size of the drawing surface. |
@@ -44,6 +48,10 @@ Exercise_ idea.
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
 | `behaviour.maxScore` | Maximum points a tutor can award (learner score stays 0 until evaluated). |
+
+**Legacy content:** packages that still use `media.backgroundImage` or
+`canvas.backgroundColor` are mapped automatically at runtime to the new
+background model.
 
 All UI strings are translatable via the `l10n` and `a11y` groups in `semantics.json`.
 

@@ -6,7 +6,10 @@
   "canvas": {
     "width": 900,
     "aspectRatio": "16:9",
-    "backgroundColor": "#ffffff",
+    "background": {
+      "type": "color",
+      "color": "#ffffff"
+    },
     "tools": [
       "pencil",
       "brush",

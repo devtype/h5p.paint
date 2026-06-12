@@ -11,6 +11,12 @@ class Tools {
     this.canvas = canvas;
     this.accessors = accessors;
     this._configureBrushes();
+    this._pathCreatedHandler = (opt) => {
+      if (this.activeTool === 'eraser' && opt.path) {
+        opt.path.globalCompositeOperation = 'destination-out';
+      }
+    };
+    this.canvas.on('path:created', this._pathCreatedHandler);
   }
 
   _configureBrushes() {
@@ -23,7 +29,8 @@ class Tools {
     this.brushBrush.width = Math.max(4, this.accessors.getBrushSize() * 2);
 
     this.eraserBrush = new fabric.PencilBrush(this.canvas);
-    this.eraserBrush.color = this.canvas.backgroundColor || '#ffffff';
+    this.eraserBrush.color = 'rgba(0,0,0,1)';
+    this.eraserBrush.globalCompositeOperation = 'destination-out';
     this.eraserBrush.width = Math.max(8, this.accessors.getBrushSize() * 4);
   }
 
@@ -111,7 +118,6 @@ class Tools {
     }
     else if (this.activeTool === 'eraser') {
       this.canvas.freeDrawingBrush.width = Math.max(4, size * 4);
-      this.canvas.freeDrawingBrush.color = this.canvas.backgroundColor || '#ffffff';
     }
   }
 

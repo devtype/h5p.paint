@@ -30,13 +30,6 @@
     "expanded": true,
     "fields": [
       {
-        "name": "backgroundImage",
-        "type": "image",
-        "label": "Background image",
-        "description": "Optional image displayed behind the learner's drawing (e.g. graph paper, photo to annotate, or outline to trace).",
-        "optional": true
-      },
-      {
         "name": "referenceImage",
         "type": "image",
         "label": "Reference / solution image",
@@ -82,12 +75,49 @@
         ]
       },
       {
-        "name": "backgroundColor",
-        "type": "text",
-        "label": "Canvas background color",
-        "description": "CSS color used when no background image is set.",
-        "default": "#ffffff",
-        "optional": true
+        "name": "background",
+        "type": "group",
+        "label": "Background",
+        "importance": "medium",
+        "expanded": true,
+        "fields": [
+          {
+            "name": "type",
+            "type": "select",
+            "label": "Background type",
+            "default": "color",
+            "options": [
+              { "value": "color", "label": "Solid color" },
+              { "value": "image", "label": "Image" }
+            ]
+          },
+          {
+            "name": "color",
+            "type": "text",
+            "label": "Background color",
+            "description": "Used when background type is Solid color.",
+            "default": "#ffffff",
+            "widget": "showWhen",
+            "showWhen": {
+              "rules": [
+                { "field": "type", "equals": "color" }
+              ]
+            }
+          },
+          {
+            "name": "image",
+            "type": "image",
+            "label": "Background image",
+            "description": "Used when background type is Image (e.g. graph paper, photo to annotate).",
+            "optional": true,
+            "widget": "showWhen",
+            "showWhen": {
+              "rules": [
+                { "field": "type", "equals": "image" }
+              ]
+            }
+          }
+        ]
       },
       {
         "name": "tools",
