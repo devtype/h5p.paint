@@ -9,5 +9,4 @@ package.json
 package-lock.json
 webpack.config.js
 README.md
-LICENSE
 *.h5p

@@ -125,6 +125,8 @@ library installation.
 |-- library.json           # Library manifest
 |-- semantics.json         # Authoring fields
 |-- icon.svg               # H5P Hub icon
+|-- LICENSE                # MIT license for this library
+|-- NOTICE                 # Third-party attributions (Fabric.js, H5P deps)
 |-- language/en.json       # Editor translations (English)
 |-- src/
 |   |-- entries/dist.js                  # Webpack entry, registers H5P.Paint
@@ -151,4 +153,8 @@ library installation.
 
 ## License
 
-[MIT](LICENSE).
+H5P.Paint is released under the [MIT License](LICENSE).
+
+Third-party components (including Fabric.js bundled into `dist/h5p-paint.js` and
+runtime H5P dependencies) are listed in [NOTICE](NOTICE) with copyright and
+license information.
