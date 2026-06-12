@@ -1,5 +1,4 @@
 node_modules/
-dist/
 *.h5p
 .cache/
 .DS_Store
