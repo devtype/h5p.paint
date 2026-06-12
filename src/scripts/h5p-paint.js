@@ -75,356 +75,370 @@ function mergeDefaults(target, source) {
   return out;
 }
 
-class Paint extends H5P.Question {
-  /**
-   * @param {object} params - Authoring parameters from semantics.
-   * @param {number} contentId - Identifier for the H5P content.
-   * @param {object} [extras] - Extras object including previous state.
-   */
-  constructor(params, contentId, extras = {}) {
-    super('paint');
+/**
+ * H5P.Paint question type.
+ *
+ * Uses the standard H5P constructor + prototype pattern required by
+ * H5P.newRunnable's ContentType mixin (isRoot, getLibraryFilePath, …).
+ * ES6 `class extends H5P.Question` breaks that chain and causes
+ * "self.isRoot is not a function" inside H5P.Question.attach().
+ *
+ * @param {object} params - Authoring parameters from semantics.
+ * @param {number} contentId - Identifier for the H5P content.
+ * @param {object} [extras] - Extras object including previous state.
+ */
+function Paint(params, contentId, extras) {
+  const self = this;
+  extras = extras || {};
 
-    this.params = mergeDefaults(params || {}, DEFAULTS);
-    this.contentId = contentId;
-    this.extras = extras;
+  H5P.Question.call(self, 'paint');
 
-    this.previousState = extras && extras.previousState ? extras.previousState : null;
+  self.params = mergeDefaults(params || {}, DEFAULTS);
+  self.contentId = contentId;
+  self.extras = extras;
+  self.previousState = extras.previousState || null;
 
-    this.state = {
-      submitted: false,
-      solutionVisible: false,
-      locked: false
-    };
+  self.state = {
+    submitted: false,
+    solutionVisible: false,
+    locked: false
+  };
 
-    this.paintCanvas = null;
-    this.toolbar = null;
-    this.solutionOverlay = null;
+  self.paintCanvas = null;
+  self.toolbar = null;
+  self.solutionOverlay = null;
+}
+
+Paint.prototype = Object.create(H5P.Question.prototype);
+Paint.prototype.constructor = Paint;
+
+/**
+ * H5P.Question hook: register DOM elements (intro, content, buttons).
+ */
+Paint.prototype.registerDomElements = function () {
+  const self = this;
+
+  if (self.params.taskDescription && self.params.taskDescription.trim() !== '') {
+    self.setIntroduction(self.params.taskDescription);
   }
 
-  /**
-   * H5P.Question hook: register DOM elements (intro, content, buttons).
-   */
-  registerDomElements() {
-    if (this.params.taskDescription && this.params.taskDescription.trim() !== '') {
-      this.setIntroduction(this.params.taskDescription);
-    }
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('h5p-paint');
 
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('h5p-paint');
+  const stage = document.createElement('div');
+  stage.classList.add('h5p-paint__stage');
+  wrapper.appendChild(stage);
 
-    const stage = document.createElement('div');
-    stage.classList.add('h5p-paint__stage');
-    wrapper.appendChild(stage);
+  self.paintCanvas = new PaintCanvas({
+    contentId: self.contentId,
+    canvasParams: self.params.canvas,
+    media: self.params.media,
+    a11y: self.params.a11y,
+    onChange: () => self._onCanvasChange()
+  });
+  stage.appendChild(self.paintCanvas.getElement());
 
-    this.paintCanvas = new PaintCanvas({
-      contentId: this.contentId,
-      canvasParams: this.params.canvas,
-      media: this.params.media,
-      a11y: this.params.a11y,
-      onChange: () => this._onCanvasChange()
-    });
-    stage.appendChild(this.paintCanvas.getElement());
+  self.toolbar = new Toolbar({
+    tools: self.params.canvas.tools,
+    a11y: self.params.a11y,
+    defaultColor: self.params.canvas.defaultColor,
+    defaultBrushSize: self.params.canvas.defaultBrushSize,
+    onAction: (action, value) => self._onToolbarAction(action, value)
+  });
+  stage.insertBefore(self.toolbar.getElement(), self.paintCanvas.getElement());
 
-    this.toolbar = new Toolbar({
-      tools: this.params.canvas.tools,
-      a11y: this.params.a11y,
-      defaultColor: this.params.canvas.defaultColor,
-      defaultBrushSize: this.params.canvas.defaultBrushSize,
-      onAction: (action, value) => this._onToolbarAction(action, value)
-    });
-    stage.insertBefore(this.toolbar.getElement(), this.paintCanvas.getElement());
+  self.solutionOverlay = new SolutionOverlay({
+    contentId: self.contentId,
+    referenceImage: self.params.media.referenceImage,
+    l10n: self.params.l10n
+  });
+  stage.appendChild(self.solutionOverlay.getElement());
 
-    this.solutionOverlay = new SolutionOverlay({
-      contentId: this.contentId,
-      referenceImage: this.params.media.referenceImage,
-      l10n: this.params.l10n
-    });
-    stage.appendChild(this.solutionOverlay.getElement());
+  self.setContent(wrapper);
+  self._registerButtons();
 
-    this.setContent(wrapper);
-    this._registerButtons();
-
-    this.paintCanvas.ready().then(() => {
-      if (this.previousState) {
-        StateService.restore(this.paintCanvas, this.previousState);
-        if (this.previousState.submitted) {
-          this._lockCanvas();
-          this.state.submitted = true;
-          this._toggleButtonsForSubmitted();
-        }
-      }
-      this._updateButtonAvailability();
-    });
-  }
-
-  _registerButtons() {
-    const l10n = this.params.l10n;
-    const behaviour = this.params.behaviour;
-
-    if (behaviour.enableSubmit) {
-      this.addButton(
-        'submit-answer',
-        l10n.submit,
-        () => this._onSubmit(),
-        true,
-        { 'aria-label': l10n.submit },
-        {}
-      );
-    }
-
-    if (behaviour.enableSolution) {
-      this.addButton(
-        'show-solution',
-        l10n.showSolution,
-        () => this._toggleSolution(),
-        false,
-        { 'aria-label': l10n.showSolution },
-        {}
-      );
-    }
-
-    if (behaviour.enableRetry) {
-      this.addButton(
-        'try-again',
-        l10n.retry,
-        () => this._onRetry(),
-        false,
-        { 'aria-label': l10n.retry },
-        {}
-      );
-    }
-  }
-
-  _onCanvasChange() {
-    this._updateButtonAvailability();
-  }
-
-  _updateButtonAvailability() {
-    const hasDrawing = this.paintCanvas && this.paintCanvas.hasDrawing();
-    if (this.params.behaviour.enableSubmit) {
-      if (this.state.submitted) {
-        this.hideButton('submit-answer');
-      }
-      else if (hasDrawing) {
-        this.showButton('submit-answer');
-      }
-      else {
-        this.showButton('submit-answer');
+  self.paintCanvas.ready().then(() => {
+    if (self.previousState) {
+      StateService.restore(self.paintCanvas, self.previousState);
+      if (self.previousState.submitted) {
+        self._lockCanvas();
+        self.state.submitted = true;
+        self._toggleButtonsForSubmitted();
       }
     }
+    self._updateButtonAvailability();
+  });
+};
+
+Paint.prototype._registerButtons = function () {
+  const self = this;
+  const l10n = self.params.l10n;
+  const behaviour = self.params.behaviour;
+
+  if (behaviour.enableSubmit) {
+    self.addButton(
+      'submit-answer',
+      l10n.submit,
+      () => self._onSubmit(),
+      true,
+      { 'aria-label': l10n.submit },
+      {}
+    );
   }
 
-  _onToolbarAction(action, value) {
-    if (!this.paintCanvas) {
-      return;
-    }
-    switch (action) {
-      case 'tool':
-        this.paintCanvas.setTool(value);
-        break;
-      case 'color':
-        this.paintCanvas.setColor(value);
-        break;
-      case 'size':
-        this.paintCanvas.setBrushSize(value);
-        break;
-      case 'undo':
-        this.paintCanvas.undo();
-        break;
-      case 'redo':
-        this.paintCanvas.redo();
-        break;
-      case 'clear':
-        this.paintCanvas.clear();
-        break;
-      default:
-        break;
-    }
-    this._updateButtonAvailability();
+  if (behaviour.enableSolution) {
+    self.addButton(
+      'show-solution',
+      l10n.showSolution,
+      () => self._toggleSolution(),
+      false,
+      { 'aria-label': l10n.showSolution },
+      {}
+    );
   }
 
-  _onSubmit() {
-    if (!this.paintCanvas || !this.paintCanvas.hasDrawing()) {
-      this._announce(this.params.l10n.noDrawing);
-      return;
-    }
-
-    this.state.submitted = true;
-
-    if (this.params.behaviour.lockAfterSubmit) {
-      this._lockCanvas();
-    }
-
-    this._toggleButtonsForSubmitted();
-    this._announce(this.params.l10n.submitted);
-
-    this.triggerXAPIAnswered();
+  if (behaviour.enableRetry) {
+    self.addButton(
+      'try-again',
+      l10n.retry,
+      () => self._onRetry(),
+      false,
+      { 'aria-label': l10n.retry },
+      {}
+    );
   }
+};
 
-  _toggleButtonsForSubmitted() {
-    this.hideButton('submit-answer');
-    if (this.params.behaviour.enableSolution && this.params.media.referenceImage) {
-      this.showButton('show-solution');
-    }
-    if (this.params.behaviour.enableRetry) {
-      this.showButton('try-again');
-    }
-  }
+Paint.prototype._onCanvasChange = function () {
+  this._updateButtonAvailability();
+};
 
-  _lockCanvas() {
-    this.state.locked = true;
-    if (this.paintCanvas) {
-      this.paintCanvas.setInteractive(false);
-    }
-    if (this.toolbar) {
-      this.toolbar.setDisabled(true);
-    }
-  }
-
-  _unlockCanvas() {
-    this.state.locked = false;
-    if (this.paintCanvas) {
-      this.paintCanvas.setInteractive(true);
-    }
-    if (this.toolbar) {
-      this.toolbar.setDisabled(false);
-    }
-  }
-
-  _toggleSolution() {
-    if (!this.solutionOverlay) {
-      return;
-    }
-    if (this.state.solutionVisible) {
-      this.solutionOverlay.hide();
-      this.state.solutionVisible = false;
-      this._setButtonLabel('show-solution', this.params.l10n.showSolution);
-      this._announce(this.params.a11y.solutionHidden);
+Paint.prototype._updateButtonAvailability = function () {
+  const self = this;
+  if (self.params.behaviour.enableSubmit) {
+    if (self.state.submitted) {
+      self.hideButton('submit-answer');
     }
     else {
-      this.solutionOverlay.show();
-      this.state.solutionVisible = true;
-      this._setButtonLabel('show-solution', this.params.l10n.hideSolution);
-      this._announce(this.params.a11y.solutionShown);
+      self.showButton('submit-answer');
     }
   }
+};
 
-  _setButtonLabel(id, label) {
-    const button = this.$buttonBar
-      ? this.$buttonBar.find('.h5p-question-' + id)[0]
-      : null;
-    if (button) {
-      button.textContent = label;
-      button.setAttribute('aria-label', label);
-    }
+Paint.prototype._onToolbarAction = function (action, value) {
+  const self = this;
+  if (!self.paintCanvas) {
+    return;
+  }
+  switch (action) {
+    case 'tool':
+      self.paintCanvas.setTool(value);
+      break;
+    case 'color':
+      self.paintCanvas.setColor(value);
+      break;
+    case 'size':
+      self.paintCanvas.setBrushSize(value);
+      break;
+    case 'undo':
+      self.paintCanvas.undo();
+      break;
+    case 'redo':
+      self.paintCanvas.redo();
+      break;
+    case 'clear':
+      self.paintCanvas.clear();
+      break;
+    default:
+      break;
+  }
+  self._updateButtonAvailability();
+};
+
+Paint.prototype._onSubmit = function () {
+  const self = this;
+  if (!self.paintCanvas || !self.paintCanvas.hasDrawing()) {
+    self._announce(self.params.l10n.noDrawing);
+    return;
   }
 
-  _onRetry() {
-    this.resetTask();
+  self.state.submitted = true;
+
+  if (self.params.behaviour.lockAfterSubmit) {
+    self._lockCanvas();
   }
 
-  _announce(message) {
-    if (typeof this.read === 'function') {
-      this.read(message);
-    }
+  self._toggleButtonsForSubmitted();
+  self._announce(self.params.l10n.submitted);
+  self.triggerXAPIAnswered();
+};
+
+Paint.prototype._toggleButtonsForSubmitted = function () {
+  const self = this;
+  self.hideButton('submit-answer');
+  if (self.params.behaviour.enableSolution && self.params.media.referenceImage) {
+    self.showButton('show-solution');
   }
-
-  /**
-   * Build and trigger an xAPI 'answered' event with the drawing as attachment.
-   */
-  triggerXAPIAnswered() {
-    if (!this.paintCanvas) {
-      return;
-    }
-    const dataUrl = this.paintCanvas.exportPNG();
-    const summary = this.paintCanvas.getSummary();
-    const xapiEvent = this.createXAPIEventTemplate('answered');
-
-    XapiService.decorate(xapiEvent, {
-      params: this.params,
-      contentId: this.contentId,
-      dataUrl,
-      summary,
-      getTitle: () => this.getTitle ? this.getTitle() : 'Paint'
-    });
-
-    XapiService.attachImage(xapiEvent, dataUrl).then(() => {
-      this.trigger(xapiEvent);
-    }).catch((error) => {
-      console.warn('H5P.Paint: failed to attach drawing to xAPI', error);
-      this.trigger(xapiEvent);
-    });
+  if (self.params.behaviour.enableRetry) {
+    self.showButton('try-again');
   }
+};
 
-  // ---------------------------------------------------------------------------
-  // H5P question type contract
-  // ---------------------------------------------------------------------------
-
-  getAnswerGiven() {
-    return this.paintCanvas ? this.paintCanvas.hasDrawing() : false;
+Paint.prototype._lockCanvas = function () {
+  const self = this;
+  self.state.locked = true;
+  if (self.paintCanvas) {
+    self.paintCanvas.setInteractive(false);
   }
-
-  getScore() {
-    return 0;
+  if (self.toolbar) {
+    self.toolbar.setDisabled(true);
   }
+};
 
-  getMaxScore() {
-    return 0;
+Paint.prototype._unlockCanvas = function () {
+  const self = this;
+  self.state.locked = false;
+  if (self.paintCanvas) {
+    self.paintCanvas.setInteractive(true);
   }
+  if (self.toolbar) {
+    self.toolbar.setDisabled(false);
+  }
+};
 
-  showSolutions() {
-    if (this.solutionOverlay && !this.state.solutionVisible) {
-      this.solutionOverlay.show();
-      this.state.solutionVisible = true;
-    }
+Paint.prototype._toggleSolution = function () {
+  const self = this;
+  if (!self.solutionOverlay) {
+    return;
   }
+  if (self.state.solutionVisible) {
+    self.solutionOverlay.hide();
+    self.state.solutionVisible = false;
+    self._setButtonLabel('show-solution', self.params.l10n.showSolution);
+    self._announce(self.params.a11y.solutionHidden);
+  }
+  else {
+    self.solutionOverlay.show();
+    self.state.solutionVisible = true;
+    self._setButtonLabel('show-solution', self.params.l10n.hideSolution);
+    self._announce(self.params.a11y.solutionShown);
+  }
+};
 
-  resetTask() {
-    if (this.paintCanvas) {
-      this.paintCanvas.reset();
-    }
-    if (this.solutionOverlay) {
-      this.solutionOverlay.hide();
-    }
-    this.state.submitted = false;
-    this.state.solutionVisible = false;
-    this._unlockCanvas();
-    this.hideButton('show-solution');
-    this.hideButton('try-again');
-    if (this.params.behaviour.enableSubmit) {
-      this.showButton('submit-answer');
-    }
-    this._setButtonLabel('show-solution', this.params.l10n.showSolution);
+Paint.prototype._setButtonLabel = function (id, label) {
+  const self = this;
+  const button = self.$buttonBar
+    ? self.$buttonBar.find('.h5p-question-' + id)[0]
+    : null;
+  if (button) {
+    button.textContent = label;
+    button.setAttribute('aria-label', label);
   }
+};
 
-  getCurrentState() {
-    if (!this.paintCanvas) {
-      return undefined;
-    }
-    return StateService.serialize(this.paintCanvas, {
-      submitted: this.state.submitted
-    });
-  }
+Paint.prototype._onRetry = function () {
+  this.resetTask();
+};
 
-  getXAPIData() {
-    const xapiEvent = this.createXAPIEventTemplate('answered');
-    const dataUrl = this.paintCanvas ? this.paintCanvas.exportPNG() : null;
-    const summary = this.paintCanvas ? this.paintCanvas.getSummary() : null;
-    XapiService.decorate(xapiEvent, {
-      params: this.params,
-      contentId: this.contentId,
-      dataUrl,
-      summary,
-      getTitle: () => this.getTitle ? this.getTitle() : 'Paint'
-    });
-    return { statement: xapiEvent.data.statement };
+Paint.prototype._announce = function (message) {
+  if (typeof this.read === 'function') {
+    this.read(message);
   }
+};
 
-  getTitle() {
-    const extras = this.extras || {};
-    const meta = extras.metadata || {};
-    return meta.title || 'Paint';
+Paint.prototype.triggerXAPIAnswered = function () {
+  const self = this;
+  if (!self.paintCanvas) {
+    return;
   }
-}
+  const dataUrl = self.paintCanvas.exportPNG();
+  const summary = self.paintCanvas.getSummary();
+  const xapiEvent = self.createXAPIEventTemplate('answered');
+
+  XapiService.decorate(xapiEvent, {
+    params: self.params,
+    contentId: self.contentId,
+    dataUrl,
+    summary,
+    getTitle: () => self.getTitle()
+  });
+
+  XapiService.attachImage(xapiEvent, dataUrl).then(() => {
+    self.trigger(xapiEvent);
+  }).catch((error) => {
+    console.warn('H5P.Paint: failed to attach drawing to xAPI', error);
+    self.trigger(xapiEvent);
+  });
+};
+
+Paint.prototype.getAnswerGiven = function () {
+  return this.paintCanvas ? this.paintCanvas.hasDrawing() : false;
+};
+
+Paint.prototype.getScore = function () {
+  return 0;
+};
+
+Paint.prototype.getMaxScore = function () {
+  return 0;
+};
+
+Paint.prototype.showSolutions = function () {
+  const self = this;
+  if (self.solutionOverlay && !self.state.solutionVisible) {
+    self.solutionOverlay.show();
+    self.state.solutionVisible = true;
+  }
+};
+
+Paint.prototype.resetTask = function () {
+  const self = this;
+  if (self.paintCanvas) {
+    self.paintCanvas.reset();
+  }
+  if (self.solutionOverlay) {
+    self.solutionOverlay.hide();
+  }
+  self.state.submitted = false;
+  self.state.solutionVisible = false;
+  self._unlockCanvas();
+  self.hideButton('show-solution');
+  self.hideButton('try-again');
+  if (self.params.behaviour.enableSubmit) {
+    self.showButton('submit-answer');
+  }
+  self._setButtonLabel('show-solution', self.params.l10n.showSolution);
+};
+
+Paint.prototype.getCurrentState = function () {
+  const self = this;
+  if (!self.paintCanvas) {
+    return undefined;
+  }
+  return StateService.serialize(self.paintCanvas, {
+    submitted: self.state.submitted
+  });
+};
+
+Paint.prototype.getXAPIData = function () {
+  const self = this;
+  const xapiEvent = self.createXAPIEventTemplate('answered');
+  const dataUrl = self.paintCanvas ? self.paintCanvas.exportPNG() : null;
+  const summary = self.paintCanvas ? self.paintCanvas.getSummary() : null;
+  XapiService.decorate(xapiEvent, {
+    params: self.params,
+    contentId: self.contentId,
+    dataUrl,
+    summary,
+    getTitle: () => self.getTitle()
+  });
+  return { statement: xapiEvent.data.statement };
+};
+
+Paint.prototype.getTitle = function () {
+  const extras = this.extras || {};
+  const meta = extras.metadata || {};
+  return meta.title || 'Paint';
+};
 
 export default Paint;

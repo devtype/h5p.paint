@@ -125,7 +125,7 @@ library installation.
 |-- library.json           # Library manifest
 |-- semantics.json         # Authoring fields
 |-- icon.svg               # H5P Hub icon
-|-- language/.en.json      # Editor translations (English)
+|-- language/en.json       # Editor translations (English)
 |-- src/
 |   |-- entries/dist.js                  # Webpack entry, registers H5P.Paint
 |   |-- scripts/
