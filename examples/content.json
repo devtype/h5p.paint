@@ -28,7 +28,8 @@
     "enableSubmit": true,
     "enableSolution": true,
     "enableRetry": true,
-    "lockAfterSubmit": true
+    "lockAfterSubmit": true,
+    "maxScore": 1
   },
   "l10n": {
     "submit": "Submit drawing",

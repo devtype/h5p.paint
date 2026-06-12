@@ -43,6 +43,7 @@ Exercise_ idea.
 | `canvas.defaultColor` / `canvas.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
+| `behaviour.maxScore` | Maximum points a tutor can award (learner score stays 0 until evaluated). |
 
 All UI strings are translatable via the `l10n` and `a11y` groups in `semantics.json`.
 
@@ -80,6 +81,53 @@ statement:
 ```
 
 LRSs that don't accept attachments still get the verb and `result.response`.
+
+## LMS / platform integration
+
+H5P.Paint is designed for **manual evaluation**: the learner drawing is captured
+at submit time and a tutor or host platform assigns the final score.
+
+### Scoring contract
+
+| Method | Value | Meaning |
+| ------ | ----- | ------- |
+| `getScore()` | `0` | No auto-grading; earned points come from host evaluation |
+| `getMaxScore()` | `behaviour.maxScore` | Author-configured cap for tutor scoring |
+| `getAnswerGiven()` | `boolean` | Whether the canvas has at least one object |
+| `getCurrentState()` | Fabric JSON + `submitted` flag | Resume / persistence payload |
+
+### Submit payload (host enrichment)
+
+When wiring `H5PIntegration.ajax.setFinished` (or equivalent), hosts typically
+POST JSON **details** shaped like:
+
+```jsonc
+{
+  "library": "H5P.Paint",
+  "score": 0,
+  "maxScore": 1,
+  "started": 1710000000,
+  "finished": 1710000123,
+  "answer": { "v": 1, "json": { /* Fabric scene */ }, "submitted": true },
+  "dataUrl": "data:image/png;base64,..."   // optional; host may add via exportPNG()
+}
+```
+
+- **`answer`** — from `getCurrentState()`; vector scene for restore/review
+- **`dataUrl`** — PNG rasterization; not part of H5P core but commonly added by
+  the host from `paintCanvas.exportPNG()` for file storage
+- **`maxScore`** — mirrors `getMaxScore()` for audit and server-side validation
+
+### xAPI attachment
+
+The content type also attaches the PNG to the xAPI `answered` statement
+(`usageType: http://h5p.org/x-content-types/H5P.Paint/drawing`). LRS hosts can
+persist from xAPI; LMS hosts may prefer the `setFinished` details payload.
+
+### Resume
+
+Learner progress is restored via H5P user data and `getCurrentState()` /
+`previousState`. Hosts should not rely on xAPI attachments for resume.
 
 ## Development
 

@@ -26,7 +26,8 @@ const DEFAULTS = {
     enableSubmit: true,
     enableSolution: true,
     enableRetry: true,
-    lockAfterSubmit: true
+    lockAfterSubmit: true,
+    maxScore: 1
   },
   l10n: {
     submit: 'Submit',
@@ -380,7 +381,9 @@ Paint.prototype.getScore = function () {
 };
 
 Paint.prototype.getMaxScore = function () {
-  return 0;
+  const raw = this.params.behaviour && this.params.behaviour.maxScore;
+  const max = Number.isFinite(Number(raw)) ? Math.floor(Number(raw)) : 0;
+  return Math.max(0, max);
 };
 
 Paint.prototype.showSolutions = function () {

@@ -76,6 +76,10 @@
         {
           "label": "Lock canvas after submit",
           "description": "Prevents further editing once the drawing has been submitted (until retry)."
+        },
+        {
+          "label": "Maximum score",
+          "description": "Maximum points a tutor can award for this drawing. The learner score stays 0 until manually evaluated."
         }
       ]
     },
