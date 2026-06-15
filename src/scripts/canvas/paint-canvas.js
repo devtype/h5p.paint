@@ -348,14 +348,10 @@ class PaintCanvas {
 
     this._drawBackgroundToContext(ctx, width, height);
 
-    const drawingLayer = this.canvas.toCanvasElement({
-      multiplier: 1 / zoom,
-      width,
-      height
-    });
+    const drawingLayer = this.canvas.toCanvasElement(1 / zoom);
     ctx.drawImage(drawingLayer, 0, 0, width, height);
 
-    return merge.toDataURL({ format: 'png', multiplier: 1 });
+    return merge.toDataURL('image/png');
   }
 
   toJSON() {
