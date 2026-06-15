@@ -340,7 +340,6 @@ class PaintCanvas {
   exportPNG() {
     const width = this.baseWidth;
     const height = this.baseHeight;
-    const zoom = this.canvas.getZoom() || 1;
     const merge = document.createElement('canvas');
     merge.width = width;
     merge.height = height;
@@ -348,8 +347,16 @@ class PaintCanvas {
 
     this._drawBackgroundToContext(ctx, width, height);
 
-    const drawingLayer = this.canvas.toCanvasElement(1 / zoom);
-    ctx.drawImage(drawingLayer, 0, 0, width, height);
+    let drawingLayer = null;
+    try {
+      drawingLayer = this.canvas.toCanvasElement(1, { width, height });
+    } catch (e) {
+      // Ignore; merge canvas may still contain the background layer.
+    }
+
+    if (drawingLayer && drawingLayer.width > 0 && drawingLayer.height > 0) {
+      ctx.drawImage(drawingLayer, 0, 0, width, height);
+    }
 
     return merge.toDataURL('image/png');
   }
