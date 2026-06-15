@@ -55,6 +55,10 @@ class PaintCanvas {
     this.canvasHost = document.createElement('div');
     this.canvasHost.classList.add('h5p-paint__canvas-host');
 
+    this.backgroundLayer = document.createElement('div');
+    this.backgroundLayer.classList.add('h5p-paint__background-layer');
+    this.canvasHost.appendChild(this.backgroundLayer);
+
     this.canvasEl = document.createElement('canvas');
     this.canvasEl.setAttribute('aria-label', this.media.alternativeText || this.a11y.canvasLabel || 'Drawing area');
     this.canvasEl.setAttribute('role', 'img');
@@ -75,7 +79,7 @@ class PaintCanvas {
     this.canvas = new fabric.Canvas(this.canvasEl, {
       width: baseWidth,
       height: baseHeight,
-      backgroundColor: this.background.color || '#ffffff',
+      backgroundColor: 'transparent',
       preserveObjectStacking: true,
       selection: false,
       enableRetinaScaling: true
@@ -181,8 +185,35 @@ class PaintCanvas {
     this.canvas.requestRenderAll();
   }
 
+  _applyColorBackground() {
+    this._backgroundImageEl = null;
+    this.backgroundLayer.innerHTML = '';
+    this.backgroundLayer.style.backgroundColor = this.background.color || '#ffffff';
+  }
+
+  _drawBackgroundToContext(ctx, width, height) {
+    ctx.fillStyle = this.background.color || '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+
+    if (this.background.type !== 'image' || !this._backgroundImageEl) {
+      return;
+    }
+
+    const img = this._backgroundImageEl;
+    if (!img.naturalWidth || !img.naturalHeight) {
+      return;
+    }
+
+    const scale = Math.min(width / img.naturalWidth, height / img.naturalHeight);
+    const drawWidth = img.naturalWidth * scale;
+    const drawHeight = img.naturalHeight * scale;
+    ctx.drawImage(img, 0, 0, drawWidth, drawHeight);
+  }
+
   _loadBackgroundImage() {
     return new Promise((resolve) => {
+      this._applyColorBackground();
+
       if (this.background.type !== 'image') {
         this._fit();
         this._snapshot();
@@ -197,38 +228,33 @@ class PaintCanvas {
         resolve();
         return;
       }
-      const url = H5P.getPath(bg.path, this.contentId);
-      fabric.Image.fromURL(url, (img) => {
-        if (!img) {
-          this._fit();
-          resolve();
-          return;
-        }
 
-        if (this.canvasParams.aspectRatio === 'background' && img.width && img.height) {
-          this.baseHeight = Math.round((this.baseWidth * img.height) / img.width);
+      const url = H5P.getPath(bg.path, this.contentId);
+      const img = document.createElement('img');
+      img.classList.add('h5p-paint__background-image');
+      img.alt = '';
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        if (this.canvasParams.aspectRatio === 'background' && img.naturalWidth && img.naturalHeight) {
+          this.baseHeight = Math.round((this.baseWidth * img.naturalHeight) / img.naturalWidth);
           this.canvas.setHeight(this.baseHeight);
         }
 
-        const scaleX = this.baseWidth / img.width;
-        const scaleY = this.baseHeight / img.height;
-        const scale = Math.min(scaleX, scaleY);
-        img.set({
-          scaleX: scale,
-          scaleY: scale,
-          originX: 'left',
-          originY: 'top',
-          selectable: false,
-          evented: false
-        });
+        this.backgroundLayer.innerHTML = '';
+        this.backgroundLayer.style.backgroundColor = this.background.color || '#ffffff';
+        this.backgroundLayer.appendChild(img);
+        this._backgroundImageEl = img;
 
-        this.canvas.setBackgroundImage(img, () => {
-          this.canvas.requestRenderAll();
-          this._fit();
-          this._snapshot();
-          resolve();
-        });
-      }, { crossOrigin: 'anonymous' });
+        this._fit();
+        this._snapshot();
+        resolve();
+      };
+      img.onerror = () => {
+        this._fit();
+        this._snapshot();
+        resolve();
+      };
+      img.src = url;
     });
   }
 
@@ -302,7 +328,6 @@ class PaintCanvas {
     this.history = [];
     this.future = [];
     this.canvas.clear();
-    this.canvas.backgroundColor = this.background.color || '#ffffff';
     this._readyPromise = this._loadBackgroundImage();
     this.canvas.requestRenderAll();
     this.onChange();
@@ -313,7 +338,24 @@ class PaintCanvas {
   }
 
   exportPNG() {
-    return this.canvas.toDataURL({ format: 'png', multiplier: 1 });
+    const width = this.baseWidth;
+    const height = this.baseHeight;
+    const zoom = this.canvas.getZoom() || 1;
+    const merge = document.createElement('canvas');
+    merge.width = width;
+    merge.height = height;
+    const ctx = merge.getContext('2d');
+
+    this._drawBackgroundToContext(ctx, width, height);
+
+    const drawingLayer = this.canvas.toCanvasElement({
+      multiplier: 1 / zoom,
+      width,
+      height
+    });
+    ctx.drawImage(drawingLayer, 0, 0, width, height);
+
+    return merge.toDataURL({ format: 'png', multiplier: 1 });
   }
 
   toJSON() {
@@ -322,8 +364,13 @@ class PaintCanvas {
 
   loadFromJSON(json) {
     return new Promise((resolve) => {
+      const payload = typeof json === 'string' ? JSON.parse(json) : { ...json };
+      delete payload.backgroundImage;
+      delete payload.background;
+      delete payload.backgroundColor;
+
       this.suspended = true;
-      this.canvas.loadFromJSON(json, () => {
+      this.canvas.loadFromJSON(payload, () => {
         this.canvas.requestRenderAll();
         this.suspended = false;
         this._snapshot();
@@ -333,8 +380,13 @@ class PaintCanvas {
   }
 
   _loadJson(json) {
+    const payload = typeof json === 'string' ? JSON.parse(json) : { ...json };
+    delete payload.backgroundImage;
+    delete payload.background;
+    delete payload.backgroundColor;
+
     this.suspended = true;
-    this.canvas.loadFromJSON(json, () => {
+    this.canvas.loadFromJSON(payload, () => {
       this.canvas.requestRenderAll();
       this.suspended = false;
       this.onChange();
