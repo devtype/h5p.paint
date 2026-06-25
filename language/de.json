@@ -23,7 +23,7 @@
       "fields": [
         {
           "label": "Grundbreite der Zeichenfläche (px)",
-          "description": "Die Zeichenfläche skaliert responsiv; dieser Wert legt das Seitenverhältnis fest."
+          "description": "Die Zeichenfläche skaliert responsiv; dieser Wert legt das Seitenverhältnis fest. Sehr große Werte erzeugen größere PNG-Exporte und xAPI-Anhänge."
         },
         {
           "label": "Seitenverhältnis",
@@ -90,8 +90,15 @@
           "description": "Verhindert weiteres Bearbeiten nach dem Abgeben (bis zum erneuten Versuch)."
         },
         {
+          "label": "Bewertungsmodus",
+          "options": [
+            { "label": "Manuell (Lehrkraft / Plattform bewertet)" },
+            { "label": "Abschluss (volle Punktzahl bei Abgabe mit Zeichnung)" }
+          ]
+        },
+        {
           "label": "Maximale Punktzahl",
-          "description": "Maximale Punkte, die eine Lehrkraft für diese Zeichnung vergeben kann. Die Lernendenpunktzahl bleibt 0, bis sie bewertet wurde."
+          "description": "Maximale Punkte für diese Frage. Im manuellen Modus bleibt die Lernendenpunktzahl 0, bis bewertet wurde. Im Abschlussmodus erhält der Lernende die volle Punktzahl nach Abgabe einer nicht leeren Zeichnung."
         }
       ]
     },

@@ -1,0 +1,38 @@
+{
+  "taskDescription": "<p>Label the parts of the diagram. Use the drawing tools to annotate the image.</p><p><em>Tip for authors: set canvas background type to Image and upload your diagram in the editor.</em></p>",
+  "media": {
+    "alternativeText": "Diagram to annotate"
+  },
+  "canvas": {
+    "width": 900,
+    "aspectRatio": "16:9",
+    "background": {
+      "type": "color",
+      "color": "#f0f4f8"
+    },
+    "tools": [
+      "pencil",
+      "brush",
+      "eraser",
+      "line",
+      "text",
+      "color",
+      "size",
+      "undo",
+      "redo",
+      "clear"
+    ],
+    "brushDefaults": {
+      "defaultColor": "#dc2626",
+      "defaultBrushSize": 3
+    }
+  },
+  "behaviour": {
+    "enableSubmit": true,
+    "enableSolution": true,
+    "enableRetry": true,
+    "lockAfterSubmit": true,
+    "scoringMode": "manual",
+    "maxScore": 5
+  }
+}

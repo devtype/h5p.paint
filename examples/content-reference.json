@@ -1,0 +1,47 @@
+{
+  "taskDescription": "<p>Draw a simple house with a door and two windows. Compare your drawing to the reference after submitting.</p>",
+  "media": {
+    "alternativeText": "Drawing area for a house sketch"
+  },
+  "canvas": {
+    "width": 800,
+    "aspectRatio": "1:1",
+    "background": {
+      "type": "color",
+      "color": "#ffffff"
+    },
+    "tools": [
+      "pencil",
+      "line",
+      "rect",
+      "eraser",
+      "color",
+      "size",
+      "undo",
+      "redo",
+      "clear"
+    ],
+    "brushDefaults": {
+      "defaultColor": "#1f6feb",
+      "defaultBrushSize": 4
+    }
+  },
+  "behaviour": {
+    "enableSubmit": true,
+    "enableSolution": true,
+    "enableRetry": true,
+    "lockAfterSubmit": true,
+    "scoringMode": "completion",
+    "maxScore": 1
+  },
+  "l10n": {
+    "submit": "Submit",
+    "showSolution": "Show reference",
+    "hideSolution": "Hide reference",
+    "retry": "Try again",
+    "submitted": "Your drawing has been submitted.",
+    "noDrawing": "Please draw something before submitting.",
+    "solutionTitle": "Reference drawing",
+    "yourDrawingTitle": "Your drawing"
+  }
+}

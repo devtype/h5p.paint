@@ -1,10 +1,10 @@
 {
   "title": "Paint",
-  "description": "Lets learners draw on a canvas in response to a prompt. Supports optional background and reference images. Drawings are submitted as images for manual review via xAPI.",
+  "description": "Lets learners draw on a canvas in response to a prompt. Supports optional background and reference images. Drawings are submitted as images for manual or completion-based scoring via xAPI.",
   "machineName": "H5P.Paint",
   "majorVersion": 0,
-  "minorVersion": 2,
-  "patchVersion": 9,
+  "minorVersion": 3,
+  "patchVersion": 0,
   "runnable": 1,
   "embedTypes": ["iframe"],
   "author": "H5P Paint contributors",
@@ -30,6 +30,11 @@
   "editorDependencies": [
     {
       "machineName": "H5PEditor.ShowWhen",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    {
+      "machineName": "H5PEditor.ColorSelector",
       "majorVersion": 1,
       "minorVersion": 0
     }

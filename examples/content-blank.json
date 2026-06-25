@@ -1,0 +1,36 @@
+{
+  "taskDescription": "<p>Draw anything you like on the blank canvas below.</p>",
+  "media": {
+    "alternativeText": "Blank drawing canvas"
+  },
+  "canvas": {
+    "width": 800,
+    "aspectRatio": "4:3",
+    "background": {
+      "type": "color",
+      "color": "#ffffff"
+    },
+    "tools": [
+      "pencil",
+      "brush",
+      "eraser",
+      "color",
+      "size",
+      "undo",
+      "redo",
+      "clear"
+    ],
+    "brushDefaults": {
+      "defaultColor": "#222222",
+      "defaultBrushSize": 4
+    }
+  },
+  "behaviour": {
+    "enableSubmit": true,
+    "enableSolution": false,
+    "enableRetry": true,
+    "lockAfterSubmit": true,
+    "scoringMode": "manual",
+    "maxScore": 1
+  }
+}

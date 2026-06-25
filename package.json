@@ -1,13 +1,15 @@
 {
   "name": "h5p-paint",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "H5P question content type for freehand and shape-based drawing tasks",
   "private": true,
   "license": "MIT",
   "scripts": {
     "build": "webpack --mode=production",
     "watch": "webpack --mode=development --watch",
-    "lint": "eslint \"src/**/*.js\""
+    "lint": "eslint \"src/**/*.js\"",
+    "test": "node --test test/*.mjs",
+    "pack": "node scripts/pack.mjs"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

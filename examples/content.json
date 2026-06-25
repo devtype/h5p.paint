@@ -34,6 +34,7 @@
     "enableSolution": true,
     "enableRetry": true,
     "lockAfterSubmit": true,
+    "scoringMode": "manual",
     "maxScore": 1
   },
   "l10n": {

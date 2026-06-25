@@ -1,0 +1,140 @@
+{
+  "semantics": [
+    {
+      "label": "Description de la tâche",
+      "description": "Consigne affichée au-dessus de la zone de dessin. HTML autorisé.",
+      "default": "<p>Dessinez votre réponse ci-dessous.</p>"
+    },
+    {
+      "label": "Médias",
+      "fields": [
+        {
+          "label": "Image de référence / solution",
+          "description": "Image optionnelle affichée lorsque l'apprenant clique sur « Afficher la solution »."
+        },
+        {
+          "label": "Texte alternatif du dessin",
+          "description": "Décrit la zone de dessin pour les lecteurs d'écran. Laissez vide pour utiliser la description de la tâche."
+        }
+      ]
+    },
+    {
+      "label": "Options du canevas",
+      "fields": [
+        {
+          "label": "Largeur de base du canevas (px)",
+          "description": "Le canevas s'adapte de façon responsive ; cette valeur définit le ratio. Des valeurs très grandes produisent des exportations PNG et des pièces jointes xAPI plus volumineuses."
+        },
+        {
+          "label": "Ratio d'aspect",
+          "options": [
+            { "label": "4:3" },
+            { "label": "16:9" },
+            { "label": "1:1 (carré)" },
+            { "label": "3:4 (portrait)" },
+            { "label": "Adapter à l'image de fond" }
+          ]
+        },
+        {
+          "label": "Arrière-plan",
+          "fields": [
+            { "label": "Type d'arrière-plan" },
+            {
+              "label": "Couleur d'arrière-plan",
+              "description": "Utilisée lorsque le type d'arrière-plan est « Couleur unie »."
+            },
+            {
+              "label": "Image d'arrière-plan",
+              "description": "Utilisée lorsque le type d'arrière-plan est « Image » (ex. papier quadrillé, photo à annoter)."
+            }
+          ]
+        },
+        {
+          "label": "Outils disponibles",
+          "description": "Outils affichés dans la barre d'outils.",
+          "options": [
+            { "label": "Crayon" },
+            { "label": "Pinceau" },
+            { "label": "Gomme" },
+            { "label": "Ligne" },
+            { "label": "Rectangle" },
+            { "label": "Ellipse" },
+            { "label": "Texte" },
+            { "label": "Sélecteur de couleur" },
+            { "label": "Taille du pinceau" },
+            { "label": "Annuler" },
+            { "label": "Rétablir" },
+            { "label": "Effacer" }
+          ]
+        },
+        {
+          "label": "Réglages du pinceau",
+          "fields": [
+            { "label": "Couleur du pinceau par défaut" },
+            { "label": "Taille du pinceau par défaut (px)" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Paramètres comportementaux",
+      "fields": [
+        { "label": "Activer le bouton Envoyer" },
+        {
+          "label": "Activer le bouton « Afficher la solution »",
+          "description": "Effectif uniquement si une image de référence est configurée."
+        },
+        { "label": "Activer le bouton « Réessayer »" },
+        {
+          "label": "Verrouiller le canevas après envoi",
+          "description": "Empêche toute modification après l'envoi (jusqu'à un nouvel essai)."
+        },
+        {
+          "label": "Mode de notation",
+          "options": [
+            { "label": "Manuel (enseignant / plateforme évalue)" },
+            { "label": "Achèvement (score complet si dessin envoyé)" }
+          ]
+        },
+        {
+          "label": "Score maximum",
+          "description": "Points maximum pour cette question. En mode manuel, le score de l'apprenant reste 0 jusqu'à l'évaluation. En mode achèvement, l'apprenant reçoit le score complet après envoi d'un dessin non vide."
+        }
+      ]
+    },
+    {
+      "label": "Traductions de l'interface",
+      "fields": [
+        { "label": "Envoyer", "default": "Envoyer" },
+        { "label": "Afficher la solution", "default": "Afficher la solution" },
+        { "label": "Masquer la solution", "default": "Masquer la solution" },
+        { "label": "Réessayer", "default": "Réessayer" },
+        { "label": "Message après envoi", "default": "Votre dessin a été envoyé." },
+        { "label": "Pas encore de dessin", "default": "Veuillez dessiner quelque chose avant d'envoyer." },
+        { "label": "Titre de la solution", "default": "Référence" },
+        { "label": "Titre de votre dessin", "default": "Votre dessin" }
+      ]
+    },
+    {
+      "label": "Traductions accessibilité",
+      "fields": [
+        { "label": "Libellé du canevas", "default": "Zone de dessin" },
+        { "label": "Libellé de la barre d'outils", "default": "Outils de dessin" },
+        { "label": "Crayon", "default": "Crayon" },
+        { "label": "Pinceau", "default": "Pinceau" },
+        { "label": "Gomme", "default": "Gomme" },
+        { "label": "Ligne", "default": "Ligne" },
+        { "label": "Rectangle", "default": "Rectangle" },
+        { "label": "Ellipse", "default": "Ellipse" },
+        { "label": "Texte", "default": "Ajouter du texte" },
+        { "label": "Couleur", "default": "Couleur" },
+        { "label": "Taille du pinceau", "default": "Taille du pinceau" },
+        { "label": "Annuler", "default": "Annuler" },
+        { "label": "Rétablir", "default": "Rétablir" },
+        { "label": "Effacer", "default": "Effacer le canevas" },
+        { "label": "Solution affichée", "default": "Solution de référence affichée." },
+        { "label": "Solution masquée", "default": "Solution de référence masquée." }
+      ]
+    }
+  ]
+}

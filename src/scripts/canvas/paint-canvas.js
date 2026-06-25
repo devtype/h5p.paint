@@ -1,5 +1,6 @@
 import { fabric } from 'fabric';
 import Tools from './tools.js';
+import { compositeExportPng } from './export-composite.js';
 
 const RATIO_MAP = {
   '4:3': 4 / 3,
@@ -340,13 +341,6 @@ class PaintCanvas {
   exportPNG() {
     const width = this.baseWidth;
     const height = this.baseHeight;
-    const merge = document.createElement('canvas');
-    merge.width = width;
-    merge.height = height;
-    const ctx = merge.getContext('2d');
-
-    this._drawBackgroundToContext(ctx, width, height);
-
     let drawingLayer = null;
     try {
       drawingLayer = this.canvas.toCanvasElement(1, { width, height });
@@ -354,11 +348,12 @@ class PaintCanvas {
       // Ignore; merge canvas may still contain the background layer.
     }
 
-    if (drawingLayer && drawingLayer.width > 0 && drawingLayer.height > 0) {
-      ctx.drawImage(drawingLayer, 0, 0, width, height);
-    }
-
-    return merge.toDataURL('image/png');
+    return compositeExportPng(
+      width,
+      height,
+      (ctx, w, h) => this._drawBackgroundToContext(ctx, w, h),
+      drawingLayer
+    );
   }
 
   toJSON() {

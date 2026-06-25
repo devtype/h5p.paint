@@ -56,7 +56,7 @@
         "name": "width",
         "type": "number",
         "label": "Canvas base width (px)",
-        "description": "The canvas scales responsively but uses this value to set its internal aspect.",
+        "description": "The canvas scales responsively but uses this value to set its internal aspect. Very large values produce bigger PNG exports and xAPI attachments.",
         "default": 800,
         "min": 200,
         "max": 4000
@@ -97,7 +97,7 @@
             "label": "Background color",
             "description": "Used when background type is Solid color.",
             "default": "#ffffff",
-            "widget": "showWhen",
+            "widget": "colorSelector",
             "showWhen": {
               "rules": [
                 { "field": "type", "equals": "color" }
@@ -165,7 +165,8 @@
             "name": "defaultColor",
             "type": "text",
             "label": "Default brush color",
-            "default": "#222222"
+            "default": "#222222",
+            "widget": "colorSelector"
           },
           {
             "name": "defaultBrushSize",
@@ -213,10 +214,26 @@
         "default": true
       },
       {
+        "name": "scoringMode",
+        "type": "select",
+        "label": "Scoring mode",
+        "default": "manual",
+        "options": [
+          {
+            "value": "manual",
+            "label": "Manual (teacher / host evaluates)"
+          },
+          {
+            "value": "completion",
+            "label": "Completion (full score when submitted with a drawing)"
+          }
+        ]
+      },
+      {
         "name": "maxScore",
         "type": "number",
         "label": "Maximum score",
-        "description": "Maximum points a tutor can award for this drawing. The learner score stays 0 until manually evaluated.",
+        "description": "Maximum points for this question. In manual mode the learner score stays 0 until evaluated. In completion mode the learner receives the full score after submitting a non-empty drawing.",
         "default": 1,
         "min": 0,
         "max": 100

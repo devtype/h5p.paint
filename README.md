@@ -25,9 +25,11 @@ Exercise_ idea.
   color shows through again (does not paint over the background).
 - Saves and restores learner progress through the standard H5P
   `getCurrentState` / `setCurrentState` mechanism.
-- Manual / teacher scoring: no auto-grading. The drawing PNG is sent as an
-  xAPI attachment (`usageType: http://h5p.org/x-content-types/H5P.Paint/drawing`)
-  with `length` and `sha2` metadata so an LRS can persist the file.
+- **Scoring modes:** manual evaluation (default) or optional **completion**
+  scoring (full points when the learner submits a non-empty drawing).
+- The drawing PNG is sent as an xAPI attachment
+  (`usageType: http://h5p.org/x-content-types/H5P.Paint/drawing`) with `length`
+  and `sha2` metadata so an LRS can persist the file.
 - Accessible toolbar (`role="toolbar"` with arrow-key navigation,
   `aria-pressed` per tool, ARIA-labelled inputs, high-contrast and
   reduced-motion media-query support).
@@ -47,16 +49,18 @@ Exercise_ idea.
 | `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
-| `behaviour.maxScore` | Maximum points a tutor can award (learner score stays 0 until evaluated). |
+| `behaviour.scoringMode` | `manual` (default) or `completion` — see [Scoring contract](#scoring-contract). |
+| `behaviour.maxScore` | Maximum points for the question. |
 
 **Legacy content:** packages that still use `media.backgroundImage`,
 `canvas.backgroundColor`, or flat `canvas.defaultColor` / `canvas.defaultBrushSize`
 are mapped automatically at runtime to the new model.
 
 All UI strings are translatable via the `l10n` and `a11y` groups in `semantics.json`.
-Editor form labels are provided in [`language/en.json`](language/en.json) and
-[`language/de.json`](language/de.json). German defaults for learner-facing strings
-are included in `de.json` for new content created in a German editor locale.
+Editor form labels are provided in [`language/en.json`](language/en.json),
+[`language/de.json`](language/de.json), and [`language/fr.json`](language/fr.json).
+German and French defaults for learner-facing strings are included for new
+content created in those editor locales.
 
 **Editor note:** H5P replaces a group header with the first visible text field's
 value when a group contains multiple text fields. Brush defaults live in their
@@ -97,21 +101,66 @@ statement:
 
 LRSs that don't accept attachments still get the verb and `result.response`.
 
+When `behaviour.scoringMode` is `completion`, the statement also includes
+`result.score` with `raw`, `max`, and `scaled` after a valid submit.
+
+## Quick start
+
+1. **Install the library** — download `H5P.Paint.h5p` from
+   [GitHub Releases](https://github.com/devtype/h5p.paint/releases) or run
+   `npm run pack` locally, then upload the file in your H5P admin UI
+   (Drupal, Moodle, WordPress, Lumi, etc.).
+2. **Create content** — add a new **Paint** activity, write the task
+   description, and configure canvas options.
+3. **Embed in a question flow** — add the Paint content to a **Question Set**
+   (or use it standalone). Test submit, retry, and resume.
+
+Example content payloads live in [`examples/`](examples/) (`content.json`,
+`content-blank.json`, `content-annotate.json`, `content-reference.json`).
+
+H5P Hub listing is optional and not required to use this library.
+
+## Generic host integration
+
+These work **out of the box** on any H5P host with no custom code:
+
+| Capability | H5P API |
+| ---------- | ------- |
+| Submit / retry / show solution buttons | `H5P.Question` |
+| Resume learner progress | `getCurrentState()` / `previousState` |
+| xAPI on submit | `answered` verb + PNG attachment |
+| Question Set score bar | `getScore()` / `getMaxScore()` |
+
+**Optional host enrichment** (not H5P core): some platforms add a `dataUrl` PNG
+field to the `setFinished` details payload by calling
+`question.paintCanvas.exportPNG()`. This is useful for file storage and tutor
+review but is **not required** for standalone H5P use.
+
+See [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) for a manual QA checklist
+(Question Set, containers, mobile, xAPI).
+
 ## LMS / platform integration
 
-H5P.Paint is designed for **manual evaluation**: the learner drawing is captured
-at submit time and a tutor or host platform assigns the final score.
+H5P.Paint supports **manual evaluation** (default) and optional **completion**
+scoring for generic Question Set / LRS hosts.
 
 ### Scoring contract
 
-| Method | Value | Meaning |
-| ------ | ----- | ------- |
-| `getScore()` | `0` | No auto-grading; earned points come from host evaluation |
-| `getMaxScore()` | `behaviour.maxScore` | Author-configured cap for tutor scoring |
-| `getAnswerGiven()` | `boolean` | Whether the canvas has at least one object |
-| `getCurrentState()` | Fabric JSON + `submitted` flag | Resume / persistence payload |
+| Setting | `getScore()` after submit | xAPI `result.score` | Typical use |
+| ------- | ------------------------- | ------------------- | ----------- |
+| `scoringMode: manual` (default) | `0` | omitted | Tutor/LMS evaluates drawing |
+| `scoringMode: completion` | `maxScore` (if drawing non-empty) | `{ raw, max, scaled }` | Auto points in Question Set |
 
-### Submit payload (host enrichment)
+| Method | Meaning |
+| ------ | ------- |
+| `getMaxScore()` | `behaviour.maxScore` |
+| `getAnswerGiven()` | Whether the canvas has at least one object |
+| `getCurrentState()` | Fabric JSON + `submitted` flag |
+
+Platforms with tutor evaluation (e.g. custom LMS workflows) should keep
+**`scoringMode: manual`**.
+
+### Submit payload (optional host enrichment)
 
 When wiring `H5PIntegration.ajax.setFinished` (or equivalent), hosts typically
 POST JSON **details** shaped like:
@@ -153,6 +202,8 @@ npm install
 npm run watch       # rebuild on change
 npm run build       # production build
 npm run lint
+npm test            # export compositing unit tests
+npm run pack        # build + create H5P.Paint.h5p
 ```
 
 The build emits `dist/h5p-paint.js` and `dist/h5p-paint.css`, which are the two
@@ -160,26 +211,24 @@ files referenced from `library.json`.
 
 ### Producing a `.h5p` package
 
-If you have the [H5P CLI](https://h5p.org/h5p-cli-guide):
+```bash
+npm run pack
+```
+
+This runs `build` and creates `H5P.Paint.h5p` in the project root (respecting
+[`.h5pignore`](.h5pignore)).
+
+Alternatively, with the [H5P CLI](https://h5p.org/h5p-cli-guide):
 
 ```bash
 npm run build
 h5p pack . H5P.Paint.h5p
 ```
 
-Or, with plain `zip`:
-
-```bash
-npm run build
-zip -rq H5P.Paint.h5p . \
-  -x "node_modules/*" "src/*" ".git/*" "*.h5p" \
-     "package.json" "package-lock.json" "webpack.config.js" \
-     ".eslintrc.json" ".babelrc" ".editorconfig" ".gitignore" \
-     "README.md"
-```
-
 Upload the resulting `.h5p` file to any H5P-enabled platform that allows
 library installation.
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Repository layout
 
@@ -192,6 +241,10 @@ library installation.
 |-- NOTICE                 # Third-party attributions (Fabric.js, H5P deps)
 |-- language/en.json       # Editor translations (English)
 |-- language/de.json       # Editor translations (German) + learner UI defaults
+|-- language/fr.json       # Editor translations (French) + learner UI defaults
+|-- docs/COMPATIBILITY.md  # Manual QA checklist for generic H5P hosts
+|-- CHANGELOG.md           # Version history
+|-- examples/              # Demo content JSON presets
 |-- src/
 |   |-- entries/dist.js                  # Webpack entry, registers H5P.Paint
 |   |-- scripts/
@@ -206,12 +259,14 @@ library installation.
 `-- dist/                                # webpack build output
 ```
 
-## Limitations / out of scope (v0.1)
+## Limitations / out of scope
 
-- No auto-grading. Open-ended drawings are reviewed manually via xAPI.
+- No pixel-matching or AI auto-grading. Optional **completion** scoring awards
+  full points for any non-empty submitted drawing.
 - No collaborative / multiplayer drawing.
 - The drawing PNG is sent as a `data:` URL; very large canvases will produce
-  large statements. LRSs may impose attachment-size limits.
+  large statements. LRSs may impose attachment-size limits. Keep `canvas.width`
+  reasonable (see semantics description).
 - Pressure-sensitive stylus input is not specifically tuned (basic pointer
   events only).
 

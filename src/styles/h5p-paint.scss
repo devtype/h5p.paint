@@ -14,21 +14,24 @@
   // Toolbar
   &__toolbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 0.25em;
+    gap: 0.35em;
     padding: 0.4em 0.5em;
     background: #f3f4f6;
     border: 1px solid #d1d5db;
     border-radius: 6px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   &__tool {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 2.25em;
-    min-height: 2.25em;
+    min-width: 2.75em;
+    min-height: 2.75em;
+    flex-shrink: 0;
     padding: 0.2em 0.5em;
     background: #ffffff;
     border: 1px solid #d1d5db;
@@ -111,6 +114,7 @@
     border: 1px solid #d1d5db;
     border-radius: 6px;
     overflow: hidden;
+    touch-action: none;
 
     .canvas-container {
       position: relative;
@@ -169,6 +173,18 @@
     margin: 0;
     color: #6b7280;
     font-style: italic;
+  }
+}
+
+@media (max-width: 480px) {
+  .h5p-paint__tool {
+    min-width: 2.75em;
+    min-height: 2.75em;
+  }
+
+  .h5p-paint__color-input {
+    inline-size: 2.75em;
+    block-size: 2.75em;
   }
 }
 

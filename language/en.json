@@ -22,7 +22,7 @@
       "fields": [
         {
           "label": "Canvas base width (px)",
-          "description": "The canvas scales responsively but uses this value to set its internal aspect."
+          "description": "The canvas scales responsively but uses this value to set its internal aspect. Very large values produce bigger PNG exports and xAPI attachments."
         },
         {
           "label": "Aspect ratio",
@@ -89,8 +89,15 @@
           "description": "Prevents further editing once the drawing has been submitted (until retry)."
         },
         {
+          "label": "Scoring mode",
+          "options": [
+            { "label": "Manual (teacher / host evaluates)" },
+            { "label": "Completion (full score when submitted with a drawing)" }
+          ]
+        },
+        {
           "label": "Maximum score",
-          "description": "Maximum points a tutor can award for this drawing. The learner score stays 0 until manually evaluated."
+          "description": "Maximum points for this question. In manual mode the learner score stays 0 until evaluated. In completion mode the learner receives the full score after submitting a non-empty drawing."
         }
       ]
     },

@@ -32,6 +32,7 @@ const DEFAULTS = {
     enableSolution: true,
     enableRetry: true,
     lockAfterSubmit: true,
+    scoringMode: 'manual',
     maxScore: 1
   },
   l10n: {
@@ -419,6 +420,9 @@ Paint.prototype.triggerXAPIAnswered = function () {
     contentId: self.contentId,
     dataUrl,
     summary,
+    score: self.getScore(),
+    maxScore: self.getMaxScore(),
+    includeScore: self._usesCompletionScoring() && self.state.submitted,
     getTitle: () => self.getTitle()
   });
 
@@ -430,12 +434,23 @@ Paint.prototype.triggerXAPIAnswered = function () {
   });
 };
 
+Paint.prototype._usesCompletionScoring = function () {
+  const mode = this.params.behaviour && this.params.behaviour.scoringMode;
+  return mode === 'completion';
+};
+
 Paint.prototype.getAnswerGiven = function () {
   return this.paintCanvas ? this.paintCanvas.hasDrawing() : false;
 };
 
 Paint.prototype.getScore = function () {
-  return 0;
+  if (!this._usesCompletionScoring()) {
+    return 0;
+  }
+  if (!this.state.submitted || !this.getAnswerGiven()) {
+    return 0;
+  }
+  return this.getMaxScore();
 };
 
 Paint.prototype.getMaxScore = function () {
@@ -491,6 +506,9 @@ Paint.prototype.getXAPIData = function () {
     contentId: self.contentId,
     dataUrl,
     summary,
+    score: self.getScore(),
+    maxScore: self.getMaxScore(),
+    includeScore: self._usesCompletionScoring() && self.state.submitted,
     getTitle: () => self.getTitle()
   });
   return { statement: xapiEvent.data.statement };
