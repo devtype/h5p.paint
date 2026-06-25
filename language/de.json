@@ -1,0 +1,133 @@
+{
+  "semantics": [
+    {
+      "label": "Aufgabenbeschreibung",
+      "description": "Aufgabenstellung über der Zeichenfläche. HTML ist erlaubt.",
+      "default": "<p>Zeichne deine Antwort unten.</p>"
+    },
+    {
+      "label": "Medien",
+      "fields": [
+        {
+          "label": "Referenz- / Musterlösungsbild",
+          "description": "Optionales Bild, das angezeigt wird, wenn die Lernenden auf „Musterlösung anzeigen“ klicken."
+        },
+        {
+          "label": "Alternativtext für die Zeichnung",
+          "description": "Beschreibt die Zeichenfläche für Screenreader. Leer lassen, um auf die Aufgabenbeschreibung zurückzufallen."
+        }
+      ]
+    },
+    {
+      "label": "Zeichenflächen-Optionen",
+      "fields": [
+        {
+          "label": "Grundbreite der Zeichenfläche (px)",
+          "description": "Die Zeichenfläche skaliert responsiv; dieser Wert legt das Seitenverhältnis fest."
+        },
+        {
+          "label": "Seitenverhältnis",
+          "options": [
+            { "label": "4:3" },
+            { "label": "16:9" },
+            { "label": "1:1 (quadratisch)" },
+            { "label": "3:4 (Hochformat)" },
+            { "label": "An Hintergrundbild anpassen" }
+          ]
+        },
+        {
+          "label": "Hintergrund",
+          "fields": [
+            { "label": "Hintergrundtyp" },
+            {
+              "label": "Hintergrundfarbe",
+              "description": "Wird verwendet, wenn der Hintergrundtyp „Einfarbig“ ist."
+            },
+            {
+              "label": "Hintergrundbild",
+              "description": "Wird verwendet, wenn der Hintergrundtyp „Bild“ ist (z. B. kariertes Papier, Foto zum Markieren)."
+            }
+          ]
+        },
+        {
+          "label": "Verfügbare Werkzeuge",
+          "description": "Werkzeuge in der Symbolleiste.",
+          "options": [
+            { "label": "Stift" },
+            { "label": "Pinsel" },
+            { "label": "Radierer" },
+            { "label": "Linie" },
+            { "label": "Rechteck" },
+            { "label": "Ellipse" },
+            { "label": "Text" },
+            { "label": "Farbauswahl" },
+            { "label": "Strichstärke" },
+            { "label": "Rückgängig" },
+            { "label": "Wiederholen" },
+            { "label": "Löschen" }
+          ]
+        },
+        {
+          "label": "Stift-Voreinstellungen",
+          "fields": [
+            { "label": "Standard-Stiftfarbe" },
+            { "label": "Standard-Strichstärke (px)" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Verhaltenseinstellungen",
+      "fields": [
+        { "label": "Schaltfläche „Abgeben“ anzeigen" },
+        {
+          "label": "Schaltfläche „Musterlösung anzeigen“ anzeigen",
+          "description": "Nur wirksam, wenn ein Referenzbild konfiguriert ist."
+        },
+        { "label": "Schaltfläche „Erneut versuchen“ anzeigen" },
+        {
+          "label": "Zeichenfläche nach dem Abgeben sperren",
+          "description": "Verhindert weiteres Bearbeiten nach dem Abgeben (bis zum erneuten Versuch)."
+        },
+        {
+          "label": "Maximale Punktzahl",
+          "description": "Maximale Punkte, die eine Lehrkraft für diese Zeichnung vergeben kann. Die Lernendenpunktzahl bleibt 0, bis sie bewertet wurde."
+        }
+      ]
+    },
+    {
+      "label": "Benutzeroberfläche",
+      "fields": [
+        { "label": "Abgeben", "default": "Abgeben" },
+        { "label": "Musterlösung anzeigen", "default": "Musterlösung anzeigen" },
+        { "label": "Musterlösung ausblenden", "default": "Musterlösung ausblenden" },
+        { "label": "Erneut versuchen", "default": "Erneut versuchen" },
+        { "label": "Meldung nach dem Abgeben", "default": "Deine Zeichnung wurde abgegeben." },
+        { "label": "Noch keine Zeichnung", "default": "Bitte zeichne etwas, bevor du abgibst." },
+        { "label": "Titel der Musterlösung", "default": "Referenz" },
+        { "label": "Titel der eigenen Zeichnung", "default": "Deine Zeichnung" }
+      ]
+    },
+    {
+      "label": "Barrierefreiheit",
+      "fields": [
+        { "label": "Beschriftung der Zeichenfläche", "default": "Zeichenfläche" },
+        { "label": "Beschriftung der Werkzeugleiste", "default": "Zeichenwerkzeuge" },
+        { "label": "Stift", "default": "Stift" },
+        { "label": "Pinsel", "default": "Pinsel" },
+        { "label": "Radierer", "default": "Radierer" },
+        { "label": "Linie", "default": "Linie" },
+        { "label": "Rechteck", "default": "Rechteck" },
+        { "label": "Ellipse", "default": "Ellipse" },
+        { "label": "Text", "default": "Text hinzufügen" },
+        { "label": "Farbe", "default": "Farbe" },
+        { "label": "Strichstärke", "default": "Strichstärke" },
+        { "label": "Rückgängig", "default": "Rückgängig" },
+        { "label": "Wiederholen", "default": "Wiederholen" },
+        { "label": "Löschen", "default": "Zeichenfläche leeren" },
+        { "label": "Musterlösung eingeblendet", "default": "Referenz-Musterlösung eingeblendet." },
+        { "label": "Musterlösung ausgeblendet", "default": "Referenz-Musterlösung ausgeblendet." }
+      ]
+    }
+  ]
+}

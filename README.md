@@ -44,16 +44,23 @@ Exercise_ idea.
 | `media.alternativeText` | Screen-reader description of the canvas. |
 | `canvas.width` / `canvas.aspectRatio` | Base size of the drawing surface. |
 | `canvas.tools` | Subset of tools to expose in the toolbar. |
-| `canvas.defaultColor` / `canvas.defaultBrushSize` | Toolbar defaults. |
+| `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
 | `behaviour.maxScore` | Maximum points a tutor can award (learner score stays 0 until evaluated). |
 
-**Legacy content:** packages that still use `media.backgroundImage` or
-`canvas.backgroundColor` are mapped automatically at runtime to the new
-background model.
+**Legacy content:** packages that still use `media.backgroundImage`,
+`canvas.backgroundColor`, or flat `canvas.defaultColor` / `canvas.defaultBrushSize`
+are mapped automatically at runtime to the new model.
 
 All UI strings are translatable via the `l10n` and `a11y` groups in `semantics.json`.
+Editor form labels are provided in [`language/en.json`](language/en.json) and
+[`language/de.json`](language/de.json). German defaults for learner-facing strings
+are included in `de.json` for new content created in a German editor locale.
+
+**Editor note:** H5P replaces a group header with the first visible text field's
+value when a group contains multiple text fields. Brush defaults live in their
+own nested group so the canvas section keeps its proper title.
 
 ## xAPI
 
@@ -184,6 +191,7 @@ library installation.
 |-- LICENSE                # MIT license for this library
 |-- NOTICE                 # Third-party attributions (Fabric.js, H5P deps)
 |-- language/en.json       # Editor translations (English)
+|-- language/de.json       # Editor translations (German) + learner UI defaults
 |-- src/
 |   |-- entries/dist.js                  # Webpack entry, registers H5P.Paint
 |   |-- scripts/

@@ -22,8 +22,10 @@ const DEFAULTS = {
       'pencil', 'brush', 'eraser', 'line', 'rect', 'ellipse',
       'text', 'color', 'size', 'undo', 'redo', 'clear'
     ],
-    defaultColor: '#222222',
-    defaultBrushSize: 4
+    brushDefaults: {
+      defaultColor: '#222222',
+      defaultBrushSize: 4
+    }
   },
   behaviour: {
     enableSubmit: true,
@@ -114,6 +116,20 @@ function resolveBackground(params) {
 }
 
 /**
+ * Resolve brush defaults from nested semantics or legacy flat canvas fields.
+ *
+ * @param {object|null|undefined} canvas - Authoring canvas params.
+ * @returns {{ defaultColor: string, defaultBrushSize: number }}
+ */
+function resolveBrushDefaults(canvas) {
+  const nested = canvas && canvas.brushDefaults;
+  return {
+    defaultColor: nested?.defaultColor ?? canvas?.defaultColor ?? '#222222',
+    defaultBrushSize: nested?.defaultBrushSize ?? canvas?.defaultBrushSize ?? 4
+  };
+}
+
+/**
  * H5P.Paint question type.
  *
  * Uses the standard H5P constructor + prototype pattern required by
@@ -169,7 +185,10 @@ Paint.prototype.registerDomElements = function () {
 
   self.paintCanvas = new PaintCanvas({
     contentId: self.contentId,
-    canvasParams: self.params.canvas,
+    canvasParams: {
+      ...self.params.canvas,
+      ...resolveBrushDefaults(self.params.canvas)
+    },
     background: resolveBackground(self.params),
     media: self.params.media,
     a11y: self.params.a11y,
@@ -177,11 +196,12 @@ Paint.prototype.registerDomElements = function () {
   });
   stage.appendChild(self.paintCanvas.getElement());
 
+  const brushDefaults = resolveBrushDefaults(self.params.canvas);
   self.toolbar = new Toolbar({
     tools: self.params.canvas.tools,
     a11y: self.params.a11y,
-    defaultColor: self.params.canvas.defaultColor,
-    defaultBrushSize: self.params.canvas.defaultBrushSize,
+    defaultColor: brushDefaults.defaultColor,
+    defaultBrushSize: brushDefaults.defaultBrushSize,
     onAction: (action, value) => self._onToolbarAction(action, value)
   });
   stage.insertBefore(self.toolbar.getElement(), self.paintCanvas.getElement());

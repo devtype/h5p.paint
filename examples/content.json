@@ -24,8 +24,10 @@
       "redo",
       "clear"
     ],
-    "defaultColor": "#1f6feb",
-    "defaultBrushSize": 4
+    "brushDefaults": {
+      "defaultColor": "#1f6feb",
+      "defaultBrushSize": 4
+    }
   },
   "behaviour": {
     "enableSubmit": true,

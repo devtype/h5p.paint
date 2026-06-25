@@ -66,8 +66,13 @@
             { "label": "Clear" }
           ]
         },
-        { "label": "Default brush color" },
-        { "label": "Default brush size (px)" }
+        {
+          "label": "Brush defaults",
+          "fields": [
+            { "label": "Default brush color" },
+            { "label": "Default brush size (px)" }
+          ]
+        }
       ]
     },
     {
