@@ -3,6 +3,16 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.3.1] - 2026-06-25
+
+### Fixed
+
+- Color picker fields showed `[field:text:colorSelector:…]` when
+  `H5PEditor.ColorSelector` 1.3 was installed but the library declared dependency
+  on 1.0. Editor dependency updated to 1.3.
+- Background color field now uses `showWhen` with nested `colorSelector` per
+  H5PEditor.ShowWhen documentation (conditional color fields).
+
 ## [0.3.0] - 2026-06-13
 
 ### Added

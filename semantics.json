@@ -97,11 +97,12 @@
             "label": "Background color",
             "description": "Used when background type is Solid color.",
             "default": "#ffffff",
-            "widget": "colorSelector",
+            "widget": "showWhen",
             "showWhen": {
               "rules": [
                 { "field": "type", "equals": "color" }
-              ]
+              ],
+              "widget": "colorSelector"
             }
           },
           {

@@ -4,7 +4,7 @@
   "machineName": "H5P.Paint",
   "majorVersion": 0,
   "minorVersion": 3,
-  "patchVersion": 0,
+  "patchVersion": 1,
   "runnable": 1,
   "embedTypes": ["iframe"],
   "author": "H5P Paint contributors",
@@ -36,7 +36,7 @@
     {
       "machineName": "H5PEditor.ColorSelector",
       "majorVersion": 1,
-      "minorVersion": 0
+      "minorVersion": 3
     }
   ]
 }
