@@ -102,7 +102,7 @@
           "fields": [
             {
               "label": "URL del punto de calificación",
-              "description": "Punto POST que acepta el dibujo y devuelve puntuación JSON. Se ignora si el host proporciona H5PIntegration.paintAiGrader."
+              "description": "Punto POST que acepta el dibujo y devuelve puntuación JSON. Se ignora si el host proporciona H5PIntegration.paintAiGrader. Los dibujos y metadatos de la tarea pueden transmitirse a esta URL; asegúrese de tener base legal y aviso de privacidad antes de usar un servicio externo. Vea docs/PRIVACY.md."
             },
             {
               "label": "Rúbrica de calificación",

@@ -8,7 +8,7 @@ release asset.
 
 | Field | Value |
 | ----- | ----- |
-| Library version | 0.5.0 |
+| Library version | 0.5.1 |
 | Host | _Record: Lumi / Drupal+H5P / Moodle / other_ |
 | Browser | _Record: Chrome / Firefox / Safari / iOS Safari_ |
 | Date | _Record when tested_ |
@@ -78,6 +78,9 @@ release asset.
 
 ## Notes
 File issues at https://github.com/devtype/h5p.paint/issues.
+
+For privacy and data-processing obligations (AI scoring, xAPI PNG exports), see
+[`docs/PRIVACY.md`](PRIVACY.md).
 
 ## Automated checks (CI)
 

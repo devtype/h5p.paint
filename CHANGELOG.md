@@ -3,6 +3,22 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.5.1] - 2026-06-30
+
+### Added
+
+- [`docs/PRIVACY.md`](docs/PRIVACY.md) — data-processing guidance for authors,
+  LMS admins, and integrators (AI scoring, xAPI PNG exports).
+- Editor privacy description on `behaviour.aiGrading.endpointUrl` (semantics +
+  en/de/fr/nl/es translations).
+
+### Changed
+
+- Copyright and `library.json` author set to **devtype**; README trademark
+  disclaimer added (not affiliated with H5P Group AS).
+- [`NOTICE`](NOTICE) extended with `H5PEditor.ShowWhen` and
+  `H5PEditor.ColorSelector` editor dependencies.
+
 ## [0.5.0] - 2026-06-13
 
 ### Added

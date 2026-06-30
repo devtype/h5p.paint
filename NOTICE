@@ -1,5 +1,5 @@
 H5P.Paint
-Copyright (c) 2026 H5P Paint contributors
+Copyright (c) 2026 devtype
 
 This product includes software developed by third parties. See below for
 copyright and license terms of components that are redistributed with or
@@ -56,6 +56,14 @@ The following libraries are declared in library.json and loaded by the host
 
   H5P.Image 1.1
     Source: https://github.com/h5p/h5p-image
+    License: MIT (H5P Group)
+
+  H5PEditor.ShowWhen 1.0
+    Source: https://github.com/h5p/h5p-editor-show-when
+    License: MIT (H5P Group)
+
+  H5PEditor.ColorSelector 1.3
+    Source: https://github.com/h5p/h5p-editor-color-selector
     License: MIT (H5P Group)
 
 Install and comply with the license terms of these libraries on your platform

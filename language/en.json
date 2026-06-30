@@ -101,7 +101,7 @@
           "fields": [
             {
               "label": "Grading endpoint URL",
-              "description": "POST endpoint that accepts the learner drawing and returns a JSON score. Ignored when the host provides H5PIntegration.paintAiGrader."
+              "description": "POST endpoint that accepts the learner drawing and returns a JSON score. Ignored when the host provides H5PIntegration.paintAiGrader. Learner drawings and task metadata may be transmitted to this URL; ensure you have a legal basis and privacy notice before using an external service. See docs/PRIVACY.md."
             },
             {
               "label": "Grading rubric",

@@ -102,7 +102,7 @@
           "fields": [
             {
               "label": "Beoordelings-eindpunt-URL",
-              "description": "POST-eindpunt dat de tekening accepteert en JSON met score teruggeeft. Wordt genegeerd wanneer de host H5PIntegration.paintAiGrader levert."
+              "description": "POST-eindpunt dat de tekening accepteert en JSON met score teruggeeft. Wordt genegeerd wanneer de host H5PIntegration.paintAiGrader levert. Leerlingtekeningen en taakmetadata kunnen naar deze URL worden verzonden; zorg voor een rechtsgrond en privacyverklaring voordat u een externe dienst gebruikt. Zie docs/PRIVACY.md."
             },
             {
               "label": "Beoordelingsrubriek",

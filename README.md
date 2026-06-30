@@ -10,6 +10,9 @@ entry _Paint_ ("a content type to create some doodles and store them — might
 be interesting to wrap images in xAPI") and the related _H5P Freehand
 Exercise_ idea.
 
+H5P.Paint is developed by **devtype**. It is not affiliated with, endorsed by,
+or maintained by H5P Group AS.
+
 ## Features
 
 - Built on `H5P.Question`, so it integrates with Question Set, Course
@@ -181,6 +184,10 @@ Request/response format: [`examples/ai-grading-contract.md`](examples/ai-grading
 Example AI content preset: [`examples/content-ai.json`](examples/content-ai.json)
 (set `endpointUrl` or use the host hook below).
 
+**Data protection:** AI mode may transmit learner drawings and task text to an
+external service. Authors and platform operators are responsible for privacy
+compliance. See [`docs/PRIVACY.md`](docs/PRIVACY.md).
+
 On submit, AI mode shows a grading progress message, calls the grader
 asynchronously, then sets the score and optional learner feedback. PNGs sent
 to the grader are downscaled to `behaviour.aiGrading.maxExportWidth` (default
@@ -316,7 +323,8 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## License
 
-H5P.Paint is released under the [MIT License](LICENSE).
+H5P.Paint is released under the [MIT License](LICENSE). Copyright (c) 2026
+**devtype**.
 
 Third-party components (including Fabric.js bundled into `dist/h5p-paint.js` and
 runtime H5P dependencies) are listed in [NOTICE](NOTICE) with copyright and

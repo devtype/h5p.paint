@@ -102,7 +102,7 @@
           "fields": [
             {
               "label": "Bewertungs-Endpunkt-URL",
-              "description": "POST-Endpunkt, der die Zeichnung entgegennimmt und JSON mit Punktzahl zurückgibt. Wird ignoriert, wenn der Host H5PIntegration.paintAiGrader bereitstellt."
+              "description": "POST-Endpunkt, der die Zeichnung entgegennimmt und JSON mit Punktzahl zurückgibt. Wird ignoriert, wenn der Host H5PIntegration.paintAiGrader bereitstellt. Lernendenzeichnungen und Aufgabenmetadaten können an diese URL übermittelt werden; stellen Sie eine Rechtsgrundlage und Datenschutzhinweise sicher, bevor Sie einen externen Dienst nutzen. Siehe docs/PRIVACY.md."
             },
             {
               "label": "Bewertungsrubrik",

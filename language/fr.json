@@ -102,7 +102,7 @@
           "fields": [
             {
               "label": "URL du point de terminaison de notation",
-              "description": "Point de terminaison POST qui accepte le dessin et renvoie un score JSON. Ignoré si l'hôte fournit H5PIntegration.paintAiGrader."
+              "description": "Point de terminaison POST qui accepte le dessin et renvoie un score JSON. Ignoré si l'hôte fournit H5PIntegration.paintAiGrader. Les dessins et métadonnées de tâche peuvent être transmis à cette URL ; assurez-vous d'avoir une base légale et une notice de confidentialité avant d'utiliser un service externe. Voir docs/PRIVACY.md."
             },
             {
               "label": "Grille de notation",

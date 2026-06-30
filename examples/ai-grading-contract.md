@@ -55,6 +55,12 @@ H5PIntegration.paintAiGrader = {
 When the hook is present, `endpointUrl` is ignored. Never store API keys in
 H5P content parameters.
 
+## Data protection
+
+Grading requests include learner drawings and task metadata. Platform operators
+and content authors are responsible for lawful processing, privacy notices, and
+vendor agreements where applicable. See [`docs/PRIVACY.md`](../docs/PRIVACY.md).
+
 ## Interrupted grading
 
 If the learner reloads or navigates away while grading is in progress
