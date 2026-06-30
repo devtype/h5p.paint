@@ -96,6 +96,13 @@ const XapiService = {
       statement.result.response += `; feedback:${String(ctx.aiFeedback).replace(/[;\n\r]/g, ' ').trim()}`;
     }
 
+    if (ctx.aiConfidence !== undefined && ctx.aiConfidence !== null) {
+      const confidence = Number(ctx.aiConfidence);
+      if (Number.isFinite(confidence)) {
+        statement.result.response += `; confidence:${confidence.toFixed(2)}`;
+      }
+    }
+
     if (ctx.includeScore && ctx.maxScore !== undefined && ctx.maxScore > 0) {
       const raw = Math.max(0, Math.min(ctx.maxScore, Number(ctx.score) || 0));
       statement.result.score = {

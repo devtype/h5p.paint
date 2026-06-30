@@ -21,7 +21,8 @@ When `behaviour.scoringMode` is `ai`, H5P.Paint POSTs JSON to
 }
 ```
 
-The PNG may be downscaled to 1024px width before sending.
+The PNG may be downscaled to `behaviour.aiGrading.maxExportWidth` pixels wide
+(default **1024**) before sending.
 
 ## Response
 
@@ -36,7 +37,9 @@ The PNG may be downscaled to 1024px width before sending.
 
 - `score` (required) — integer or float, clamped to `[0, maxScore]`
 - `feedback` (optional) — short learner-facing comment (HTML stripped)
-- `confidence` (optional) — stored internally, not shown by default
+- `confidence` (optional) — float in `[0, 1]`; persisted in learner state,
+  optionally shown when `showConfidenceToLearner` is enabled, and appended to
+  xAPI `result.response` as `; confidence:0.82`
 
 ## Host hook (optional)
 
@@ -44,10 +47,18 @@ The PNG may be downscaled to 1024px width before sending.
 H5PIntegration.paintAiGrader = {
   grade: async function (payload) {
     // Call your backend / vision model
-    return { score: 4, feedback: 'Well done.' };
+    return { score: 4, feedback: 'Well done.', confidence: 0.91 };
   }
 };
 ```
 
 When the hook is present, `endpointUrl` is ignored. Never store API keys in
 H5P content parameters.
+
+## Interrupted grading
+
+If the learner reloads or navigates away while grading is in progress
+(`aiGradingStatus: pending`, not yet submitted), the library restores the
+drawing but resets grading to idle and prompts the learner to submit again.
+xAPI is emitted only after grading completes or fails and the submit is
+finalized.

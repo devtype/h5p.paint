@@ -22,7 +22,9 @@ const INCLUDE = [
   'dist/h5p-paint.css',
   'language/en.json',
   'language/de.json',
-  'language/fr.json'
+  'language/fr.json',
+  'language/nl.json',
+  'language/es.json'
 ];
 
 console.log('Building dist…');

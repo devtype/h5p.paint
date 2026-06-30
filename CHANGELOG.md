@@ -3,6 +3,26 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.5.0] - 2026-06-13
+
+### Added
+
+- **AI confidence** — optional `confidence` from grader persisted in state,
+  optionally shown to learners (`showConfidenceToLearner`), encoded in xAPI
+  `result.response`.
+- **`behaviour.aiGrading.maxExportWidth`** — author-configurable PNG downscale
+  before grading requests (default 1024px).
+- **`examples/content-ai.json`** — AI scoring preset with rubric.
+- Pure **`scoring.js`** module with unit tests for score resolution, xAPI
+  inclusion, and interrupted grading restore.
+- Editor translations: **Dutch** ([`language/nl.json`](language/nl.json)) and
+  **Spanish** ([`language/es.json`](language/es.json)).
+
+### Fixed
+
+- Reload during AI grading (`pending`, not submitted) no longer leaves the
+  learner stuck without a submit button; shows an interrupted message instead.
+
 ## [0.4.0] - 2026-06-25
 
 ### Added

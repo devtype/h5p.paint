@@ -1,0 +1,62 @@
+{
+  "taskDescription": "<p>Label the parts of the plant cell diagram below. Include the nucleus, cell wall, and chloroplast.</p>",
+  "media": {
+    "alternativeText": "Drawing area for a plant cell diagram"
+  },
+  "canvas": {
+    "width": 800,
+    "aspectRatio": "4:3",
+    "background": {
+      "type": "color",
+      "color": "#f8f9fa"
+    },
+    "tools": [
+      "pencil",
+      "line",
+      "text",
+      "color",
+      "size",
+      "undo",
+      "redo",
+      "clear"
+    ],
+    "brushDefaults": {
+      "defaultColor": "#24292f",
+      "defaultBrushSize": 3
+    }
+  },
+  "behaviour": {
+    "enableSubmit": true,
+    "enableSolution": false,
+    "enableRetry": true,
+    "lockAfterSubmit": true,
+    "scoringMode": "ai",
+    "maxScore": 5,
+    "aiGrading": {
+      "endpointUrl": "",
+      "rubric": "<p>Award 1 point for each correctly labelled part: nucleus, cell wall, chloroplast. Partial credit for clear attempts.</p>",
+      "includeReferenceImage": false,
+      "requestTimeoutMs": 30000,
+      "maxExportWidth": 1024,
+      "showFeedbackToLearner": true,
+      "showConfidenceToLearner": true,
+      "onFailure": "zero"
+    }
+  },
+  "l10n": {
+    "submit": "Submit",
+    "showSolution": "Show solution",
+    "hideSolution": "Hide solution",
+    "retry": "Try again",
+    "submitted": "Your drawing has been submitted.",
+    "noDrawing": "Please draw something before submitting.",
+    "solutionTitle": "Reference",
+    "yourDrawingTitle": "Your drawing",
+    "aiGrading": "Your drawing is being graded…",
+    "aiGradingFailed": "Automatic grading could not be completed.",
+    "aiFeedbackTitle": "Feedback",
+    "aiScoreLabel": "Score",
+    "aiConfidenceLabel": "Confidence",
+    "aiGradingInterrupted": "Grading was interrupted. Please submit again."
+  }
+}

@@ -209,7 +209,8 @@ const AiGrader = {
     const ai = ctx.aiGrading || {};
     const maxScore = ctx.maxScore;
     const timeoutMs = Math.max(1000, Number(ai.requestTimeoutMs) || 30000);
-    const dataUrl = await downscaleDataUrl(ctx.dataUrl);
+    const maxExportWidth = Math.max(256, Number(ai.maxExportWidth) || MAX_EXPORT_WIDTH);
+    const dataUrl = await downscaleDataUrl(ctx.dataUrl, maxExportWidth);
     const payload = buildGradingPayload({ ...ctx, dataUrl });
 
     const hook = getHostHook();

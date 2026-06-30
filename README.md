@@ -50,7 +50,7 @@ Exercise_ idea.
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
 | `behaviour.scoringMode` | `manual` (default), `completion`, or `ai` — see [Scoring contract](#scoring-contract). |
-| `behaviour.aiGrading` | AI endpoint, rubric, timeout, failure policy (visible when scoring mode is AI). |
+| `behaviour.aiGrading` | AI endpoint, rubric, timeout, `maxExportWidth`, failure policy, feedback/confidence toggles (visible when scoring mode is AI). |
 | `behaviour.maxScore` | Maximum points for the question. |
 
 **Legacy content:** packages that still use `media.backgroundImage`,
@@ -117,7 +117,8 @@ When `behaviour.scoringMode` is `completion`, the statement also includes
    (or use it standalone). Test submit, retry, and resume.
 
 Example content payloads live in [`examples/`](examples/) (`content.json`,
-`content-blank.json`, `content-annotate.json`, `content-reference.json`).
+`content-blank.json`, `content-annotate.json`, `content-reference.json`,
+`content-ai.json`).
 
 H5P Hub listing is optional and not required to use this library.
 
@@ -151,13 +152,13 @@ H5P.Paint supports **manual evaluation** (default), **completion** scoring, and
 | ------- | ------------------------- | ------------------- | ----------- |
 | `scoringMode: manual` (default) | `0` | omitted | Tutor/LMS evaluates drawing |
 | `scoringMode: completion` | `maxScore` (if drawing non-empty) | `{ raw, max, scaled }` | Auto points in Question Set |
-| `scoringMode: ai` | AI score when grading completes | `{ raw, max, scaled }` + feedback in `result.response` | Vision model / custom grader |
+| `scoringMode: ai` | AI score when grading completes | `{ raw, max, scaled }` + feedback/confidence in `result.response` | Vision model / custom grader |
 
 | Method | Meaning |
 | ------ | ------- |
 | `getMaxScore()` | `behaviour.maxScore` |
 | `getAnswerGiven()` | Whether the canvas has at least one object |
-| `getCurrentState()` | Fabric JSON + `submitted` + optional AI fields (v2) |
+| `getCurrentState()` | Fabric JSON + `submitted` + optional AI fields (v2, incl. confidence) |
 
 Platforms with tutor evaluation should keep **`scoringMode: manual`**.
 
@@ -177,9 +178,15 @@ The hook takes precedence over the endpoint URL. **Never store API keys in H5P
 content.** Use a same-origin proxy or the hook for authentication.
 
 Request/response format: [`examples/ai-grading-contract.md`](examples/ai-grading-contract.md).
+Example AI content preset: [`examples/content-ai.json`](examples/content-ai.json)
+(set `endpointUrl` or use the host hook below).
 
 On submit, AI mode shows a grading progress message, calls the grader
-asynchronously, then sets the score and optional learner feedback. If grading
+asynchronously, then sets the score and optional learner feedback. PNGs sent
+to the grader are downscaled to `behaviour.aiGrading.maxExportWidth` (default
+1024px). Optional `confidence` from the grader can be shown when
+`showConfidenceToLearner` is enabled. If the learner reloads during grading,
+the drawing is restored and they are prompted to submit again. If grading
 fails, `behaviour.aiGrading.onFailure` controls the fallback (`zero`,
 `completion`, or `manual`).
 
@@ -225,12 +232,25 @@ npm install
 npm run watch       # rebuild on change
 npm run build       # production build
 npm run lint
-npm test            # export compositing unit tests
+npm test            # unit tests (export, AI grader, scoring)
 npm run pack        # build + create H5P.Paint.h5p
 ```
 
 The build emits `dist/h5p-paint.js` and `dist/h5p-paint.css`, which are the two
 files referenced from `library.json`.
+
+### Build size
+
+After `npm run build` (production, minified):
+
+| Artifact | Typical size |
+| -------- | ------------ |
+| `dist/h5p-paint.js` | ~335 KB (Fabric.js is the bulk) |
+| `dist/h5p-paint.css` | ~3.5 KB |
+| `H5P.Paint.h5p` (`npm run pack`) | ~112 KB (runtime allowlist only) |
+
+The webpack bundle includes Fabric.js; H5P platform libraries (`H5P.Question`,
+etc.) are not bundled.
 
 ### Producing a `.h5p` package
 

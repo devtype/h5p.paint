@@ -279,10 +279,26 @@
             "max": 120000
           },
           {
+            "name": "maxExportWidth",
+            "type": "number",
+            "label": "Max PNG width sent to grader (px)",
+            "description": "Learner drawings are downscaled to this width before grading requests. Lower values reduce payload size and API cost.",
+            "default": 1024,
+            "min": 256,
+            "max": 4096
+          },
+          {
             "name": "showFeedbackToLearner",
             "type": "boolean",
             "label": "Show AI feedback to learner",
             "default": true
+          },
+          {
+            "name": "showConfidenceToLearner",
+            "type": "boolean",
+            "label": "Show AI confidence to learner",
+            "description": "When the grader returns a confidence value (0–1), display it in the feedback panel.",
+            "default": false
           },
           {
             "name": "onFailure",
@@ -327,7 +343,9 @@
       { "name": "aiGrading", "type": "text", "label": "Grading in progress", "default": "Your drawing is being graded…" },
       { "name": "aiGradingFailed", "type": "text", "label": "Grading failed message", "default": "Automatic grading could not be completed." },
       { "name": "aiFeedbackTitle", "type": "text", "label": "AI feedback title", "default": "Feedback" },
-      { "name": "aiScoreLabel", "type": "text", "label": "AI score label", "default": "Score" }
+      { "name": "aiScoreLabel", "type": "text", "label": "AI score label", "default": "Score" },
+      { "name": "aiConfidenceLabel", "type": "text", "label": "AI confidence label", "default": "Confidence" },
+      { "name": "aiGradingInterrupted", "type": "text", "label": "Grading interrupted message", "default": "Grading was interrupted. Please submit again." }
     ]
   },
   {

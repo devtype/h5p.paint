@@ -3,7 +3,7 @@
   "description": "Lets learners draw on a canvas in response to a prompt. Supports optional background and reference images. Manual, completion, or AI-based scoring via xAPI.",
   "machineName": "H5P.Paint",
   "majorVersion": 0,
-  "minorVersion": 4,
+  "minorVersion": 5,
   "patchVersion": 0,
   "runnable": 1,
   "embedTypes": ["iframe"],

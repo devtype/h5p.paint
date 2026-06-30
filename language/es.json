@@ -1,0 +1,179 @@
+{
+  "semantics": [
+    {
+      "label": "Descripción de la tarea",
+      "description": "Consigna mostrada sobre el área de dibujo. Se permite HTML.",
+      "default": "<p>Dibuja tu respuesta abajo.</p>"
+    },
+    {
+      "label": "Medios",
+      "fields": [
+        {
+          "label": "Imagen de referencia / solución",
+          "description": "Imagen opcional que se muestra cuando el alumno hace clic en 'Mostrar solución'."
+        },
+        {
+          "label": "Texto alternativo del dibujo",
+          "description": "Describe el área de dibujo para lectores de pantalla. Déjelo vacío para usar la descripción de la tarea."
+        }
+      ]
+    },
+    {
+      "label": "Opciones del lienzo",
+      "fields": [
+        {
+          "label": "Ancho base del lienzo (px)",
+          "description": "El lienzo escala de forma responsiva; este valor define la proporción. Valores muy grandes producen exportaciones PNG y adjuntos xAPI más grandes."
+        },
+        {
+          "label": "Relación de aspecto",
+          "options": [
+            { "label": "4:3" },
+            { "label": "16:9" },
+            { "label": "1:1 (cuadrado)" },
+            { "label": "3:4 (vertical)" },
+            { "label": "Ajustar a imagen de fondo" }
+          ]
+        },
+        {
+          "label": "Fondo",
+          "fields": [
+            { "label": "Tipo de fondo" },
+            {
+              "label": "Color de fondo",
+              "description": "Se usa cuando el tipo de fondo es 'Color sólido'."
+            },
+            {
+              "label": "Imagen de fondo",
+              "description": "Se usa cuando el tipo de fondo es 'Imagen' (p. ej. papel cuadriculado, foto para anotar)."
+            }
+          ]
+        },
+        {
+          "label": "Herramientas disponibles",
+          "description": "Herramientas mostradas en la barra.",
+          "options": [
+            { "label": "Lápiz" },
+            { "label": "Pincel" },
+            { "label": "Goma" },
+            { "label": "Línea" },
+            { "label": "Rectángulo" },
+            { "label": "Elipse" },
+            { "label": "Texto" },
+            { "label": "Selector de color" },
+            { "label": "Tamaño del pincel" },
+            { "label": "Deshacer" },
+            { "label": "Rehacer" },
+            { "label": "Borrar" }
+          ]
+        },
+        {
+          "label": "Valores predeterminados del pincel",
+          "fields": [
+            { "label": "Color del pincel predeterminado" },
+            { "label": "Tamaño del pincel predeterminado (px)" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Configuración de comportamiento",
+      "fields": [
+        { "label": "Activar botón Enviar" },
+        {
+          "label": "Activar botón 'Mostrar solución'",
+          "description": "Solo efectivo si hay una imagen de referencia configurada."
+        },
+        { "label": "Activar botón 'Reintentar'" },
+        {
+          "label": "Bloquear lienzo tras enviar",
+          "description": "Impide editar después del envío (hasta reintentar)."
+        },
+        {
+          "label": "Modo de puntuación",
+          "options": [
+            { "label": "Manual (profesor / plataforma evalúa)" },
+            { "label": "Finalización (puntuación completa al enviar con dibujo)" },
+            { "label": "IA (calificar dibujo mediante punto de conexión configurado)" }
+          ]
+        },
+        {
+          "label": "Calificación IA",
+          "fields": [
+            {
+              "label": "URL del punto de calificación",
+              "description": "Punto POST que acepta el dibujo y devuelve puntuación JSON. Se ignora si el host proporciona H5PIntegration.paintAiGrader."
+            },
+            {
+              "label": "Rúbrica de calificación",
+              "description": "Criterios opcionales enviados al servicio (texto o HTML)."
+            },
+            { "label": "Incluir URL de imagen de referencia en la solicitud" },
+            { "label": "Tiempo de espera de solicitud (ms)" },
+            {
+              "label": "Ancho máx. PNG enviado al calificador (px)",
+              "description": "Los dibujos se reducen a este ancho antes de las solicitudes de calificación."
+            },
+            { "label": "Mostrar retroalimentación IA al alumno" },
+            {
+              "label": "Mostrar confianza IA al alumno",
+              "description": "Cuando el calificador devuelve un valor de confianza (0–1), mostrarlo en el panel de retroalimentación."
+            },
+            {
+              "label": "Si falla la calificación",
+              "options": [
+                { "label": "Otorgar 0 puntos" },
+                { "label": "Otorgar puntuación completa (como modo finalización)" },
+                { "label": "Otorgar 0 puntos (revisión manual)" }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Puntuación máxima",
+          "description": "Puntos máximos para esta pregunta. Manual: 0 hasta evaluación. Finalización: puntuación completa tras enviar. IA: puntuación del servicio."
+        }
+      ]
+    },
+    {
+      "label": "Interfaz de usuario",
+      "fields": [
+        { "label": "Enviar", "default": "Enviar" },
+        { "label": "Mostrar solución", "default": "Mostrar solución" },
+        { "label": "Ocultar solución", "default": "Ocultar solución" },
+        { "label": "Reintentar", "default": "Reintentar" },
+        { "label": "Mensaje tras enviar", "default": "Tu dibujo ha sido enviado." },
+        { "label": "Sin dibujo aún", "default": "Dibuja algo antes de enviar." },
+        { "label": "Título de la solución", "default": "Referencia" },
+        { "label": "Título de tu dibujo", "default": "Tu dibujo" },
+        { "label": "Calificación en curso", "default": "Tu dibujo está siendo calificado…" },
+        { "label": "Mensaje de calificación fallida", "default": "No se pudo completar la calificación automática." },
+        { "label": "Título de retroalimentación IA", "default": "Retroalimentación" },
+        { "label": "Etiqueta de puntuación IA", "default": "Puntuación" },
+        { "label": "Etiqueta de confianza IA", "default": "Confianza" },
+        { "label": "Mensaje de calificación interrumpida", "default": "La calificación se interrumpió. Envía de nuevo." }
+      ]
+    },
+    {
+      "label": "Accesibilidad",
+      "fields": [
+        { "label": "Etiqueta del lienzo", "default": "Área de dibujo" },
+        { "label": "Etiqueta de la barra de herramientas", "default": "Herramientas de dibujo" },
+        { "label": "Lápiz", "default": "Lápiz" },
+        { "label": "Pincel", "default": "Pincel" },
+        { "label": "Goma", "default": "Goma" },
+        { "label": "Línea", "default": "Línea" },
+        { "label": "Rectángulo", "default": "Rectángulo" },
+        { "label": "Elipse", "default": "Elipse" },
+        { "label": "Texto", "default": "Añadir texto" },
+        { "label": "Color", "default": "Color" },
+        { "label": "Tamaño del pincel", "default": "Tamaño del pincel" },
+        { "label": "Deshacer", "default": "Deshacer" },
+        { "label": "Rehacer", "default": "Rehacer" },
+        { "label": "Borrar", "default": "Borrar lienzo" },
+        { "label": "Solución mostrada", "default": "Solución de referencia mostrada." },
+        { "label": "Solución oculta", "default": "Solución de referencia oculta." }
+      ]
+    }
+  ]
+}

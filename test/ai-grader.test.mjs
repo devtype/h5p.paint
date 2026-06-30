@@ -64,3 +64,10 @@ test('buildGradingPayload strips HTML and includes reference URL', () => {
 test('sanitizeFeedback strips HTML from feedback', () => {
   assert.equal(sanitizeFeedback('<b>Nice</b> work'), 'Nice work');
 });
+
+test('downscaleDataUrl is a no-op without document', async () => {
+  const dataUrl = 'data:image/png;base64,abc';
+  const { downscaleDataUrl } = await import('../src/scripts/services/ai-grader.js');
+  assert.equal(await downscaleDataUrl(dataUrl), dataUrl);
+  assert.equal(await downscaleDataUrl(dataUrl, 512), dataUrl);
+});

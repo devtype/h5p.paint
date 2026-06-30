@@ -43,6 +43,9 @@ const StateService = {
     if (extra.aiFeedback) {
       state.aiFeedback = extra.aiFeedback;
     }
+    if (extra.aiConfidence !== undefined && extra.aiConfidence !== null) {
+      state.aiConfidence = extra.aiConfidence;
+    }
     return state;
   },
 

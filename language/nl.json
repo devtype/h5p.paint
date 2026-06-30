@@ -1,0 +1,179 @@
+{
+  "semantics": [
+    {
+      "label": "Taakbeschrijving",
+      "description": "Opdracht boven het tekengebied. HTML is toegestaan.",
+      "default": "<p>Teken je antwoord hieronder.</p>"
+    },
+    {
+      "label": "Media",
+      "fields": [
+        {
+          "label": "Referentie- / modeloplossingsafbeelding",
+          "description": "Optionele afbeelding die wordt getoond wanneer de leerling op 'Toon oplossing' klikt."
+        },
+        {
+          "label": "Alternatieve tekst voor de tekening",
+          "description": "Beschrijft het tekengebied voor schermlezers. Laat leeg om terug te vallen op de taakbeschrijving."
+        }
+      ]
+    },
+    {
+      "label": "Tekengebied-opties",
+      "fields": [
+        {
+          "label": "Basisbreedte tekengebied (px)",
+          "description": "Het tekengebied schaalt responsief; deze waarde bepaalt de verhouding. Zeer grote waarden produceren grotere PNG-exporten en xAPI-bijlagen."
+        },
+        {
+          "label": "Beeldverhouding",
+          "options": [
+            { "label": "4:3" },
+            { "label": "16:9" },
+            { "label": "1:1 (vierkant)" },
+            { "label": "3:4 (staand)" },
+            { "label": "Aanpassen aan achtergrondafbeelding" }
+          ]
+        },
+        {
+          "label": "Achtergrond",
+          "fields": [
+            { "label": "Achtergrondtype" },
+            {
+              "label": "Achtergrondkleur",
+              "description": "Gebruikt wanneer het achtergrondtype 'Effen kleur' is."
+            },
+            {
+              "label": "Achtergrondafbeelding",
+              "description": "Gebruikt wanneer het achtergrondtype 'Afbeelding' is (bijv. ruitjespapier, foto om te annoteren)."
+            }
+          ]
+        },
+        {
+          "label": "Beschikbare gereedschappen",
+          "description": "Gereedschappen in de werkbalk.",
+          "options": [
+            { "label": "Potlood" },
+            { "label": "Penseel" },
+            { "label": "Gum" },
+            { "label": "Lijn" },
+            { "label": "Rechthoek" },
+            { "label": "Ellips" },
+            { "label": "Tekst" },
+            { "label": "Kleurkiezer" },
+            { "label": "Penseelgrootte" },
+            { "label": "Ongedaan maken" },
+            { "label": "Opnieuw" },
+            { "label": "Wissen" }
+          ]
+        },
+        {
+          "label": "Penseelstandaardinstellingen",
+          "fields": [
+            { "label": "Standaard penseelkleur" },
+            { "label": "Standaard penseelgrootte (px)" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Gedragsinstellingen",
+      "fields": [
+        { "label": "Knop 'Indienen' inschakelen" },
+        {
+          "label": "Knop 'Toon oplossing' inschakelen",
+          "description": "Alleen effectief als een referentieafbeelding is geconfigureerd."
+        },
+        { "label": "Knop 'Opnieuw proberen' inschakelen" },
+        {
+          "label": "Tekengebied vergrendelen na indienen",
+          "description": "Voorkomt verder bewerken na indienen (tot opnieuw proberen)."
+        },
+        {
+          "label": "Scoremodus",
+          "options": [
+            { "label": "Handmatig (docent / platform beoordeelt)" },
+            { "label": "Voltooiing (volledige score bij indienen met tekening)" },
+            { "label": "AI (tekening beoordelen via geconfigureerd eindpunt)" }
+          ]
+        },
+        {
+          "label": "AI-beoordeling",
+          "fields": [
+            {
+              "label": "Beoordelings-eindpunt-URL",
+              "description": "POST-eindpunt dat de tekening accepteert en JSON met score teruggeeft. Wordt genegeerd wanneer de host H5PIntegration.paintAiGrader levert."
+            },
+            {
+              "label": "Beoordelingsrubriek",
+              "description": "Optionele criteria voor de beoordelingsservice (platte tekst of HTML)."
+            },
+            { "label": "Referentieafbeelding-URL opnemen in beoordelingsverzoek" },
+            { "label": "Verzoek-time-out (ms)" },
+            {
+              "label": "Max. PNG-breedte naar beoordelaar (px)",
+              "description": "Tekeningen worden verkleind naar deze breedte vóór beoordelingsverzoeken."
+            },
+            { "label": "AI-feedback tonen aan leerling" },
+            {
+              "label": "AI-betrouwbaarheid tonen aan leerling",
+              "description": "Wanneer de beoordelaar een betrouwbaarheidswaarde (0–1) teruggeeft, toon deze in het feedbackpaneel."
+            },
+            {
+              "label": "Bij mislukte beoordeling",
+              "options": [
+                { "label": "0 punten toekennen" },
+                { "label": "Volledige score toekennen (zoals voltooiingsmodus)" },
+                { "label": "0 punten toekennen (handmatige controle)" }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Maximale score",
+          "description": "Maximale punten voor deze vraag. Handmatig: 0 tot beoordeling. Voltooiing: volledige score na indienen. AI: score van beoordelingsservice."
+        }
+      ]
+    },
+    {
+      "label": "Gebruikersinterface",
+      "fields": [
+        { "label": "Indienen", "default": "Indienen" },
+        { "label": "Toon oplossing", "default": "Toon oplossing" },
+        { "label": "Verberg oplossing", "default": "Verberg oplossing" },
+        { "label": "Opnieuw proberen", "default": "Opnieuw proberen" },
+        { "label": "Bericht na indienen", "default": "Je tekening is ingediend." },
+        { "label": "Nog geen tekening", "default": "Teken eerst iets voordat je indient." },
+        { "label": "Titel oplossing", "default": "Referentie" },
+        { "label": "Titel van je tekening", "default": "Je tekening" },
+        { "label": "Beoordeling bezig", "default": "Je tekening wordt beoordeeld…" },
+        { "label": "Bericht bij mislukte beoordeling", "default": "Automatische beoordeling kon niet worden voltooid." },
+        { "label": "Titel AI-feedback", "default": "Feedback" },
+        { "label": "AI-scorelabel", "default": "Score" },
+        { "label": "AI-betrouwbaarheidslabel", "default": "Betrouwbaarheid" },
+        { "label": "Bericht onderbroken beoordeling", "default": "Beoordeling is onderbroken. Dien opnieuw in." }
+      ]
+    },
+    {
+      "label": "Toegankelijkheid",
+      "fields": [
+        { "label": "Label tekengebied", "default": "Tekengebied" },
+        { "label": "Label werkbalk", "default": "Tekengereedschappen" },
+        { "label": "Potlood", "default": "Potlood" },
+        { "label": "Penseel", "default": "Penseel" },
+        { "label": "Gum", "default": "Gum" },
+        { "label": "Lijn", "default": "Lijn" },
+        { "label": "Rechthoek", "default": "Rechthoek" },
+        { "label": "Ellips", "default": "Ellips" },
+        { "label": "Tekst", "default": "Tekst toevoegen" },
+        { "label": "Kleur", "default": "Kleur" },
+        { "label": "Penseelgrootte", "default": "Penseelgrootte" },
+        { "label": "Ongedaan maken", "default": "Ongedaan maken" },
+        { "label": "Opnieuw", "default": "Opnieuw" },
+        { "label": "Wissen", "default": "Tekengebied wissen" },
+        { "label": "Oplossing getoond", "default": "Referentie-oplossing getoond." },
+        { "label": "Oplossing verborgen", "default": "Referentie-oplossing verborgen." }
+      ]
+    }
+  ]
+}

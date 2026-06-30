@@ -110,7 +110,15 @@
             },
             { "label": "Referenzbild-URL in Bewertungsanfrage einschließen" },
             { "label": "Anfrage-Timeout (ms)" },
+            {
+              "label": "Max. PNG-Breite an Bewertung (px)",
+              "description": "Zeichnungen werden vor Bewertungsanfragen auf diese Breite verkleinert."
+            },
             { "label": "KI-Feedback für Lernende anzeigen" },
+            {
+              "label": "KI-Konfidenz für Lernende anzeigen",
+              "description": "Wenn der Bewertungsdienst einen Konfidenzwert (0–1) zurückgibt, im Feedback-Panel anzeigen."
+            },
             {
               "label": "Bei fehlgeschlagener Bewertung",
               "options": [
@@ -141,7 +149,9 @@
         { "label": "Bewertung läuft", "default": "Deine Zeichnung wird bewertet…" },
         { "label": "Meldung bei fehlgeschlagener Bewertung", "default": "Die automatische Bewertung konnte nicht abgeschlossen werden." },
         { "label": "Titel des KI-Feedbacks", "default": "Feedback" },
-        { "label": "KI-Punktzahl-Beschriftung", "default": "Punktzahl" }
+        { "label": "KI-Punktzahl-Beschriftung", "default": "Punktzahl" },
+        { "label": "KI-Konfidenz-Beschriftung", "default": "Konfidenz" },
+        { "label": "Meldung bei unterbrochener Bewertung", "default": "Die Bewertung wurde unterbrochen. Bitte erneut abgeben." }
       ]
     },
     {

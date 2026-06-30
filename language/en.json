@@ -109,7 +109,9 @@
             },
             { "label": "Include reference image URL in grading request" },
             { "label": "Request timeout (ms)" },
+            { "label": "Max PNG width sent to grader (px)" },
             { "label": "Show AI feedback to learner" },
+            { "label": "Show AI confidence to learner" },
             {
               "label": "If grading fails",
               "options": [
@@ -140,7 +142,9 @@
         { "label": "Grading in progress" },
         { "label": "Grading failed message" },
         { "label": "AI feedback title" },
-        { "label": "AI score label" }
+        { "label": "AI score label" },
+        { "label": "AI confidence label" },
+        { "label": "Grading interrupted message" }
       ]
     },
     {

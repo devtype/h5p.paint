@@ -110,7 +110,15 @@
             },
             { "label": "Inclure l'URL de l'image de référence dans la requête" },
             { "label": "Délai d'expiration de la requête (ms)" },
+            {
+              "label": "Largeur max. PNG envoyée au service (px)",
+              "description": "Les dessins sont réduits à cette largeur avant l'envoi au service de notation."
+            },
             { "label": "Afficher le retour IA à l'apprenant" },
+            {
+              "label": "Afficher la confiance IA à l'apprenant",
+              "description": "Lorsque le service renvoie une valeur de confiance (0–1), l'afficher dans le panneau de retour."
+            },
             {
               "label": "En cas d'échec de la notation",
               "options": [
@@ -141,7 +149,9 @@
         { "label": "Notation en cours", "default": "Votre dessin est en cours de notation…" },
         { "label": "Message d'échec de notation", "default": "La notation automatique n'a pas pu être effectuée." },
         { "label": "Titre du retour IA", "default": "Retour" },
-        { "label": "Libellé du score IA", "default": "Score" }
+        { "label": "Libellé du score IA", "default": "Score" },
+        { "label": "Libellé de confiance IA", "default": "Confiance" },
+        { "label": "Message de notation interrompue", "default": "La notation a été interrompue. Veuillez renvoyer." }
       ]
     },
     {
