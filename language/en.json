@@ -92,12 +92,37 @@
           "label": "Scoring mode",
           "options": [
             { "label": "Manual (teacher / host evaluates)" },
-            { "label": "Completion (full score when submitted with a drawing)" }
+            { "label": "Completion (full score when submitted with a drawing)" },
+            { "label": "AI (grade drawing via configured endpoint)" }
+          ]
+        },
+        {
+          "label": "AI grading",
+          "fields": [
+            {
+              "label": "Grading endpoint URL",
+              "description": "POST endpoint that accepts the learner drawing and returns a JSON score. Ignored when the host provides H5PIntegration.paintAiGrader."
+            },
+            {
+              "label": "Grading rubric",
+              "description": "Optional criteria sent to the grading service (plain text or HTML)."
+            },
+            { "label": "Include reference image URL in grading request" },
+            { "label": "Request timeout (ms)" },
+            { "label": "Show AI feedback to learner" },
+            {
+              "label": "If grading fails",
+              "options": [
+                { "label": "Award 0 points" },
+                { "label": "Award full score (like completion mode)" },
+                { "label": "Award 0 points (manual review)" }
+              ]
+            }
           ]
         },
         {
           "label": "Maximum score",
-          "description": "Maximum points for this question. In manual mode the learner score stays 0 until evaluated. In completion mode the learner receives the full score after submitting a non-empty drawing."
+          "description": "Maximum points for this question. Manual: learner score stays 0 until evaluated. Completion: full score after submit. AI: score returned by the grading service."
         }
       ]
     },
@@ -111,7 +136,11 @@
         { "label": "Submitted message" },
         { "label": "No drawing yet" },
         { "label": "Solution title" },
-        { "label": "Your drawing title" }
+        { "label": "Your drawing title" },
+        { "label": "Grading in progress" },
+        { "label": "Grading failed message" },
+        { "label": "AI feedback title" },
+        { "label": "AI score label" }
       ]
     },
     {

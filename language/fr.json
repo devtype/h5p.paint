@@ -93,12 +93,37 @@
           "label": "Mode de notation",
           "options": [
             { "label": "Manuel (enseignant / plateforme évalue)" },
-            { "label": "Achèvement (score complet si dessin envoyé)" }
+            { "label": "Achèvement (score complet si dessin envoyé)" },
+            { "label": "IA (noter le dessin via un point de terminaison configuré)" }
+          ]
+        },
+        {
+          "label": "Notation IA",
+          "fields": [
+            {
+              "label": "URL du point de terminaison de notation",
+              "description": "Point de terminaison POST qui accepte le dessin et renvoie un score JSON. Ignoré si l'hôte fournit H5PIntegration.paintAiGrader."
+            },
+            {
+              "label": "Grille de notation",
+              "description": "Critères optionnels envoyés au service de notation (texte ou HTML)."
+            },
+            { "label": "Inclure l'URL de l'image de référence dans la requête" },
+            { "label": "Délai d'expiration de la requête (ms)" },
+            { "label": "Afficher le retour IA à l'apprenant" },
+            {
+              "label": "En cas d'échec de la notation",
+              "options": [
+                { "label": "Attribuer 0 point" },
+                { "label": "Attribuer le score complet (comme le mode achèvement)" },
+                { "label": "Attribuer 0 point (révision manuelle)" }
+              ]
+            }
           ]
         },
         {
           "label": "Score maximum",
-          "description": "Points maximum pour cette question. En mode manuel, le score de l'apprenant reste 0 jusqu'à l'évaluation. En mode achèvement, l'apprenant reçoit le score complet après envoi d'un dessin non vide."
+          "description": "Points maximum pour cette question. Manuel : 0 jusqu'à évaluation. Achèvement : score complet après envoi. IA : score renvoyé par le service."
         }
       ]
     },
@@ -112,7 +137,11 @@
         { "label": "Message après envoi", "default": "Votre dessin a été envoyé." },
         { "label": "Pas encore de dessin", "default": "Veuillez dessiner quelque chose avant d'envoyer." },
         { "label": "Titre de la solution", "default": "Référence" },
-        { "label": "Titre de votre dessin", "default": "Votre dessin" }
+        { "label": "Titre de votre dessin", "default": "Votre dessin" },
+        { "label": "Notation en cours", "default": "Votre dessin est en cours de notation…" },
+        { "label": "Message d'échec de notation", "default": "La notation automatique n'a pas pu être effectuée." },
+        { "label": "Titre du retour IA", "default": "Retour" },
+        { "label": "Libellé du score IA", "default": "Score" }
       ]
     },
     {

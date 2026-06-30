@@ -3,6 +3,19 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.4.0] - 2026-06-25
+
+### Added
+
+- **AI scoring mode** (`behaviour.scoringMode: ai`) — async grading via author
+  endpoint URL or `H5PIntegration.paintAiGrader.grade()` hook.
+- `behaviour.aiGrading` settings: endpoint, rubric, timeout, failure policy,
+  learner feedback toggle.
+- Learner UI for grading progress and AI feedback.
+- State v2 persistence for AI score and feedback on resume.
+- [`examples/ai-grading-contract.md`](examples/ai-grading-contract.md) —
+  request/response contract for grading endpoints.
+
 ## [0.3.1] - 2026-06-25
 
 ### Fixed

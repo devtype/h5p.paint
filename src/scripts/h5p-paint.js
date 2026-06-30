@@ -3,6 +3,7 @@ import Toolbar from './ui/toolbar.js';
 import SolutionOverlay from './ui/solution-overlay.js';
 import StateService from './services/state.js';
 import XapiService from './services/xapi.js';
+import AiGrader from './services/ai-grader.js';
 
 const DEFAULTS = {
   taskDescription: '',
@@ -33,7 +34,15 @@ const DEFAULTS = {
     enableRetry: true,
     lockAfterSubmit: true,
     scoringMode: 'manual',
-    maxScore: 1
+    maxScore: 1,
+    aiGrading: {
+      endpointUrl: '',
+      rubric: '',
+      includeReferenceImage: true,
+      requestTimeoutMs: 30000,
+      showFeedbackToLearner: true,
+      onFailure: 'zero'
+    }
   },
   l10n: {
     submit: 'Submit',
@@ -43,7 +52,11 @@ const DEFAULTS = {
     submitted: 'Your drawing has been submitted.',
     noDrawing: 'Please draw something before submitting.',
     solutionTitle: 'Reference',
-    yourDrawingTitle: 'Your drawing'
+    yourDrawingTitle: 'Your drawing',
+    aiGrading: 'Your drawing is being graded…',
+    aiGradingFailed: 'Automatic grading could not be completed.',
+    aiFeedbackTitle: 'Feedback',
+    aiScoreLabel: 'Score'
   },
   a11y: {
     canvasLabel: 'Drawing area',
@@ -156,12 +169,18 @@ function Paint(params, contentId, extras) {
   self.state = {
     submitted: false,
     solutionVisible: false,
-    locked: false
+    locked: false,
+    aiGradingStatus: 'idle',
+    aiScore: null,
+    aiFeedback: '',
+    aiError: null
   };
 
   self.paintCanvas = null;
   self.toolbar = null;
   self.solutionOverlay = null;
+  self.aiStatusEl = null;
+  self.aiFeedbackEl = null;
 }
 
 Paint.prototype = Object.create(H5P.Question.prototype);
@@ -214,17 +233,24 @@ Paint.prototype.registerDomElements = function () {
   });
   stage.appendChild(self.solutionOverlay.getElement());
 
+  self.aiStatusEl = document.createElement('div');
+  self.aiStatusEl.classList.add('h5p-paint__ai-status');
+  self.aiStatusEl.setAttribute('role', 'status');
+  self.aiStatusEl.hidden = true;
+  stage.appendChild(self.aiStatusEl);
+
+  self.aiFeedbackEl = document.createElement('div');
+  self.aiFeedbackEl.classList.add('h5p-paint__ai-feedback');
+  self.aiFeedbackEl.hidden = true;
+  stage.appendChild(self.aiFeedbackEl);
+
   self.setContent(wrapper);
   self._registerButtons();
 
   self.paintCanvas.ready().then(() => {
     if (self.previousState) {
       StateService.restore(self.paintCanvas, self.previousState);
-      if (self.previousState.submitted) {
-        self._lockCanvas();
-        self.state.submitted = true;
-        self._toggleButtonsForSubmitted();
-      }
+      self._restoreFromPreviousState(self.previousState);
     }
     self._updateButtonAvailability();
   });
@@ -276,7 +302,7 @@ Paint.prototype._onCanvasChange = function () {
 Paint.prototype._updateButtonAvailability = function () {
   const self = this;
   if (self.params.behaviour.enableSubmit) {
-    if (self.state.submitted) {
+    if (self.state.submitted || self.state.aiGradingStatus === 'pending') {
       self.hideButton('submit-answer');
     }
     else {
@@ -322,6 +348,72 @@ Paint.prototype._onSubmit = function () {
     return;
   }
 
+  if (self._usesAiScoring()) {
+    self._submitWithAiGrading();
+    return;
+  }
+
+  self._finalizeSubmit();
+};
+
+Paint.prototype._submitWithAiGrading = function () {
+  const self = this;
+  const l10n = self.params.l10n;
+  const ai = self.params.behaviour.aiGrading || {};
+
+  self.state.aiGradingStatus = 'pending';
+  self.state.aiError = null;
+  self.hideButton('submit-answer');
+  self._showAiStatus(l10n.aiGrading);
+  self._announce(l10n.aiGrading);
+  if (self.toolbar) {
+    self.toolbar.setDisabled(true);
+  }
+
+  const dataUrl = self.paintCanvas.exportPNG();
+  const summary = self.paintCanvas.getSummary();
+  const referenceImage = self.params.media && self.params.media.referenceImage;
+  const referenceImageUrl = referenceImage && referenceImage.path
+    ? H5P.getPath(referenceImage.path, self.contentId)
+    : null;
+
+  AiGrader.grade({
+    contentId: self.contentId,
+    maxScore: self.getMaxScore(),
+    taskDescription: self.params.taskDescription,
+    aiGrading: ai,
+    dataUrl,
+    summary,
+    referenceImageUrl
+  }).then((result) => {
+    self.state.aiScore = result.score;
+    self.state.aiFeedback = result.feedback || '';
+    self.state.aiGradingStatus = 'done';
+    self._hideAiStatus();
+    self._finalizeSubmit();
+    if (ai.showFeedbackToLearner !== false) {
+      self._showAiFeedback(result.score, result.feedback);
+    }
+  }).catch((error) => {
+    console.warn('H5P.Paint: AI grading failed', error);
+    self.state.aiError = error.message || 'Grading failed';
+    self.state.aiGradingStatus = 'error';
+    const onFailure = ai.onFailure || 'zero';
+    self.state.aiScore = AiGrader.resolveFailureScore(
+      onFailure,
+      self.getMaxScore(),
+      self.getAnswerGiven()
+    );
+    self._hideAiStatus();
+    self._showAiStatus(l10n.aiGradingFailed, true);
+    self._announce(l10n.aiGradingFailed);
+    self._finalizeSubmit();
+  });
+};
+
+Paint.prototype._finalizeSubmit = function () {
+  const self = this;
+
   self.state.submitted = true;
 
   if (self.params.behaviour.lockAfterSubmit) {
@@ -331,6 +423,89 @@ Paint.prototype._onSubmit = function () {
   self._toggleButtonsForSubmitted();
   self._announce(self.params.l10n.submitted);
   self.triggerXAPIAnswered();
+};
+
+Paint.prototype._showAiStatus = function (message, isError) {
+  const self = this;
+  if (!self.aiStatusEl) {
+    return;
+  }
+  self.aiStatusEl.textContent = message;
+  self.aiStatusEl.classList.toggle('is-error', !!isError);
+  self.aiStatusEl.hidden = false;
+};
+
+Paint.prototype._hideAiStatus = function () {
+  if (this.aiStatusEl) {
+    this.aiStatusEl.hidden = true;
+    this.aiStatusEl.classList.remove('is-error');
+  }
+};
+
+Paint.prototype._showAiFeedback = function (score, feedback) {
+  const self = this;
+  if (!self.aiFeedbackEl) {
+    return;
+  }
+  const l10n = self.params.l10n;
+  self.aiFeedbackEl.innerHTML = '';
+
+  const title = document.createElement('p');
+  title.classList.add('h5p-paint__ai-feedback-title');
+  title.textContent = l10n.aiFeedbackTitle;
+  self.aiFeedbackEl.appendChild(title);
+
+  const scoreLine = document.createElement('p');
+  scoreLine.classList.add('h5p-paint__ai-feedback-score');
+  scoreLine.textContent = `${l10n.aiScoreLabel}: ${score} / ${self.getMaxScore()}`;
+  self.aiFeedbackEl.appendChild(scoreLine);
+
+  if (feedback) {
+    const body = document.createElement('p');
+    body.classList.add('h5p-paint__ai-feedback-text');
+    body.textContent = feedback;
+    self.aiFeedbackEl.appendChild(body);
+  }
+
+  self.aiFeedbackEl.hidden = false;
+};
+
+Paint.prototype._hideAiFeedback = function () {
+  if (this.aiFeedbackEl) {
+    this.aiFeedbackEl.hidden = true;
+    this.aiFeedbackEl.innerHTML = '';
+  }
+};
+
+Paint.prototype._restoreFromPreviousState = function (state) {
+  const self = this;
+  if (!state) {
+    return;
+  }
+  if (state.aiGradingStatus) {
+    self.state.aiGradingStatus = state.aiGradingStatus;
+  }
+  if (state.aiScore !== undefined && state.aiScore !== null) {
+    self.state.aiScore = state.aiScore;
+  }
+  if (state.aiFeedback) {
+    self.state.aiFeedback = state.aiFeedback;
+  }
+  if (state.submitted) {
+    self.state.submitted = true;
+    self._lockCanvas();
+    self._toggleButtonsForSubmitted();
+    const ai = self.params.behaviour.aiGrading || {};
+    if (
+      self.state.aiGradingStatus === 'done'
+      && ai.showFeedbackToLearner !== false
+    ) {
+      self._showAiFeedback(self.state.aiScore, self.state.aiFeedback);
+    }
+    if (self.state.aiGradingStatus === 'error') {
+      self._showAiStatus(self.params.l10n.aiGradingFailed, true);
+    }
+  }
 };
 
 Paint.prototype._toggleButtonsForSubmitted = function () {
@@ -422,7 +597,8 @@ Paint.prototype.triggerXAPIAnswered = function () {
     summary,
     score: self.getScore(),
     maxScore: self.getMaxScore(),
-    includeScore: self._usesCompletionScoring() && self.state.submitted,
+    includeScore: self._shouldIncludeScoreInXapi(),
+    aiFeedback: self.state.aiFeedback,
     getTitle: () => self.getTitle()
   });
 
@@ -434,9 +610,36 @@ Paint.prototype.triggerXAPIAnswered = function () {
   });
 };
 
-Paint.prototype._usesCompletionScoring = function () {
+Paint.prototype._getScoringMode = function () {
   const mode = this.params.behaviour && this.params.behaviour.scoringMode;
-  return mode === 'completion';
+  if (mode === 'completion' || mode === 'ai') {
+    return mode;
+  }
+  return 'manual';
+};
+
+Paint.prototype._usesCompletionScoring = function () {
+  return this._getScoringMode() === 'completion';
+};
+
+Paint.prototype._usesAiScoring = function () {
+  return this._getScoringMode() === 'ai';
+};
+
+Paint.prototype._shouldIncludeScoreInXapi = function () {
+  if (!this.state.submitted || this.state.aiGradingStatus === 'pending') {
+    return false;
+  }
+  if (this._usesCompletionScoring()) {
+    return true;
+  }
+  if (this._usesAiScoring() && this.state.aiGradingStatus === 'done') {
+    return true;
+  }
+  if (this._usesAiScoring() && this.state.aiGradingStatus === 'error') {
+    return this.getScore() > 0;
+  }
+  return false;
 };
 
 Paint.prototype.getAnswerGiven = function () {
@@ -444,13 +647,23 @@ Paint.prototype.getAnswerGiven = function () {
 };
 
 Paint.prototype.getScore = function () {
-  if (!this._usesCompletionScoring()) {
+  const mode = this._getScoringMode();
+  if (mode === 'manual') {
     return 0;
   }
   if (!this.state.submitted || !this.getAnswerGiven()) {
     return 0;
   }
-  return this.getMaxScore();
+  if (mode === 'completion') {
+    return this.getMaxScore();
+  }
+  if (mode === 'ai') {
+    if (this.state.aiGradingStatus === 'done' || this.state.aiGradingStatus === 'error') {
+      return Math.max(0, Number(this.state.aiScore) || 0);
+    }
+    return 0;
+  }
+  return 0;
 };
 
 Paint.prototype.getMaxScore = function () {
@@ -477,6 +690,12 @@ Paint.prototype.resetTask = function () {
   }
   self.state.submitted = false;
   self.state.solutionVisible = false;
+  self.state.aiGradingStatus = 'idle';
+  self.state.aiScore = null;
+  self.state.aiFeedback = '';
+  self.state.aiError = null;
+  self._hideAiStatus();
+  self._hideAiFeedback();
   self._unlockCanvas();
   self.hideButton('show-solution');
   self.hideButton('try-again');
@@ -492,7 +711,10 @@ Paint.prototype.getCurrentState = function () {
     return undefined;
   }
   return StateService.serialize(self.paintCanvas, {
-    submitted: self.state.submitted
+    submitted: self.state.submitted,
+    aiGradingStatus: self.state.aiGradingStatus,
+    aiScore: self.state.aiScore,
+    aiFeedback: self.state.aiFeedback
   });
 };
 
@@ -508,7 +730,8 @@ Paint.prototype.getXAPIData = function () {
     summary,
     score: self.getScore(),
     maxScore: self.getMaxScore(),
-    includeScore: self._usesCompletionScoring() && self.state.submitted,
+    includeScore: self._shouldIncludeScoreInXapi(),
+    aiFeedback: self.state.aiFeedback,
     getTitle: () => self.getTitle()
   });
   return { statement: xapiEvent.data.statement };

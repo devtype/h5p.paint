@@ -227,6 +227,73 @@
           {
             "value": "completion",
             "label": "Completion (full score when submitted with a drawing)"
+          },
+          {
+            "value": "ai",
+            "label": "AI (grade drawing via configured endpoint)"
+          }
+        ]
+      },
+      {
+        "name": "aiGrading",
+        "type": "group",
+        "label": "AI grading",
+        "importance": "medium",
+        "expanded": true,
+        "widget": "showWhen",
+        "showWhen": {
+          "rules": [
+            { "field": "scoringMode", "equals": "ai" }
+          ]
+        },
+        "fields": [
+          {
+            "name": "endpointUrl",
+            "type": "text",
+            "label": "Grading endpoint URL",
+            "description": "POST endpoint that accepts the learner drawing and returns a JSON score. Ignored when the host provides H5PIntegration.paintAiGrader.",
+            "optional": true
+          },
+          {
+            "name": "rubric",
+            "type": "text",
+            "label": "Grading rubric",
+            "description": "Optional criteria sent to the grading service (plain text or HTML).",
+            "optional": true,
+            "widget": "html",
+            "enterMode": "p",
+            "tags": ["strong", "em", "ul", "ol"]
+          },
+          {
+            "name": "includeReferenceImage",
+            "type": "boolean",
+            "label": "Include reference image URL in grading request",
+            "default": true
+          },
+          {
+            "name": "requestTimeoutMs",
+            "type": "number",
+            "label": "Request timeout (ms)",
+            "default": 30000,
+            "min": 1000,
+            "max": 120000
+          },
+          {
+            "name": "showFeedbackToLearner",
+            "type": "boolean",
+            "label": "Show AI feedback to learner",
+            "default": true
+          },
+          {
+            "name": "onFailure",
+            "type": "select",
+            "label": "If grading fails",
+            "default": "zero",
+            "options": [
+              { "value": "zero", "label": "Award 0 points" },
+              { "value": "completion", "label": "Award full score (like completion mode)" },
+              { "value": "manual", "label": "Award 0 points (manual review)" }
+            ]
           }
         ]
       },
@@ -234,7 +301,7 @@
         "name": "maxScore",
         "type": "number",
         "label": "Maximum score",
-        "description": "Maximum points for this question. In manual mode the learner score stays 0 until evaluated. In completion mode the learner receives the full score after submitting a non-empty drawing.",
+        "description": "Maximum points for this question. Manual: learner score stays 0 until evaluated. Completion: full score after submit. AI: score returned by the grading service.",
         "default": 1,
         "min": 0,
         "max": 100
@@ -256,7 +323,11 @@
       { "name": "submitted", "type": "text", "label": "Submitted message", "default": "Your drawing has been submitted." },
       { "name": "noDrawing", "type": "text", "label": "No drawing yet", "default": "Please draw something before submitting." },
       { "name": "solutionTitle", "type": "text", "label": "Solution title", "default": "Reference" },
-      { "name": "yourDrawingTitle", "type": "text", "label": "Your drawing title", "default": "Your drawing" }
+      { "name": "yourDrawingTitle", "type": "text", "label": "Your drawing title", "default": "Your drawing" },
+      { "name": "aiGrading", "type": "text", "label": "Grading in progress", "default": "Your drawing is being graded…" },
+      { "name": "aiGradingFailed", "type": "text", "label": "Grading failed message", "default": "Automatic grading could not be completed." },
+      { "name": "aiFeedbackTitle", "type": "text", "label": "AI feedback title", "default": "Feedback" },
+      { "name": "aiScoreLabel", "type": "text", "label": "AI score label", "default": "Score" }
     ]
   },
   {

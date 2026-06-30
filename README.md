@@ -25,8 +25,8 @@ Exercise_ idea.
   color shows through again (does not paint over the background).
 - Saves and restores learner progress through the standard H5P
   `getCurrentState` / `setCurrentState` mechanism.
-- **Scoring modes:** manual evaluation (default) or optional **completion**
-  scoring (full points when the learner submits a non-empty drawing).
+- **Scoring modes:** manual evaluation (default), **completion** scoring, or
+  **AI** scoring via a configurable endpoint or host hook.
 - The drawing PNG is sent as an xAPI attachment
   (`usageType: http://h5p.org/x-content-types/H5P.Paint/drawing`) with `length`
   and `sha2` metadata so an LRS can persist the file.
@@ -49,7 +49,8 @@ Exercise_ idea.
 | `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
-| `behaviour.scoringMode` | `manual` (default) or `completion` — see [Scoring contract](#scoring-contract). |
+| `behaviour.scoringMode` | `manual` (default), `completion`, or `ai` — see [Scoring contract](#scoring-contract). |
+| `behaviour.aiGrading` | AI endpoint, rubric, timeout, failure policy (visible when scoring mode is AI). |
 | `behaviour.maxScore` | Maximum points for the question. |
 
 **Legacy content:** packages that still use `media.backgroundImage`,
@@ -141,8 +142,8 @@ See [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) for a manual QA checklist
 
 ## LMS / platform integration
 
-H5P.Paint supports **manual evaluation** (default) and optional **completion**
-scoring for generic Question Set / LRS hosts.
+H5P.Paint supports **manual evaluation** (default), **completion** scoring, and
+**AI** scoring for generic Question Set / LRS hosts.
 
 ### Scoring contract
 
@@ -150,15 +151,37 @@ scoring for generic Question Set / LRS hosts.
 | ------- | ------------------------- | ------------------- | ----------- |
 | `scoringMode: manual` (default) | `0` | omitted | Tutor/LMS evaluates drawing |
 | `scoringMode: completion` | `maxScore` (if drawing non-empty) | `{ raw, max, scaled }` | Auto points in Question Set |
+| `scoringMode: ai` | AI score when grading completes | `{ raw, max, scaled }` + feedback in `result.response` | Vision model / custom grader |
 
 | Method | Meaning |
 | ------ | ------- |
 | `getMaxScore()` | `behaviour.maxScore` |
 | `getAnswerGiven()` | Whether the canvas has at least one object |
-| `getCurrentState()` | Fabric JSON + `submitted` flag |
+| `getCurrentState()` | Fabric JSON + `submitted` + optional AI fields (v2) |
 
-Platforms with tutor evaluation (e.g. custom LMS workflows) should keep
-**`scoringMode: manual`**.
+Platforms with tutor evaluation should keep **`scoringMode: manual`**.
+
+### AI grading
+
+Configure `behaviour.aiGrading.endpointUrl` or provide a host hook:
+
+```javascript
+H5PIntegration.paintAiGrader = {
+  grade: async function (payload) {
+    return { score: 4, feedback: 'Well labelled.' };
+  }
+};
+```
+
+The hook takes precedence over the endpoint URL. **Never store API keys in H5P
+content.** Use a same-origin proxy or the hook for authentication.
+
+Request/response format: [`examples/ai-grading-contract.md`](examples/ai-grading-contract.md).
+
+On submit, AI mode shows a grading progress message, calls the grader
+asynchronously, then sets the score and optional learner feedback. If grading
+fails, `behaviour.aiGrading.onFailure` controls the fallback (`zero`,
+`completion`, or `manual`).
 
 ### Submit payload (optional host enrichment)
 
@@ -261,8 +284,9 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## Limitations / out of scope
 
-- No pixel-matching or AI auto-grading. Optional **completion** scoring awards
-  full points for any non-empty submitted drawing.
+- No pixel-matching auto-grading. Optional **completion** scoring awards full
+  points for any non-empty submitted drawing. **AI** scoring requires a host
+  endpoint or `H5PIntegration.paintAiGrader` hook.
 - No collaborative / multiplayer drawing.
 - The drawing PNG is sent as a `data:` URL; very large canvases will produce
   large statements. LRSs may impose attachment-size limits. Keep `canvas.width`

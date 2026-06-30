@@ -93,12 +93,37 @@
           "label": "Bewertungsmodus",
           "options": [
             { "label": "Manuell (Lehrkraft / Plattform bewertet)" },
-            { "label": "Abschluss (volle Punktzahl bei Abgabe mit Zeichnung)" }
+            { "label": "Abschluss (volle Punktzahl bei Abgabe mit Zeichnung)" },
+            { "label": "KI (Zeichnung über konfigurierten Endpunkt bewerten)" }
+          ]
+        },
+        {
+          "label": "KI-Bewertung",
+          "fields": [
+            {
+              "label": "Bewertungs-Endpunkt-URL",
+              "description": "POST-Endpunkt, der die Zeichnung entgegennimmt und JSON mit Punktzahl zurückgibt. Wird ignoriert, wenn der Host H5PIntegration.paintAiGrader bereitstellt."
+            },
+            {
+              "label": "Bewertungsrubrik",
+              "description": "Optionale Kriterien für den Bewertungsdienst (Klartext oder HTML)."
+            },
+            { "label": "Referenzbild-URL in Bewertungsanfrage einschließen" },
+            { "label": "Anfrage-Timeout (ms)" },
+            { "label": "KI-Feedback für Lernende anzeigen" },
+            {
+              "label": "Bei fehlgeschlagener Bewertung",
+              "options": [
+                { "label": "0 Punkte vergeben" },
+                { "label": "Volle Punktzahl vergeben (wie Abschlussmodus)" },
+                { "label": "0 Punkte vergeben (manuelle Prüfung)" }
+              ]
+            }
           ]
         },
         {
           "label": "Maximale Punktzahl",
-          "description": "Maximale Punkte für diese Frage. Im manuellen Modus bleibt die Lernendenpunktzahl 0, bis bewertet wurde. Im Abschlussmodus erhält der Lernende die volle Punktzahl nach Abgabe einer nicht leeren Zeichnung."
+          "description": "Maximale Punkte für diese Frage. Manuell: 0 bis zur Bewertung. Abschluss: volle Punktzahl nach Abgabe. KI: vom Bewertungsdienst zurückgegebene Punktzahl."
         }
       ]
     },
@@ -112,7 +137,11 @@
         { "label": "Meldung nach dem Abgeben", "default": "Deine Zeichnung wurde abgegeben." },
         { "label": "Noch keine Zeichnung", "default": "Bitte zeichne etwas, bevor du abgibst." },
         { "label": "Titel der Musterlösung", "default": "Referenz" },
-        { "label": "Titel der eigenen Zeichnung", "default": "Deine Zeichnung" }
+        { "label": "Titel der eigenen Zeichnung", "default": "Deine Zeichnung" },
+        { "label": "Bewertung läuft", "default": "Deine Zeichnung wird bewertet…" },
+        { "label": "Meldung bei fehlgeschlagener Bewertung", "default": "Die automatische Bewertung konnte nicht abgeschlossen werden." },
+        { "label": "Titel des KI-Feedbacks", "default": "Feedback" },
+        { "label": "KI-Punktzahl-Beschriftung", "default": "Punktzahl" }
       ]
     },
     {

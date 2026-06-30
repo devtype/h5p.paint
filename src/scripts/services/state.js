@@ -3,10 +3,10 @@
  *
  * - Background / reference images live in the H5P params and are NOT included
  *   in the saved state to keep `getCurrentState()` payloads tiny.
- * - We capture the Fabric scene as JSON and the submitted flag.
+ * - We capture the Fabric scene as JSON, submit flag, and optional AI grading.
  */
 
-const STATE_VERSION = 1;
+const STATE_VERSION = 2;
 
 function stripBackground(json) {
   if (!json) {
@@ -29,11 +29,21 @@ const StateService = {
    */
   serialize(paintCanvas, extra = {}) {
     const json = paintCanvas.toJSON();
-    return {
+    const state = {
       v: STATE_VERSION,
       json: stripBackground(json),
       submitted: !!extra.submitted
     };
+    if (extra.aiGradingStatus) {
+      state.aiGradingStatus = extra.aiGradingStatus;
+    }
+    if (extra.aiScore !== undefined && extra.aiScore !== null) {
+      state.aiScore = extra.aiScore;
+    }
+    if (extra.aiFeedback) {
+      state.aiFeedback = extra.aiFeedback;
+    }
+    return state;
   },
 
   /**
