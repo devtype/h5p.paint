@@ -8,7 +8,7 @@ release asset.
 
 | Field | Value |
 | ----- | ----- |
-| Library version | 0.6.0 |
+| Library version | 0.6.1 |
 | Host | _Record: Lumi / Drupal+H5P / Moodle / other_ |
 | Browser | _Record: Chrome / Firefox / Safari / iOS Safari_ |
 | Date | _Record when tested_ |
@@ -35,6 +35,7 @@ release asset.
 | 6 | Reload page mid-draw (save state enabled) | Drawing restored from `getCurrentState` | ☐ |
 | 7 | Reload after submit | Submitted state restored; canvas locked | ☐ |
 | 8 | Upgrade from 0.5.x saved drawing | Drawing saved under Fabric 5 reloads after 0.6.0 upgrade | ☐ |
+| 8a | Author tool checkboxes | Editor shows per-tool checkboxes; learner toolbar matches selection; initial tool is first enabled drawing tool | ☐ |
 
 ## Question Set integration
 
@@ -89,7 +90,7 @@ These run on every push via GitHub Actions:
 
 - `npm run lint`
 - `npm run build`
-- `npm test` (export compositing, AI grader, scoring, and Fabric state fixture tests)
+- `npm test` (export compositing, AI grader, scoring, Fabric state, and tool-config tests)
 
 Manual rows above are **not** automated and must be signed off before claiming
 full compatibility on a specific host.

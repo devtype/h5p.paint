@@ -5,6 +5,11 @@ import StateService from './services/state.js';
 import XapiService from './services/xapi.js';
 import AiGrader from './services/ai-grader.js';
 import {
+  DEFAULT_TOOLS_OBJECT,
+  resolveInitialDrawingTool,
+  resolveTools
+} from './canvas/tool-config.js';
+import {
   resolveScore,
   shouldIncludeScoreInXapi,
   normalizeRestoredAiState
@@ -24,10 +29,7 @@ const DEFAULTS = {
       color: '#ffffff',
       image: null
     },
-    tools: [
-      'pencil', 'brush', 'eraser', 'line', 'rect', 'ellipse',
-      'text', 'color', 'size', 'undo', 'redo', 'clear'
-    ],
+    tools: { ...DEFAULT_TOOLS_OBJECT },
     brushDefaults: {
       defaultColor: '#222222',
       defaultBrushSize: 4
@@ -171,6 +173,10 @@ function Paint(params, contentId, extras) {
   H5P.Question.call(self, 'paint');
 
   self.params = mergeDefaults(params || {}, DEFAULTS);
+  const authorTools = params?.canvas?.tools ?? self.params.canvas.tools;
+  self.resolvedTools = resolveTools(authorTools);
+  self.initialTool = resolveInitialDrawingTool(self.resolvedTools);
+  self.params.canvas.tools = self.resolvedTools;
   self.contentId = contentId;
   self.extras = extras;
   self.previousState = extras.previousState || null;
@@ -222,13 +228,16 @@ Paint.prototype.registerDomElements = function () {
     background: resolveBackground(self.params),
     media: self.params.media,
     a11y: self.params.a11y,
+    enabledTools: self.resolvedTools,
+    initialTool: self.initialTool,
     onChange: () => self._onCanvasChange()
   });
   stage.appendChild(self.paintCanvas.getElement());
 
   const brushDefaults = resolveBrushDefaults(self.params.canvas);
   self.toolbar = new Toolbar({
-    tools: self.params.canvas.tools,
+    tools: self.resolvedTools,
+    initialTool: self.initialTool,
     a11y: self.params.a11y,
     defaultColor: brushDefaults.defaultColor,
     defaultBrushSize: brushDefaults.defaultBrushSize,

@@ -51,8 +51,8 @@
         },
         {
           "label": "Beschikbare gereedschappen",
-          "description": "Gereedschappen in de werkbalk.",
-          "options": [
+          "description": "Kies welke gereedschappen leerlingen in de werkbalk zien. Schakel minstens één tekengereedschap in.",
+          "fields": [
             { "label": "Potlood" },
             { "label": "Penseel" },
             { "label": "Gum" },

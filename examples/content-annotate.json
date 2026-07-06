@@ -10,18 +10,20 @@
       "type": "color",
       "color": "#f0f4f8"
     },
-    "tools": [
-      "pencil",
-      "brush",
-      "eraser",
-      "line",
-      "text",
-      "color",
-      "size",
-      "undo",
-      "redo",
-      "clear"
-    ],
+    "tools": {
+      "pencil": true,
+      "brush": true,
+      "eraser": true,
+      "line": true,
+      "rect": false,
+      "ellipse": false,
+      "text": true,
+      "color": true,
+      "size": true,
+      "undo": true,
+      "redo": true,
+      "clear": true
+    },
     "brushDefaults": {
       "defaultColor": "#dc2626",
       "defaultBrushSize": 3

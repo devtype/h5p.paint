@@ -51,8 +51,8 @@
         },
         {
           "label": "Herramientas disponibles",
-          "description": "Herramientas mostradas en la barra.",
-          "options": [
+          "description": "Elija qué herramientas ven los estudiantes en la barra. Active al menos una herramienta de dibujo.",
+          "fields": [
             { "label": "Lápiz" },
             { "label": "Pincel" },
             { "label": "Goma" },

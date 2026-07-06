@@ -48,7 +48,7 @@ or maintained by H5P Group AS.
 | `media.referenceImage` | Optional image revealed via _Show solution_. |
 | `media.alternativeText` | Screen-reader description of the canvas. |
 | `canvas.width` / `canvas.aspectRatio` | Base size of the drawing surface. |
-| `canvas.tools` | Subset of tools to expose in the toolbar. |
+| `canvas.tools` | Per-tool checkboxes in the editor (`pencil`, `brush`, `eraser`, `line`, `rect`, `ellipse`, `text`, `color`, `size`, `undo`, `redo`, `clear`). Only checked tools appear in the learner toolbar. Legacy JSON arrays are still accepted at runtime. Color and brush size are auto-included when required. See [`examples/content-blank.json`](examples/content-blank.json). |
 | `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
@@ -57,8 +57,9 @@ or maintained by H5P Group AS.
 | `behaviour.maxScore` | Maximum points for the question. |
 
 **Legacy content:** packages that still use `media.backgroundImage`,
-`canvas.backgroundColor`, or flat `canvas.defaultColor` / `canvas.defaultBrushSize`
-are mapped automatically at runtime to the new model.
+`canvas.backgroundColor`, flat `canvas.defaultColor` / `canvas.defaultBrushSize`,
+or a `canvas.tools` **string array** (pre-0.6.1) are mapped automatically at
+runtime to the new model.
 
 All UI strings are translatable via the `l10n` and `a11y` groups in `semantics.json`.
 Editor form labels are provided in [`language/en.json`](language/en.json),

@@ -1,3 +1,5 @@
+import { DRAWING_TOOLS } from '../canvas/tool-config.js';
+
 /**
  * Accessible toolbar for the Paint canvas.
  *
@@ -5,9 +7,7 @@
  * keeping a single tool active (via aria-pressed) at any time.
  */
 
-const TOOL_KEYS = [
-  'pencil', 'brush', 'eraser', 'line', 'rect', 'ellipse', 'text'
-];
+const TOOL_KEYS = DRAWING_TOOLS;
 
 const ICONS = {
   pencil: '\u270F\uFE0F',
@@ -32,7 +32,9 @@ class Toolbar {
     this.color = opts.defaultColor || '#222222';
     this.brushSize = opts.defaultBrushSize || 4;
 
-    this.activeTool = TOOL_KEYS.find((t) => this.tools.includes(t)) || 'pencil';
+    this.activeTool = opts.initialTool
+      || TOOL_KEYS.find((t) => this.tools.includes(t))
+      || 'pencil';
     this.disabled = false;
 
     this.buttons = new Map();

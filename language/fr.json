@@ -51,8 +51,8 @@
         },
         {
           "label": "Outils disponibles",
-          "description": "Outils affichés dans la barre d'outils.",
-          "options": [
+          "description": "Choisissez les outils visibles pour les apprenants. Activez au moins un outil de dessin.",
+          "fields": [
             { "label": "Crayon" },
             { "label": "Pinceau" },
             { "label": "Gomme" },

@@ -3,6 +3,25 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.6.1] - 2026-07-06
+
+### Fixed
+
+- **Author tool picker:** replace broken multi-select dropdown with per-tool
+  checkboxes in the editor (`canvas.tools` boolean group). Authors can now pick
+  any subset of drawing tools, controls, and actions for an exercise.
+
+### Changed
+
+- Runtime normalizes tool config via `resolveTools()` (supports legacy string
+  arrays in saved content). Auto-includes color/size when needed; syncs initial
+  active tool with the first enabled drawing tool.
+
+### Added
+
+- [`src/scripts/canvas/tool-config.js`](src/scripts/canvas/tool-config.js) and
+  [`test/tool-config.test.mjs`](test/tool-config.test.mjs).
+
 ## [0.6.0] - 2026-07-06
 
 ### Security

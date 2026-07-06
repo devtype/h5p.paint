@@ -50,8 +50,8 @@
         },
         {
           "label": "Available tools",
-          "description": "Tools shown in the toolbar.",
-          "options": [
+          "description": "Choose which tools learners see in the toolbar. Enable at least one drawing tool.",
+          "fields": [
             { "label": "Pencil" },
             { "label": "Brush" },
             { "label": "Eraser" },

@@ -1,6 +1,7 @@
 import { Canvas } from 'fabric';
 import Tools from './tools.js';
 import { compositeExportPng } from './export-composite.js';
+import { DRAWING_TOOLS, resolveInitialDrawingTool } from './tool-config.js';
 
 const RATIO_MAP = {
   '4:3': 4 / 3,
@@ -48,13 +49,16 @@ class PaintCanvas {
     this.a11y = opts.a11y || {};
     this.onChange = opts.onChange || (() => {});
 
+    this.enabledTools = opts.enabledTools || DRAWING_TOOLS;
+    this.enabledDrawingTools = DRAWING_TOOLS.filter((t) => this.enabledTools.includes(t));
+
     this.history = [];
     this.future = [];
     this.suspended = false;
 
     this.color = this.canvasParams.defaultColor || '#222222';
     this.brushSize = this.canvasParams.defaultBrushSize || 4;
-    this.currentTool = 'pencil';
+    this.currentTool = opts.initialTool || resolveInitialDrawingTool(this.enabledTools);
     this.shapeStart = null;
     this.shapeBeingDrawn = null;
     this.interactive = true;
@@ -291,6 +295,9 @@ class PaintCanvas {
   }
 
   setTool(tool) {
+    if (!this.enabledDrawingTools.includes(tool)) {
+      return;
+    }
     this.currentTool = tool;
     this.tools.activate(tool);
   }

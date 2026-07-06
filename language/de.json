@@ -51,8 +51,8 @@
         },
         {
           "label": "Verfügbare Werkzeuge",
-          "description": "Werkzeuge in der Symbolleiste.",
-          "options": [
+          "description": "Wählen Sie, welche Werkzeuge Lernende in der Symbolleiste sehen. Mindestens ein Zeichenwerkzeug sollte aktiv sein.",
+          "fields": [
             { "label": "Stift" },
             { "label": "Pinsel" },
             { "label": "Radierer" },
