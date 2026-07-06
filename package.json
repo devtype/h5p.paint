@@ -1,6 +1,6 @@
 {
   "name": "h5p-paint",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "H5P question content type for freehand and shape-based drawing tasks",
   "private": true,
   "license": "MIT",
@@ -24,6 +24,10 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "fabric": "^5.3.0"
+    "fabric": "^7.4.0"
+  },
+  "overrides": {
+    "form-data": "4.0.6",
+    "glob": "^10.4.5"
   }
 }

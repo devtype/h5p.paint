@@ -232,7 +232,8 @@ Learner progress is restored via H5P user data and `getCurrentState()` /
 
 ## Development
 
-Requires Node.js 18+.
+Requires Node.js **20+** for development (Fabric 7 dependency chain). H5P hosts
+only need the built `.h5p` package.
 
 ```bash
 npm install
@@ -252,9 +253,9 @@ After `npm run build` (production, minified):
 
 | Artifact | Typical size |
 | -------- | ------------ |
-| `dist/h5p-paint.js` | ~335 KB (Fabric.js is the bulk) |
+| `dist/h5p-paint.js` | ~313 KB (Fabric.js is the bulk) |
 | `dist/h5p-paint.css` | ~3.5 KB |
-| `H5P.Paint.h5p` (`npm run pack`) | ~112 KB (runtime allowlist only) |
+| `H5P.Paint.h5p` (`npm run pack`) | ~110 KB (runtime allowlist only) |
 
 The webpack bundle includes Fabric.js; H5P platform libraries (`H5P.Question`,
 etc.) are not bundled.

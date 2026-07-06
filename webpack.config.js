@@ -39,8 +39,15 @@ module.exports = (env, argv) => {
       })
     ],
     resolve: {
-      alias: {
-        fabric: 'fabric/dist/fabric.min.js'
+      fallback: {
+        canvas: false,
+        fs: false,
+        jsdom: false,
+        http: false,
+        https: false,
+        url: false,
+        'jsdom/lib/jsdom/living/generated/utils': false,
+        'jsdom/lib/jsdom/utils': false
       }
     },
     performance: {

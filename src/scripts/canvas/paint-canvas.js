@@ -1,4 +1,4 @@
-import { fabric } from 'fabric';
+import { Canvas } from 'fabric';
 import Tools from './tools.js';
 import { compositeExportPng } from './export-composite.js';
 
@@ -10,6 +10,22 @@ const RATIO_MAP = {
 };
 
 const HISTORY_LIMIT = 50;
+
+const SERIALIZE_PROPS = ['selectable', 'evented', 'globalCompositeOperation'];
+
+/**
+ * Strip background keys from Fabric JSON before load.
+ *
+ * @param {object|string} json
+ * @returns {object}
+ */
+function parseScenePayload(json) {
+  const payload = typeof json === 'string' ? JSON.parse(json) : { ...json };
+  delete payload.backgroundImage;
+  delete payload.background;
+  delete payload.backgroundColor;
+  return payload;
+}
 
 /**
  * Wraps a Fabric.js canvas to provide tools, undo/redo, export, and resize.
@@ -77,7 +93,7 @@ class PaintCanvas {
     this.baseWidth = baseWidth;
     this.baseHeight = baseHeight;
 
-    this.canvas = new fabric.Canvas(this.canvasEl, {
+    this.canvas = new Canvas(this.canvasEl, {
       width: baseWidth,
       height: baseHeight,
       backgroundColor: 'transparent',
@@ -127,7 +143,7 @@ class PaintCanvas {
     if (!['line', 'rect', 'ellipse'].includes(this.currentTool)) {
       return;
     }
-    const pointer = this.canvas.getPointer(opt.e);
+    const pointer = this.canvas.getScenePoint(opt.e);
     this.shapeStart = pointer;
     this.suspended = true;
 
@@ -142,7 +158,7 @@ class PaintCanvas {
     if (!this.interactive || !this.shapeBeingDrawn || !this.shapeStart) {
       return;
     }
-    const pointer = this.canvas.getPointer(opt.e);
+    const pointer = this.canvas.getScenePoint(opt.e);
     this.tools.updateShape(this.currentTool, this.shapeBeingDrawn, this.shapeStart, pointer);
     this.canvas.requestRenderAll();
   }
@@ -160,12 +176,16 @@ class PaintCanvas {
   }
 
   _snapshot() {
-    const json = JSON.stringify(this.canvas.toJSON(['selectable', 'evented', 'globalCompositeOperation']));
+    const json = JSON.stringify(this.canvas.toObject(SERIALIZE_PROPS));
     this.history.push(json);
     if (this.history.length > HISTORY_LIMIT) {
       this.history.shift();
     }
     this.future = [];
+  }
+
+  _setCanvasDimensions(width, height) {
+    this.canvas.setDimensions({ width, height });
   }
 
   _fit() {
@@ -181,8 +201,7 @@ class PaintCanvas {
       return;
     }
     this.canvas.setZoom(scale);
-    this.canvas.setWidth(this.baseWidth * scale);
-    this.canvas.setHeight(this.baseHeight * scale);
+    this._setCanvasDimensions(this.baseWidth * scale, this.baseHeight * scale);
     this.canvas.requestRenderAll();
   }
 
@@ -238,7 +257,7 @@ class PaintCanvas {
       img.onload = () => {
         if (this.canvasParams.aspectRatio === 'background' && img.naturalWidth && img.naturalHeight) {
           this.baseHeight = Math.round((this.baseWidth * img.naturalHeight) / img.naturalWidth);
-          this.canvas.setHeight(this.baseHeight);
+          this._setCanvasDimensions(this.baseWidth, this.baseHeight);
         }
 
         this.backgroundLayer.innerHTML = '';
@@ -357,38 +376,25 @@ class PaintCanvas {
   }
 
   toJSON() {
-    return this.canvas.toJSON(['selectable', 'evented', 'globalCompositeOperation']);
+    return this.canvas.toObject(SERIALIZE_PROPS);
   }
 
-  loadFromJSON(json) {
-    return new Promise((resolve) => {
-      const payload = typeof json === 'string' ? JSON.parse(json) : { ...json };
-      delete payload.backgroundImage;
-      delete payload.background;
-      delete payload.backgroundColor;
-
-      this.suspended = true;
-      this.canvas.loadFromJSON(payload, () => {
-        this.canvas.requestRenderAll();
-        this.suspended = false;
-        this._snapshot();
-        resolve();
-      });
-    });
-  }
-
-  _loadJson(json) {
-    const payload = typeof json === 'string' ? JSON.parse(json) : { ...json };
-    delete payload.backgroundImage;
-    delete payload.background;
-    delete payload.backgroundColor;
-
+  async loadFromJSON(json) {
+    const payload = parseScenePayload(json);
     this.suspended = true;
-    this.canvas.loadFromJSON(payload, () => {
-      this.canvas.requestRenderAll();
-      this.suspended = false;
-      this.onChange();
-    });
+    await this.canvas.loadFromJSON(payload);
+    this.canvas.requestRenderAll();
+    this.suspended = false;
+    this._snapshot();
+  }
+
+  async _loadJson(json) {
+    const payload = parseScenePayload(json);
+    this.suspended = true;
+    await this.canvas.loadFromJSON(payload);
+    this.canvas.requestRenderAll();
+    this.suspended = false;
+    this.onChange();
   }
 
   getSummary() {

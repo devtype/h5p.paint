@@ -3,6 +3,28 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.6.0] - 2026-07-06
+
+### Security
+
+- Upgrade **Fabric.js** from 5.5.2 to **7.4.0** (addresses Snyk/CVE findings
+  including CVE-2026-27013 and related dependency advisories).
+- Add npm `overrides` for `form-data@4.0.6` and `glob@10` (dev transitive deps).
+
+### Changed
+
+- Canvas code migrated to Fabric 7 APIs: named imports, `toObject()` for state
+  serialization, async `loadFromJSON()`, `setDimensions()`, `getScenePoint()`,
+  explicit `originX`/`originY` on shapes (preserves v5 placement behaviour).
+- Webpack bundles Fabric 7 ESM with Node polyfill fallbacks (jsdom/canvas not
+  shipped in `dist/h5p-paint.js`).
+- Production bundle size ~313 KB JS (was ~335 KB on Fabric 5).
+
+### Added
+
+- [`test/fixtures/canvas-state-v5.json`](test/fixtures/canvas-state-v5.json) and
+  fixture validation test for saved-state compatibility QA.
+
 ## [0.5.1] - 2026-06-30
 
 ### Added

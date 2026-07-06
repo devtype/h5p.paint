@@ -1,4 +1,6 @@
-import { fabric } from 'fabric';
+import { PencilBrush, Line, Rect, Ellipse, IText } from 'fabric';
+
+const SHAPE_ORIGIN = { originX: 'left', originY: 'top' };
 
 /**
  * Tools manager for the Fabric.js canvas wrapper.
@@ -20,15 +22,15 @@ class Tools {
   }
 
   _configureBrushes() {
-    this.pencilBrush = new fabric.PencilBrush(this.canvas);
+    this.pencilBrush = new PencilBrush(this.canvas);
     this.pencilBrush.color = this.accessors.getColor();
     this.pencilBrush.width = Math.max(1, Math.min(this.accessors.getBrushSize(), 6));
 
-    this.brushBrush = new fabric.PencilBrush(this.canvas);
+    this.brushBrush = new PencilBrush(this.canvas);
     this.brushBrush.color = this.accessors.getColor();
     this.brushBrush.width = Math.max(4, this.accessors.getBrushSize() * 2);
 
-    this.eraserBrush = new fabric.PencilBrush(this.canvas);
+    this.eraserBrush = new PencilBrush(this.canvas);
     this.eraserBrush.color = 'rgba(0,0,0,1)';
     this.eraserBrush.globalCompositeOperation = 'destination-out';
     this.eraserBrush.width = Math.max(8, this.accessors.getBrushSize() * 4);
@@ -77,13 +79,14 @@ class Tools {
   _enableTextInsertion() {
     this._disableTextInsertion();
     this._textHandler = (opt) => {
-      const pointer = this.canvas.getPointer(opt.e);
-      const text = new fabric.IText('Text', {
+      const pointer = this.canvas.getScenePoint(opt.e);
+      const text = new IText('Text', {
         left: pointer.x,
         top: pointer.y,
         fontSize: Math.max(14, this.accessors.getBrushSize() * 4),
         fill: this.accessors.getColor(),
-        fontFamily: 'sans-serif'
+        fontFamily: 'sans-serif',
+        ...SHAPE_ORIGIN
       });
       this.canvas.add(text);
       this.canvas.setActiveObject(text);
@@ -127,14 +130,15 @@ class Tools {
 
     switch (tool) {
       case 'line':
-        return new fabric.Line([pointer.x, pointer.y, pointer.x, pointer.y], {
+        return new Line([pointer.x, pointer.y, pointer.x, pointer.y], {
           stroke: color,
           strokeWidth: stroke,
           strokeLineCap: 'round',
-          selectable: true
+          selectable: true,
+          ...SHAPE_ORIGIN
         });
       case 'rect':
-        return new fabric.Rect({
+        return new Rect({
           left: pointer.x,
           top: pointer.y,
           width: 1,
@@ -142,10 +146,11 @@ class Tools {
           fill: 'transparent',
           stroke: color,
           strokeWidth: stroke,
-          selectable: true
+          selectable: true,
+          ...SHAPE_ORIGIN
         });
       case 'ellipse':
-        return new fabric.Ellipse({
+        return new Ellipse({
           left: pointer.x,
           top: pointer.y,
           rx: 1,
@@ -154,8 +159,7 @@ class Tools {
           stroke: color,
           strokeWidth: stroke,
           selectable: true,
-          originX: 'left',
-          originY: 'top'
+          ...SHAPE_ORIGIN
         });
       default:
         return null;

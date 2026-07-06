@@ -8,7 +8,7 @@ release asset.
 
 | Field | Value |
 | ----- | ----- |
-| Library version | 0.5.1 |
+| Library version | 0.6.0 |
 | Host | _Record: Lumi / Drupal+H5P / Moodle / other_ |
 | Browser | _Record: Chrome / Firefox / Safari / iOS Safari_ |
 | Date | _Record when tested_ |
@@ -34,47 +34,48 @@ release asset.
 | 5 | Show / hide solution (with reference image) | Reference overlay toggles | ☐ |
 | 6 | Reload page mid-draw (save state enabled) | Drawing restored from `getCurrentState` | ☐ |
 | 7 | Reload after submit | Submitted state restored; canvas locked | ☐ |
+| 8 | Upgrade from 0.5.x saved drawing | Drawing saved under Fabric 5 reloads after 0.6.0 upgrade | ☐ |
 
 ## Question Set integration
 
 | # | Scenario | Expected | Result |
 | - | -------- | -------- | ------ |
-| 8 | Paint as one question in Question Set | Renders inside QS navigation | ☐ |
-| 9 | Submit Paint, go to next question | No console errors; state saved | ☐ |
-| 10 | Return to Paint question | Prior drawing visible | ☐ |
-| 11 | **Manual scoring** (`scoringMode: manual`) | Score bar shows 0 after submit | ☐ |
-| 12 | **Completion scoring** (`scoringMode: completion`) | Full score after submit with drawing | ☐ |
-| 13 | Completion + retry | Score resets to 0 until resubmit | ☐ |
-| 14 | **AI scoring** (`scoringMode: ai`) | Grading message, then score from endpoint/hook | ☐ |
-| 15 | AI + reload after graded submit | Score and feedback restored from state | ☐ |
-| 16 | AI + reload during grading (pending) | Drawing restored; interrupted message; submit available; score 0 until resubmit | ☐ |
-| 17 | AI grading failure + `onFailure: zero` | Score 0, error message shown | ☐ |
-| 18 | AI + `showConfidenceToLearner` | Confidence percentage shown when grader returns it | ☐ |
-| 19 | Finish Question Set | xAPI / completion events fire | ☐ |
+| 9 | Paint as one question in Question Set | Renders inside QS navigation | ☐ |
+| 10 | Submit Paint, go to next question | No console errors; state saved | ☐ |
+| 11 | Return to Paint question | Prior drawing visible | ☐ |
+| 12 | **Manual scoring** (`scoringMode: manual`) | Score bar shows 0 after submit | ☐ |
+| 13 | **Completion scoring** (`scoringMode: completion`) | Full score after submit with drawing | ☐ |
+| 14 | Completion + retry | Score resets to 0 until resubmit | ☐ |
+| 15 | **AI scoring** (`scoringMode: ai`) | Grading message, then score from endpoint/hook | ☐ |
+| 16 | AI + reload after graded submit | Score and feedback restored from state | ☐ |
+| 17 | AI + reload during grading (pending) | Drawing restored; interrupted message; submit available; score 0 until resubmit | ☐ |
+| 18 | AI grading failure + `onFailure: zero` | Score 0, error message shown | ☐ |
+| 19 | AI + `showConfidenceToLearner` | Confidence percentage shown when grader returns it | ☐ |
+| 20 | Finish Question Set | xAPI / completion events fire | ☐ |
 
 ## Container embeds (smoke test)
 
 | # | Scenario | Expected | Result |
 | - | --------- | -------- | ------ |
-| 20 | Interactive Book | Paint page renders and submit works | ☐ |
-| 21 | Course Presentation | Paint slide renders and submit works | ☐ |
+| 21 | Interactive Book | Paint page renders and submit works | ☐ |
+| 22 | Course Presentation | Paint slide renders and submit works | ☐ |
 
 ## xAPI (optional LRS host)
 
 | # | Scenario | Expected | Result |
 | - | -------- | -------- | ------ |
-| 22 | Submit drawing | `answered` verb; PNG attachment present | ☐ |
-| 23 | Completion mode submit | `result.score.raw` equals `maxScore` | ☐ |
-| 24 | AI mode submit | `result.score` matches grader; feedback in response | ☐ |
-| 25 | AI mode + confidence | `result.response` includes `confidence:` when returned | ☐ |
-| 26 | Manual mode submit | No `result.score` in statement | ☐ |
+| 23 | Submit drawing | `answered` verb; PNG attachment present | ☐ |
+| 24 | Completion mode submit | `result.score.raw` equals `maxScore` | ☐ |
+| 25 | AI mode submit | `result.score` matches grader; feedback in response | ☐ |
+| 26 | AI mode + confidence | `result.response` includes `confidence:` when returned | ☐ |
+| 27 | Manual mode submit | No `result.score` in statement | ☐ |
 
 ## Mobile / touch
 
 | # | Scenario | Expected | Result |
 | - | -------- | -------- | ------ |
-| 27 | Toolbar on narrow viewport | Horizontal scroll; buttons ≥ 44px | ☐ |
-| 28 | Draw with finger / stylus | Strokes register; no page scroll while drawing | ☐ |
+| 28 | Toolbar on narrow viewport | Horizontal scroll; buttons ≥ 44px | ☐ |
+| 29 | Draw with finger / stylus | Strokes register; no page scroll while drawing | ☐ |
 
 ## Notes
 File issues at https://github.com/devtype/h5p.paint/issues.
@@ -88,7 +89,7 @@ These run on every push via GitHub Actions:
 
 - `npm run lint`
 - `npm run build`
-- `npm test` (export compositing, AI grader, and scoring unit tests)
+- `npm test` (export compositing, AI grader, scoring, and Fabric state fixture tests)
 
 Manual rows above are **not** automated and must be signed off before claiming
 full compatibility on a specific host.

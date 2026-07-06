@@ -17,7 +17,7 @@ See the LICENSE file in this directory for the full license text.
 ================================================================================
 
 Fabric.js
-  Version: 5.5.2 (see package.json / package-lock.json for the pinned version
+  Version: 7.4.0 (see package.json / package-lock.json for the pinned version
            used at build time)
   Homepage: https://fabricjs.com/
   Source:   https://github.com/fabricjs/fabric.js
