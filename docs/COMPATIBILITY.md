@@ -8,7 +8,7 @@ release asset.
 
 | Field | Value |
 | ----- | ----- |
-| Library version | 0.6.1 |
+| Library version | 0.6.2 |
 | Host | _Record: Lumi / Drupal+H5P / Moodle / other_ |
 | Browser | _Record: Chrome / Firefox / Safari / iOS Safari_ |
 | Date | _Record when tested_ |

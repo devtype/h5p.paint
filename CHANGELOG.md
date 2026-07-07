@@ -3,6 +3,14 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.6.2] - 2026-07-07
+
+### Fixed
+
+- Respect author deselection of **Color picker** and **Brush size** — they are
+  no longer auto-added when drawing tools are enabled. Hidden controls fall back
+  to `canvas.brushDefaults`.
+
 ## [0.6.1] - 2026-07-06
 
 ### Fixed

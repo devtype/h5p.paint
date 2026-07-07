@@ -30,7 +30,25 @@ test('toolsFromAuthorInput reads legacy string array', () => {
   assert.deepEqual(tools, ['pencil', 'eraser', 'undo']);
 });
 
-test('resolveTools auto-appends color for shape tools', () => {
+test('resolveTools respects deselected color and size', () => {
+  const tools = resolveTools({
+    pencil: true,
+    brush: true,
+    eraser: true,
+    line: false,
+    rect: false,
+    ellipse: false,
+    text: false,
+    color: false,
+    size: false,
+    undo: true,
+    redo: true,
+    clear: true
+  });
+  assert.deepEqual(tools, ['pencil', 'brush', 'eraser', 'undo', 'redo', 'clear']);
+});
+
+test('resolveTools does not add color for shape-only selection', () => {
   const tools = resolveTools({
     line: true,
     rect: true,
@@ -45,28 +63,7 @@ test('resolveTools auto-appends color for shape tools', () => {
     redo: false,
     clear: false
   });
-  assert.ok(tools.includes('line'));
-  assert.ok(tools.includes('rect'));
-  assert.ok(tools.includes('color'));
-});
-
-test('resolveTools auto-appends size for freehand tools', () => {
-  const tools = resolveTools({
-    pencil: true,
-    brush: false,
-    eraser: false,
-    line: false,
-    rect: false,
-    ellipse: false,
-    text: false,
-    color: true,
-    size: false,
-    undo: false,
-    redo: false,
-    clear: false
-  });
-  assert.ok(tools.includes('pencil'));
-  assert.ok(tools.includes('size'));
+  assert.deepEqual(tools, ['line', 'rect']);
 });
 
 test('resolveTools forces pencil when no drawing tool selected', () => {
@@ -89,7 +86,7 @@ test('resolveTools forces pencil when no drawing tool selected', () => {
 
 test('resolveTools preserves ALL_TOOLS order', () => {
   const tools = resolveTools(['clear', 'pencil', 'undo']);
-  assert.deepEqual(tools, ['pencil', 'color', 'size', 'undo', 'clear']);
+  assert.deepEqual(tools, ['pencil', 'undo', 'clear']);
 });
 
 test('resolveInitialDrawingTool skips disabled pencil', () => {

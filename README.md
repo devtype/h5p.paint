@@ -48,7 +48,7 @@ or maintained by H5P Group AS.
 | `media.referenceImage` | Optional image revealed via _Show solution_. |
 | `media.alternativeText` | Screen-reader description of the canvas. |
 | `canvas.width` / `canvas.aspectRatio` | Base size of the drawing surface. |
-| `canvas.tools` | Per-tool checkboxes in the editor (`pencil`, `brush`, `eraser`, `line`, `rect`, `ellipse`, `text`, `color`, `size`, `undo`, `redo`, `clear`). Only checked tools appear in the learner toolbar. Legacy JSON arrays are still accepted at runtime. Color and brush size are auto-included when required. See [`examples/content-blank.json`](examples/content-blank.json). |
+| `canvas.tools` | Per-tool checkboxes in the editor (`pencil`, `brush`, `eraser`, `line`, `rect`, `ellipse`, `text`, `color`, `size`, `undo`, `redo`, `clear`). Only checked tools appear in the learner toolbar. Legacy JSON arrays are still accepted at runtime. When color or size are unchecked, learners use `canvas.brushDefaults` instead. See [`examples/content-blank.json`](examples/content-blank.json). |
 | `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |

@@ -5,9 +5,6 @@ export const CONTROL_TOOLS = ['color', 'size'];
 export const ACTION_TOOLS = ['undo', 'redo', 'clear'];
 export const ALL_TOOLS = [...DRAWING_TOOLS, ...CONTROL_TOOLS, ...ACTION_TOOLS];
 
-const STROKE_TOOLS = ['pencil', 'brush', 'line', 'rect', 'ellipse', 'text'];
-const FREEHAND_TOOLS = ['pencil', 'brush', 'eraser'];
-
 export const DEFAULT_TOOLS_OBJECT = Object.fromEntries(ALL_TOOLS.map((t) => [t, true]));
 
 /**
@@ -35,7 +32,7 @@ export function toolsFromAuthorInput(raw) {
 }
 
 /**
- * Resolve enabled toolbar tools with safe fallbacks and control auto-inclusion.
+ * Resolve enabled toolbar tools with safe fallbacks.
  *
  * @param {object|string[]|null|undefined} raw
  * @returns {string[]}
@@ -48,14 +45,6 @@ export function resolveTools(raw) {
 
   if (!DRAWING_TOOLS.some((t) => tools.includes(t))) {
     tools.unshift('pencil');
-  }
-
-  if (STROKE_TOOLS.some((t) => tools.includes(t)) && !tools.includes('color')) {
-    tools.push('color');
-  }
-
-  if (FREEHAND_TOOLS.some((t) => tools.includes(t)) && !tools.includes('size')) {
-    tools.push('size');
   }
 
   return ALL_TOOLS.filter((t) => tools.includes(t));
