@@ -121,16 +121,13 @@
             },
             {
               "label": "Couleurs de la palette",
-              "description": "Choisissez 2 à 8 couleurs. Laissez les emplacements optionnels vides si besoin.",
+              "description": "Choisissez jusqu'à cinq couleurs. La couleur par défaut est toujours affichée en premier.",
               "fields": [
                 { "label": "Couleur 1" },
                 { "label": "Couleur 2" },
                 { "label": "Couleur 3" },
                 { "label": "Couleur 4" },
-                { "label": "Couleur 5" },
-                { "label": "Couleur 6" },
-                { "label": "Couleur 7" },
-                { "label": "Couleur 8" }
+                { "label": "Couleur 5" }
               ]
             },
             { "label": "Taille du pinceau par défaut (px)" }

@@ -121,16 +121,13 @@
             },
             {
               "label": "Palet kleuren",
-              "description": "Kies 2–8 kleuren. Laat optionele velden leeg als u minder nodig hebt.",
+              "description": "Kies maximaal vijf kleuren. De standaard penseelkleur staat altijd eerst voor leerlingen.",
               "fields": [
                 { "label": "Kleur 1" },
                 { "label": "Kleur 2" },
                 { "label": "Kleur 3" },
                 { "label": "Kleur 4" },
-                { "label": "Kleur 5" },
-                { "label": "Kleur 6" },
-                { "label": "Kleur 7" },
-                { "label": "Kleur 8" }
+                { "label": "Kleur 5" }
               ]
             },
             { "label": "Standaard penseelgrootte (px)" }

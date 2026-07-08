@@ -4,7 +4,7 @@
   "machineName": "H5P.Paint",
   "majorVersion": 0,
   "minorVersion": 7,
-  "patchVersion": 3,
+  "patchVersion": 4,
   "runnable": 1,
   "embedTypes": ["iframe"],
   "author": "devtype",

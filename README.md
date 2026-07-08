@@ -53,7 +53,7 @@ or maintained by H5P Group AS.
 | `canvas.tools` (legacy) | Flat boolean object or string array (0.6.x) still accepted at runtime. |
 | `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `canvas.brushDefaults.colorMode` | `full` (system color picker, default), `palette` (author swatches), or `fixed` (always `defaultColor`). |
-| `canvas.brushDefaults.paletteColors` | Object with `color1`–`color8` when `colorMode` is `palette` (legacy list format still read at runtime). |
+| `canvas.brushDefaults.paletteColors` | Object with `color1`–`color5` when `colorMode` is `palette`. The default brush color is always shown first to learners. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
 | `behaviour.scoringMode` | `manual` (default), `completion`, or `ai` — see [Scoring contract](#scoring-contract). |

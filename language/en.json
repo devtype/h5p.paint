@@ -120,16 +120,13 @@
             },
             {
               "label": "Palette colors",
-              "description": "Pick 2–8 colors. Leave optional slots empty if you need fewer.",
+              "description": "Pick up to five colors. The default brush color is always shown first to learners.",
               "fields": [
                 { "label": "Color 1" },
                 { "label": "Color 2" },
                 { "label": "Color 3" },
                 { "label": "Color 4" },
-                { "label": "Color 5" },
-                { "label": "Color 6" },
-                { "label": "Color 7" },
-                { "label": "Color 8" }
+                { "label": "Color 5" }
               ]
             },
             { "label": "Default brush size (px)" }

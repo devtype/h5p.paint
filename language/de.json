@@ -121,16 +121,13 @@
             },
             {
               "label": "Palettenfarben",
-              "description": "2–8 Farben wählen. Optionale Felder leer lassen, wenn weniger nötig.",
+              "description": "Bis zu fünf Farben wählen. Die Standard-Stiftfarbe wird Lernenden immer zuerst angezeigt.",
               "fields": [
                 { "label": "Farbe 1" },
                 { "label": "Farbe 2" },
                 { "label": "Farbe 3" },
                 { "label": "Farbe 4" },
-                { "label": "Farbe 5" },
-                { "label": "Farbe 6" },
-                { "label": "Farbe 7" },
-                { "label": "Farbe 8" }
+                { "label": "Farbe 5" }
               ]
             },
             { "label": "Standard-Strichstärke (px)" }

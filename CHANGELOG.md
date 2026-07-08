@@ -3,6 +3,14 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.4] - 2026-07-08
+
+### Changed
+
+- **Palette colors:** Reduce author palette to five `colorSelector` fields
+  (`color1`–`color5`). The default brush color is always prepended as the first
+  learner swatch (deduped if also listed in the palette).
+
 ## [0.7.3] - 2026-07-08
 
 ### Fixed

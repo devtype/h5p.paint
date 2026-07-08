@@ -247,7 +247,7 @@
             "name": "paletteColors",
             "type": "group",
             "label": "Palette colors",
-            "description": "Pick 2–8 colors. Leave optional slots empty if you need fewer.",
+            "description": "Pick up to five colors. The default brush color is always shown first to learners.",
             "importance": "medium",
             "expanded": true,
             "widget": "showWhen",
@@ -290,27 +290,6 @@
                 "type": "text",
                 "label": "Color 5",
                 "default": "#2563eb",
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color6",
-                "type": "text",
-                "label": "Color 6",
-                "default": "#7c3aed",
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color7",
-                "type": "text",
-                "label": "Color 7",
-                "optional": true,
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color8",
-                "type": "text",
-                "label": "Color 8",
-                "optional": true,
                 "widget": "colorSelector"
               }
             ]

@@ -1,10 +1,11 @@
+export const AUTHOR_PALETTE_SIZE = 5;
+
 export const DEFAULT_PALETTE_COLORS = [
   '#e11d48',
   '#ea580c',
   '#ca8a04',
   '#16a34a',
-  '#2563eb',
-  '#7c3aed'
+  '#2563eb'
 ];
 
 export const PALETTE_COLOR_KEYS = [
@@ -12,13 +13,8 @@ export const PALETTE_COLOR_KEYS = [
   'color2',
   'color3',
   'color4',
-  'color5',
-  'color6',
-  'color7',
-  'color8'
+  'color5'
 ];
-
-export const MAX_PALETTE_COLORS = PALETTE_COLOR_KEYS.length;
 
 export const COLOR_MODES = ['full', 'palette', 'fixed'];
 
@@ -60,7 +56,7 @@ export function extractPaletteColors(raw) {
         }
         return DEFAULT_PALETTE_COLORS[index % DEFAULT_PALETTE_COLORS.length];
       })
-      .slice(0, MAX_PALETTE_COLORS);
+      .slice(0, AUTHOR_PALETTE_SIZE);
   }
 
   if (raw && typeof raw === 'object') {
@@ -78,7 +74,10 @@ export function extractPaletteColors(raw) {
  */
 export function normalizePaletteColors(raw) {
   const colors = extractPaletteColors(raw);
-  return colors.length >= 2 ? colors : [...DEFAULT_PALETTE_COLORS];
+  if (colors.length >= 2) {
+    return colors.slice(0, AUTHOR_PALETTE_SIZE);
+  }
+  return [...DEFAULT_PALETTE_COLORS];
 }
 
 /**
@@ -119,14 +118,16 @@ export function resolveBrushDefaults(canvas) {
   const nested = canvas && canvas.brushDefaults;
   const colorMode = normalizeColorMode(nested?.colorMode);
   let paletteColors = normalizePaletteColors(nested?.paletteColors);
-  let defaultColor = normalizeHexColor(
+  const defaultColor = normalizeHexColor(
     nested?.defaultColor ?? canvas?.defaultColor ?? '#222222'
   ) || '#222222';
 
   if (colorMode === 'palette') {
-    if (!paletteColors.includes(defaultColor)) {
-      paletteColors = [defaultColor, ...paletteColors].slice(0, MAX_PALETTE_COLORS);
-    }
+    const authorColors = paletteColors.filter((color) => color !== defaultColor);
+    paletteColors = [
+      defaultColor,
+      ...authorColors.slice(0, AUTHOR_PALETTE_SIZE)
+    ];
   }
 
   return {

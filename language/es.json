@@ -121,16 +121,13 @@
             },
             {
               "label": "Colores de la paleta",
-              "description": "Elija 2–8 colores. Deje vacíos los campos opcionales si necesita menos.",
+              "description": "Elija hasta cinco colores. El color predeterminado del pincel siempre se muestra primero.",
               "fields": [
                 { "label": "Color 1" },
                 { "label": "Color 2" },
                 { "label": "Color 3" },
                 { "label": "Color 4" },
-                { "label": "Color 5" },
-                { "label": "Color 6" },
-                { "label": "Color 7" },
-                { "label": "Color 8" }
+                { "label": "Color 5" }
               ]
             },
             { "label": "Tamaño del pincel predeterminado (px)" }

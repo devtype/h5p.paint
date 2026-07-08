@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  AUTHOR_PALETTE_SIZE,
   DEFAULT_PALETTE_COLORS,
   normalizePaletteColors,
   normalizeColorMode,
@@ -13,39 +14,32 @@ test('normalizePaletteColors returns defaults for empty input', () => {
   assert.deepEqual(normalizePaletteColors([]), DEFAULT_PALETTE_COLORS);
 });
 
-test('normalizePaletteColors reads all eight group colors', () => {
+test('normalizePaletteColors reads five group colors', () => {
   assert.deepEqual(
     normalizePaletteColors({
       color1: '#ff0000',
       color2: '#00ff00',
       color3: '#0000ff',
       color4: '#ffff00',
-      color5: '#ff00ff',
-      color6: '#00ffff',
-      color7: '854d0e',
-      color8: '000000'
+      color5: '000000'
     }),
-    [
-      '#ff0000',
-      '#00ff00',
-      '#0000ff',
-      '#ffff00',
-      '#ff00ff',
-      '#00ffff',
-      '#854d0e',
-      '#000000'
-    ]
+    ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#000000']
   );
 });
 
-test('normalizePaletteColors maps group fields to hex array', () => {
+test('normalizePaletteColors ignores extra legacy group slots', () => {
   assert.deepEqual(
     normalizePaletteColors({
       color1: '#ff0000',
       color2: '#00ff00',
-      color3: '#0000ff'
+      color3: '#0000ff',
+      color4: '#ffff00',
+      color5: '#000000',
+      color6: '#7c3aed',
+      color7: '#854d0e',
+      color8: '#111111'
     }),
-    ['#ff0000', '#00ff00', '#0000ff']
+    ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#000000']
   );
 });
 
@@ -92,48 +86,56 @@ test('resolveToolbarTools strips color when fixed', () => {
   );
 });
 
-test('resolveBrushDefaults prepends default color when it is not in palette', () => {
+test('resolveBrushDefaults always puts default color first in palette mode', () => {
   const brush = resolveBrushDefaults({
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
       paletteColors: {
         color1: '#ff0000',
-        color2: '#00ff00'
+        color2: '#00ff00',
+        color3: '#0000ff'
       }
     }
   });
 
   assert.equal(brush.defaultColor, '#000000');
+  assert.deepEqual(brush.paletteColors, ['#000000', '#ff0000', '#00ff00', '#0000ff']);
+});
+
+test('resolveBrushDefaults dedupes default color from author palette', () => {
+  const brush = resolveBrushDefaults({
+    brushDefaults: {
+      defaultColor: '#000000',
+      colorMode: 'palette',
+      paletteColors: {
+        color1: '#ff0000',
+        color2: '#000000',
+        color3: '#00ff00'
+      }
+    }
+  });
+
   assert.deepEqual(brush.paletteColors, ['#000000', '#ff0000', '#00ff00']);
 });
 
-test('resolveBrushDefaults keeps default color when it is already in palette', () => {
+test('resolveBrushDefaults limits author palette to five colors', () => {
   const brush = resolveBrushDefaults({
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
       paletteColors: {
-        color1: '#ff0000',
-        color2: '#000000'
+        color1: '#111111',
+        color2: '#333333',
+        color3: '#444444',
+        color4: '#555555',
+        color5: '#666666',
+        color6: '#777777'
       }
     }
   });
 
-  assert.equal(brush.defaultColor, '#000000');
-  assert.deepEqual(brush.paletteColors, ['#ff0000', '#000000']);
-});
-
-test('resolveBrushDefaults normalizes legacy list defaults', () => {
-  const brush = resolveBrushDefaults({
-    brushDefaults: {
-      defaultColor: '#222222',
-      colorMode: 'palette',
-      paletteColors: [{ color: '#ff0000' }, { color: '#00ff00' }]
-    }
-  });
-
-  assert.equal(brush.colorMode, 'palette');
-  assert.equal(brush.defaultColor, '#222222');
-  assert.deepEqual(brush.paletteColors, ['#222222', '#ff0000', '#00ff00']);
+  assert.equal(brush.paletteColors.length, AUTHOR_PALETTE_SIZE + 1);
+  assert.equal(brush.paletteColors[0], '#000000');
+  assert.equal(brush.paletteColors[5], '#666666');
 });
