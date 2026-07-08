@@ -119,7 +119,20 @@
                 { "label": "Alleen vaste kleur" }
               ]
             },
-            { "label": "Palet kleuren" },
+            {
+              "label": "Palet kleuren",
+              "description": "Kies 2–8 kleuren. Laat optionele velden leeg als u minder nodig hebt.",
+              "fields": [
+                { "label": "Kleur 1" },
+                { "label": "Kleur 2" },
+                { "label": "Kleur 3" },
+                { "label": "Kleur 4" },
+                { "label": "Kleur 5" },
+                { "label": "Kleur 6" },
+                { "label": "Kleur 7" },
+                { "label": "Kleur 8" }
+              ]
+            },
             { "label": "Standaard penseelgrootte (px)" }
           ]
         }

@@ -13,7 +13,18 @@ test('normalizePaletteColors returns defaults for empty input', () => {
   assert.deepEqual(normalizePaletteColors([]), DEFAULT_PALETTE_COLORS);
 });
 
-test('normalizePaletteColors maps H5P list items to hex array', () => {
+test('normalizePaletteColors maps group fields to hex array', () => {
+  assert.deepEqual(
+    normalizePaletteColors({
+      color1: '#ff0000',
+      color2: '#00ff00',
+      color3: '#0000ff'
+    }),
+    ['#ff0000', '#00ff00', '#0000ff']
+  );
+});
+
+test('normalizePaletteColors maps legacy list items to hex array', () => {
   assert.deepEqual(
     normalizePaletteColors([
       { color: '#ff0000' },
@@ -21,6 +32,13 @@ test('normalizePaletteColors maps H5P list items to hex array', () => {
       { color: '#0000ff' }
     ]),
     ['#ff0000', '#00ff00', '#0000ff']
+  );
+});
+
+test('normalizePaletteColors fills empty legacy list slots from defaults', () => {
+  assert.deepEqual(
+    normalizePaletteColors([{}, {}, {}]),
+    DEFAULT_PALETTE_COLORS.slice(0, 3)
   );
 });
 

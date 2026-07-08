@@ -245,32 +245,75 @@
           },
           {
             "name": "paletteColors",
-            "type": "list",
+            "type": "group",
             "label": "Palette colors",
+            "description": "Pick 2–8 colors. Leave optional slots empty if you need fewer.",
             "importance": "medium",
-            "min": 2,
-            "max": 8,
-            "entity": "Color",
+            "expanded": true,
             "widget": "showWhen",
             "showWhen": {
               "rules": [
                 { "field": "colorMode", "equals": "palette" }
               ]
             },
-            "default": [
-              { "color": "#e11d48" },
-              { "color": "#ea580c" },
-              { "color": "#ca8a04" },
-              { "color": "#16a34a" },
-              { "color": "#2563eb" },
-              { "color": "#7c3aed" }
-            ],
-            "field": {
-              "name": "color",
-              "type": "text",
-              "label": "Color",
-              "widget": "colorSelector"
-            }
+            "fields": [
+              {
+                "name": "color1",
+                "type": "text",
+                "label": "Color 1",
+                "default": "#e11d48",
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color2",
+                "type": "text",
+                "label": "Color 2",
+                "default": "#ea580c",
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color3",
+                "type": "text",
+                "label": "Color 3",
+                "default": "#ca8a04",
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color4",
+                "type": "text",
+                "label": "Color 4",
+                "default": "#16a34a",
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color5",
+                "type": "text",
+                "label": "Color 5",
+                "default": "#2563eb",
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color6",
+                "type": "text",
+                "label": "Color 6",
+                "default": "#7c3aed",
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color7",
+                "type": "text",
+                "label": "Color 7",
+                "optional": true,
+                "widget": "colorSelector"
+              },
+              {
+                "name": "color8",
+                "type": "text",
+                "label": "Color 8",
+                "optional": true,
+                "widget": "colorSelector"
+              }
+            ]
           },
           {
             "name": "defaultBrushSize",

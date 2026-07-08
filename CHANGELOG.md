@@ -3,6 +3,16 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.2] - 2026-07-08
+
+### Fixed
+
+- **Palette colors in editor:** H5P list fields do not apply list-level defaults, so
+  palette swatches appeared black in the authoring UI while the learner toolbar
+  still used runtime fallbacks. Replaced the list with a group of eight
+  `colorSelector` fields (six with defaults, two optional). Added `upgrades.js`
+  to migrate saved list-format palettes on library upgrade.
+
 ## [0.7.1] - 2026-07-08
 
 ### Added

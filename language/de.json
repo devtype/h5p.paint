@@ -119,7 +119,20 @@
                 { "label": "Nur feste Farbe" }
               ]
             },
-            { "label": "Palettenfarben" },
+            {
+              "label": "Palettenfarben",
+              "description": "2–8 Farben wählen. Optionale Felder leer lassen, wenn weniger nötig.",
+              "fields": [
+                { "label": "Farbe 1" },
+                { "label": "Farbe 2" },
+                { "label": "Farbe 3" },
+                { "label": "Farbe 4" },
+                { "label": "Farbe 5" },
+                { "label": "Farbe 6" },
+                { "label": "Farbe 7" },
+                { "label": "Farbe 8" }
+              ]
+            },
             { "label": "Standard-Strichstärke (px)" }
           ]
         }

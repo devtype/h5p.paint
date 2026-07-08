@@ -119,7 +119,20 @@
                 { "label": "Couleur fixe uniquement" }
               ]
             },
-            { "label": "Couleurs de la palette" },
+            {
+              "label": "Couleurs de la palette",
+              "description": "Choisissez 2 à 8 couleurs. Laissez les emplacements optionnels vides si besoin.",
+              "fields": [
+                { "label": "Couleur 1" },
+                { "label": "Couleur 2" },
+                { "label": "Couleur 3" },
+                { "label": "Couleur 4" },
+                { "label": "Couleur 5" },
+                { "label": "Couleur 6" },
+                { "label": "Couleur 7" },
+                { "label": "Couleur 8" }
+              ]
+            },
             { "label": "Taille du pinceau par défaut (px)" }
           ]
         }

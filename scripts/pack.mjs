@@ -15,6 +15,7 @@ const outputPath = join(root, outputName);
 const INCLUDE = [
   'library.json',
   'semantics.json',
+  'upgrades.js',
   'icon.svg',
   'LICENSE',
   'NOTICE',

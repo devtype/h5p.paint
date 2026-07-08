@@ -18,18 +18,37 @@ function isValidHexColor(value) {
 }
 
 /**
- * @param {Array<{color?: string}|string>|null|undefined} raw
+ * @param {Array<{color?: string}|string>|Record<string, string>|null|undefined} raw
+ * @returns {string[]}
+ */
+export function extractPaletteColors(raw) {
+  if (Array.isArray(raw)) {
+    return raw.map((entry, index) => {
+      const color = typeof entry === 'string' ? entry : entry?.color;
+      if (isValidHexColor(color)) {
+        return color;
+      }
+      return DEFAULT_PALETTE_COLORS[index % DEFAULT_PALETTE_COLORS.length];
+    });
+  }
+
+  if (raw && typeof raw === 'object') {
+    return Object.keys(raw)
+      .filter((key) => /^color\d+$/.test(key))
+      .sort((a, b) => Number(a.slice(5)) - Number(b.slice(5)))
+      .map((key) => raw[key])
+      .filter(isValidHexColor);
+  }
+
+  return [];
+}
+
+/**
+ * @param {Array<{color?: string}|string>|Record<string, string>|null|undefined} raw
  * @returns {string[]}
  */
 export function normalizePaletteColors(raw) {
-  if (!Array.isArray(raw) || !raw.length) {
-    return [...DEFAULT_PALETTE_COLORS];
-  }
-
-  const colors = raw
-    .map((entry) => (typeof entry === 'string' ? entry : entry?.color))
-    .filter(isValidHexColor);
-
+  const colors = extractPaletteColors(raw);
   return colors.length >= 2 ? colors : [...DEFAULT_PALETTE_COLORS];
 }
 
