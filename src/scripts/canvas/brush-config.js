@@ -7,14 +7,42 @@ export const DEFAULT_PALETTE_COLORS = [
   '#7c3aed'
 ];
 
+export const PALETTE_COLOR_KEYS = [
+  'color1',
+  'color2',
+  'color3',
+  'color4',
+  'color5',
+  'color6',
+  'color7',
+  'color8'
+];
+
+export const MAX_PALETTE_COLORS = PALETTE_COLOR_KEYS.length;
+
 export const COLOR_MODES = ['full', 'palette', 'fixed'];
 
 /**
- * @param {string} value
- * @returns {boolean}
+ * @param {string|null|undefined} value
+ * @returns {string|null}
  */
-function isValidHexColor(value) {
-  return typeof value === 'string' && /^#[0-9a-fA-F]{6}$/.test(value);
+export function normalizeHexColor(value) {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(trimmed)) {
+    return trimmed.toLowerCase();
+  }
+  if (/^[0-9a-fA-F]{6}$/.test(trimmed)) {
+    return `#${trimmed.toLowerCase()}`;
+  }
+  if (/^#[0-9a-fA-F]{3}$/.test(trimmed)) {
+    const hex = trimmed.slice(1);
+    return `#${hex[0]}${hex[0]}${hex[1]}${hex[1]}${hex[2]}${hex[2]}`.toLowerCase();
+  }
+  return null;
 }
 
 /**
@@ -23,21 +51,22 @@ function isValidHexColor(value) {
  */
 export function extractPaletteColors(raw) {
   if (Array.isArray(raw)) {
-    return raw.map((entry, index) => {
-      const color = typeof entry === 'string' ? entry : entry?.color;
-      if (isValidHexColor(color)) {
-        return color;
-      }
-      return DEFAULT_PALETTE_COLORS[index % DEFAULT_PALETTE_COLORS.length];
-    });
+    return raw
+      .map((entry, index) => {
+        const color = typeof entry === 'string' ? entry : entry?.color;
+        const normalized = normalizeHexColor(color);
+        if (normalized) {
+          return normalized;
+        }
+        return DEFAULT_PALETTE_COLORS[index % DEFAULT_PALETTE_COLORS.length];
+      })
+      .slice(0, MAX_PALETTE_COLORS);
   }
 
   if (raw && typeof raw === 'object') {
-    return Object.keys(raw)
-      .filter((key) => /^color\d+$/.test(key))
-      .sort((a, b) => Number(a.slice(5)) - Number(b.slice(5)))
-      .map((key) => raw[key])
-      .filter(isValidHexColor);
+    return PALETTE_COLOR_KEYS
+      .map((key) => normalizeHexColor(raw[key]))
+      .filter(Boolean);
   }
 
   return [];
@@ -89,15 +118,15 @@ export function resolveToolbarTools(tools, colorMode) {
 export function resolveBrushDefaults(canvas) {
   const nested = canvas && canvas.brushDefaults;
   const colorMode = normalizeColorMode(nested?.colorMode);
-  const paletteColors = normalizePaletteColors(nested?.paletteColors);
-  let defaultColor = nested?.defaultColor ?? canvas?.defaultColor ?? '#222222';
+  let paletteColors = normalizePaletteColors(nested?.paletteColors);
+  let defaultColor = normalizeHexColor(
+    nested?.defaultColor ?? canvas?.defaultColor ?? '#222222'
+  ) || '#222222';
 
-  if (!isValidHexColor(defaultColor)) {
-    defaultColor = '#222222';
-  }
-
-  if (colorMode === 'palette' && !paletteColors.includes(defaultColor)) {
-    defaultColor = paletteColors[0];
+  if (colorMode === 'palette') {
+    if (!paletteColors.includes(defaultColor)) {
+      paletteColors = [defaultColor, ...paletteColors].slice(0, MAX_PALETTE_COLORS);
+    }
   }
 
   return {

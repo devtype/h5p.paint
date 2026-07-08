@@ -13,6 +13,31 @@ test('normalizePaletteColors returns defaults for empty input', () => {
   assert.deepEqual(normalizePaletteColors([]), DEFAULT_PALETTE_COLORS);
 });
 
+test('normalizePaletteColors reads all eight group colors', () => {
+  assert.deepEqual(
+    normalizePaletteColors({
+      color1: '#ff0000',
+      color2: '#00ff00',
+      color3: '#0000ff',
+      color4: '#ffff00',
+      color5: '#ff00ff',
+      color6: '#00ffff',
+      color7: '854d0e',
+      color8: '000000'
+    }),
+    [
+      '#ff0000',
+      '#00ff00',
+      '#0000ff',
+      '#ffff00',
+      '#ff00ff',
+      '#00ffff',
+      '#854d0e',
+      '#000000'
+    ]
+  );
+});
+
 test('normalizePaletteColors maps group fields to hex array', () => {
   assert.deepEqual(
     normalizePaletteColors({
@@ -67,7 +92,39 @@ test('resolveToolbarTools strips color when fixed', () => {
   );
 });
 
-test('resolveBrushDefaults uses first palette color when default is not in palette', () => {
+test('resolveBrushDefaults prepends default color when it is not in palette', () => {
+  const brush = resolveBrushDefaults({
+    brushDefaults: {
+      defaultColor: '#000000',
+      colorMode: 'palette',
+      paletteColors: {
+        color1: '#ff0000',
+        color2: '#00ff00'
+      }
+    }
+  });
+
+  assert.equal(brush.defaultColor, '#000000');
+  assert.deepEqual(brush.paletteColors, ['#000000', '#ff0000', '#00ff00']);
+});
+
+test('resolveBrushDefaults keeps default color when it is already in palette', () => {
+  const brush = resolveBrushDefaults({
+    brushDefaults: {
+      defaultColor: '#000000',
+      colorMode: 'palette',
+      paletteColors: {
+        color1: '#ff0000',
+        color2: '#000000'
+      }
+    }
+  });
+
+  assert.equal(brush.defaultColor, '#000000');
+  assert.deepEqual(brush.paletteColors, ['#ff0000', '#000000']);
+});
+
+test('resolveBrushDefaults normalizes legacy list defaults', () => {
   const brush = resolveBrushDefaults({
     brushDefaults: {
       defaultColor: '#222222',
@@ -77,6 +134,6 @@ test('resolveBrushDefaults uses first palette color when default is not in palet
   });
 
   assert.equal(brush.colorMode, 'palette');
-  assert.equal(brush.defaultColor, '#ff0000');
-  assert.deepEqual(brush.paletteColors, ['#ff0000', '#00ff00']);
+  assert.equal(brush.defaultColor, '#222222');
+  assert.deepEqual(brush.paletteColors, ['#222222', '#ff0000', '#00ff00']);
 });

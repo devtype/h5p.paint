@@ -3,6 +3,17 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.3] - 2026-07-08
+
+### Fixed
+
+- **Palette colors 7–8:** Accept hex values with or without a leading `#` so
+  optional palette slots are not dropped at runtime.
+- **Default brush color in palette mode:** When `defaultColor` is not among the
+  palette swatches, prepend it to the learner toolbar (instead of silently
+  switching to the first palette color). Black defaults now draw black when
+  black is configured as a palette color or as the default brush color.
+
 ## [0.7.2] - 2026-07-08
 
 ### Fixed

@@ -1,6 +1,6 @@
 {
   "name": "h5p-paint",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "H5P question content type for freehand and shape-based drawing tasks",
   "private": true,
   "license": "MIT",

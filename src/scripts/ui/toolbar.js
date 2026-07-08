@@ -33,7 +33,7 @@ class Toolbar {
     this.paletteColors = opts.paletteColors || [];
     this.color = opts.defaultColor || '#222222';
     this.brushSize = opts.defaultBrushSize || 4;
-    this.paletteSwatches = new Map();
+    this.paletteSwatches = [];
 
     this.activeTool = opts.initialTool
       || TOOL_KEYS.find((t) => this.tools.includes(t))
@@ -154,12 +154,12 @@ class Toolbar {
         if (this.disabled) {
           return;
         }
-        this._selectPaletteColor(hex);
+        this._selectPaletteColor(index);
         this.onAction('color', hex);
       });
 
       wrapper.appendChild(button);
-      this.paletteSwatches.set(hex, button);
+      this.paletteSwatches.push(button);
       this.buttons.set(`palette-${index}`, button);
     });
 
@@ -167,19 +167,27 @@ class Toolbar {
     this.buttons.set('color', wrapper);
   }
 
-  _selectPaletteColor(hex) {
-    this.color = hex;
-    for (const [color, button] of this.paletteSwatches.entries()) {
-      const selected = color === hex;
+  _selectPaletteColor(index) {
+    const selectedIndex = Number(index);
+    if (!Number.isInteger(selectedIndex) || !this.paletteColors[selectedIndex]) {
+      return;
+    }
+
+    this.color = this.paletteColors[selectedIndex];
+    this.paletteSwatches.forEach((button, buttonIndex) => {
+      const selected = buttonIndex === selectedIndex;
       button.setAttribute('aria-pressed', selected ? 'true' : 'false');
       button.classList.toggle('is-selected', selected);
-    }
+    });
   }
 
   setColor(hex) {
     this.color = hex;
     if (this.colorMode === 'palette') {
-      this._selectPaletteColor(hex);
+      const index = this.paletteColors.indexOf(hex);
+      if (index !== -1) {
+        this._selectPaletteColor(index);
+      }
       return;
     }
     const input = this.buttons.get('color');
