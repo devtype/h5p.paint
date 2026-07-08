@@ -232,6 +232,47 @@
             "widget": "colorSelector"
           },
           {
+            "name": "colorMode",
+            "type": "select",
+            "label": "Learner color selection",
+            "description": "Full opens the system color picker. Palette shows a small set of author-chosen colors. Fixed uses only the default brush color.",
+            "default": "full",
+            "options": [
+              { "value": "full", "label": "Full color picker" },
+              { "value": "palette", "label": "Limited palette" },
+              { "value": "fixed", "label": "Fixed color only" }
+            ]
+          },
+          {
+            "name": "paletteColors",
+            "type": "list",
+            "label": "Palette colors",
+            "importance": "medium",
+            "min": 2,
+            "max": 8,
+            "entity": "Color",
+            "widget": "showWhen",
+            "showWhen": {
+              "rules": [
+                { "field": "colorMode", "equals": "palette" }
+              ]
+            },
+            "default": [
+              { "color": "#e11d48" },
+              { "color": "#ea580c" },
+              { "color": "#ca8a04" },
+              { "color": "#16a34a" },
+              { "color": "#2563eb" },
+              { "color": "#7c3aed" }
+            ],
+            "field": {
+              "name": "color",
+              "type": "text",
+              "label": "Color",
+              "widget": "colorSelector"
+            }
+          },
+          {
             "name": "defaultBrushSize",
             "type": "number",
             "label": "Default brush size (px)",

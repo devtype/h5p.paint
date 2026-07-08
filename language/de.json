@@ -110,6 +110,16 @@
           "label": "Stift-Voreinstellungen",
           "fields": [
             { "label": "Standard-Stiftfarbe" },
+            {
+              "label": "Farbauswahl für Lernende",
+              "description": "Vollständig öffnet den System-Farbwähler. Palette zeigt wenige Autorenfarben. Fest nutzt nur die Standard-Stiftfarbe.",
+              "options": [
+                { "label": "Voller Farbwähler" },
+                { "label": "Begrenzte Palette" },
+                { "label": "Nur feste Farbe" }
+              ]
+            },
+            { "label": "Palettenfarben" },
             { "label": "Standard-Strichstärke (px)" }
           ]
         }

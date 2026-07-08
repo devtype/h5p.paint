@@ -110,6 +110,16 @@
           "label": "Penseelstandaardinstellingen",
           "fields": [
             { "label": "Standaard penseelkleur" },
+            {
+              "label": "Kleurkiezer voor leerlingen",
+              "description": "Volledig opent de systeemkleurkiezer. Palet toont enkele auteurskleuren. Vast gebruikt alleen de standaardkleur.",
+              "options": [
+                { "label": "Volledige kleurkiezer" },
+                { "label": "Beperkt palet" },
+                { "label": "Alleen vaste kleur" }
+              ]
+            },
+            { "label": "Palet kleuren" },
             { "label": "Standaard penseelgrootte (px)" }
           ]
         }

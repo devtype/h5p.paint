@@ -10,6 +10,10 @@ import {
   resolveTools
 } from './canvas/tool-config.js';
 import {
+  resolveBrushDefaults,
+  resolveToolbarTools
+} from './canvas/brush-config.js';
+import {
   resolveScore,
   shouldIncludeScoreInXapi,
   normalizeRestoredAiState
@@ -32,7 +36,8 @@ const DEFAULTS = {
     tools: defaultToolsSemantics(),
     brushDefaults: {
       defaultColor: '#222222',
-      defaultBrushSize: 4
+      defaultBrushSize: 4,
+      colorMode: 'full'
     }
   },
   behaviour: {
@@ -141,20 +146,6 @@ function resolveBackground(params) {
 }
 
 /**
- * Resolve brush defaults from nested semantics or legacy flat canvas fields.
- *
- * @param {object|null|undefined} canvas - Authoring canvas params.
- * @returns {{ defaultColor: string, defaultBrushSize: number }}
- */
-function resolveBrushDefaults(canvas) {
-  const nested = canvas && canvas.brushDefaults;
-  return {
-    defaultColor: nested?.defaultColor ?? canvas?.defaultColor ?? '#222222',
-    defaultBrushSize: nested?.defaultBrushSize ?? canvas?.defaultBrushSize ?? 4
-  };
-}
-
-/**
  * H5P.Paint question type.
  *
  * Uses the standard H5P constructor + prototype pattern required by
@@ -222,11 +213,14 @@ Paint.prototype.registerDomElements = function () {
   stage.classList.add('h5p-paint__stage');
   wrapper.appendChild(stage);
 
+  const brush = resolveBrushDefaults(self.params.canvas);
+  const toolbarTools = resolveToolbarTools(self.resolvedTools, brush.colorMode);
+
   self.paintCanvas = new PaintCanvas({
     contentId: self.contentId,
     canvasParams: {
       ...self.params.canvas,
-      ...resolveBrushDefaults(self.params.canvas)
+      ...brush
     },
     background: resolveBackground(self.params),
     media: self.params.media,
@@ -237,13 +231,14 @@ Paint.prototype.registerDomElements = function () {
   });
   stage.appendChild(self.paintCanvas.getElement());
 
-  const brushDefaults = resolveBrushDefaults(self.params.canvas);
   self.toolbar = new Toolbar({
-    tools: self.resolvedTools,
+    tools: toolbarTools,
     initialTool: self.initialTool,
     a11y: self.params.a11y,
-    defaultColor: brushDefaults.defaultColor,
-    defaultBrushSize: brushDefaults.defaultBrushSize,
+    colorMode: brush.colorMode,
+    paletteColors: brush.paletteColors,
+    defaultColor: brush.defaultColor,
+    defaultBrushSize: brush.defaultBrushSize,
     onAction: (action, value) => self._onToolbarAction(action, value)
   });
   stage.insertBefore(self.toolbar.getElement(), self.paintCanvas.getElement());

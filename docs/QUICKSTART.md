@@ -21,6 +21,7 @@ Upload `H5P.Paint.h5p` in your platform’s H5P library admin (Lumi, Moodle, Dru
    - Set width / aspect ratio
    - Choose a **tool preset** (Full toolkit, Sketch only, Annotate, Shapes and text, or Custom)
    - Set **default active tool** (e.g. Pencil)
+   - Optional: under **Brush defaults**, set **Learner color selection** to **Limited palette** or **Fixed color only** for simpler UIs (younger learners)
    - Optional: background image for annotate/trace tasks
 4. Under **Behavioural settings**: enable submit / retry / solution as needed
 

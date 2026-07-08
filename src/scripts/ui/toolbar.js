@@ -29,8 +29,11 @@ class Toolbar {
     this.tools = opts.tools || [];
     this.a11y = opts.a11y || {};
     this.onAction = opts.onAction || (() => {});
+    this.colorMode = opts.colorMode || 'full';
+    this.paletteColors = opts.paletteColors || [];
     this.color = opts.defaultColor || '#222222';
     this.brushSize = opts.defaultBrushSize || 4;
+    this.paletteSwatches = new Map();
 
     this.activeTool = opts.initialTool
       || TOOL_KEYS.find((t) => this.tools.includes(t))
@@ -52,7 +55,12 @@ class Toolbar {
 
     for (const tool of this.tools) {
       if (tool === 'color') {
-        this._addColorPicker();
+        if (this.colorMode === 'palette') {
+          this._addColorPalette();
+        }
+        else {
+          this._addColorPicker();
+        }
       }
       else if (tool === 'size') {
         this._addSizeSlider();
@@ -119,6 +127,65 @@ class Toolbar {
     wrapper.appendChild(input);
     this.element.appendChild(wrapper);
     this.buttons.set('color', input);
+  }
+
+  _addColorPalette() {
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('h5p-paint__palette');
+    wrapper.setAttribute('role', 'group');
+    wrapper.setAttribute('aria-label', this.a11y.tool_color || 'Color');
+
+    this.paletteColors.forEach((hex, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.classList.add('h5p-paint__palette-swatch');
+      button.style.backgroundColor = hex;
+      button.setAttribute(
+        'aria-label',
+        `${this.a11y.tool_color || 'Color'} ${index + 1}`
+      );
+      button.tabIndex = -1;
+
+      const selected = hex === this.color;
+      button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      button.classList.toggle('is-selected', selected);
+
+      button.addEventListener('click', () => {
+        if (this.disabled) {
+          return;
+        }
+        this._selectPaletteColor(hex);
+        this.onAction('color', hex);
+      });
+
+      wrapper.appendChild(button);
+      this.paletteSwatches.set(hex, button);
+      this.buttons.set(`palette-${index}`, button);
+    });
+
+    this.element.appendChild(wrapper);
+    this.buttons.set('color', wrapper);
+  }
+
+  _selectPaletteColor(hex) {
+    this.color = hex;
+    for (const [color, button] of this.paletteSwatches.entries()) {
+      const selected = color === hex;
+      button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+      button.classList.toggle('is-selected', selected);
+    }
+  }
+
+  setColor(hex) {
+    this.color = hex;
+    if (this.colorMode === 'palette') {
+      this._selectPaletteColor(hex);
+      return;
+    }
+    const input = this.buttons.get('color');
+    if (input && 'value' in input) {
+      input.value = hex;
+    }
   }
 
   _addSizeSlider() {
@@ -212,6 +279,9 @@ class Toolbar {
   setDisabled(disabled) {
     this.disabled = !!disabled;
     for (const el of this.buttons.values()) {
+      if (el instanceof HTMLElement && el.getAttribute('role') === 'group') {
+        continue;
+      }
       el.disabled = this.disabled;
       if (this.disabled) {
         el.setAttribute('aria-disabled', 'true');

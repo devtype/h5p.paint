@@ -110,6 +110,16 @@
           "label": "Valores predeterminados del pincel",
           "fields": [
             { "label": "Color del pincel predeterminado" },
+            {
+              "label": "Selección de color para el estudiante",
+              "description": "Completo abre el selector del sistema. Paleta muestra un conjunto pequeño de colores. Fijo usa solo el color predeterminado.",
+              "options": [
+                { "label": "Selector completo" },
+                { "label": "Paleta limitada" },
+                { "label": "Solo color fijo" }
+              ]
+            },
+            { "label": "Colores de la paleta" },
             { "label": "Tamaño del pincel predeterminado (px)" }
           ]
         }

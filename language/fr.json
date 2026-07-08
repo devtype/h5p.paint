@@ -110,6 +110,16 @@
           "label": "Réglages du pinceau",
           "fields": [
             { "label": "Couleur du pinceau par défaut" },
+            {
+              "label": "Sélection de couleur pour l'apprenant",
+              "description": "Complet ouvre le sélecteur système. Palette affiche un petit ensemble de couleurs. Fixe utilise uniquement la couleur par défaut.",
+              "options": [
+                { "label": "Sélecteur complet" },
+                { "label": "Palette limitée" },
+                { "label": "Couleur fixe uniquement" }
+              ]
+            },
+            { "label": "Couleurs de la palette" },
             { "label": "Taille du pinceau par défaut (px)" }
           ]
         }

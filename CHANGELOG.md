@@ -3,6 +3,24 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.1] - 2026-07-08
+
+### Added
+
+- **Author color mode** under `canvas.brushDefaults`: `full` (default, system
+  color picker), `palette` (2–8 author swatches), or `fixed` (always
+  `defaultColor`, no color control in toolbar).
+- `paletteColors` list in semantics (shown when color mode is palette).
+- `src/scripts/canvas/brush-config.js` helpers and unit tests
+  (`test/brush-config.test.mjs`, extended `test/toolbar.test.mjs`).
+
+### Changed
+
+- Toolbar omits the color control when `colorMode` is `fixed`, even if Color
+  picker is enabled in tool settings.
+- In palette mode, if `defaultColor` is not in the palette, the first palette
+  color is used as the initial stroke color.
+
 ## [0.7.0] - 2026-07-08
 
 ### Added

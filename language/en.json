@@ -109,6 +109,16 @@
           "label": "Brush defaults",
           "fields": [
             { "label": "Default brush color" },
+            {
+              "label": "Learner color selection",
+              "description": "Full opens the system color picker. Palette shows a small set of author-chosen colors. Fixed uses only the default brush color.",
+              "options": [
+                { "label": "Full color picker" },
+                { "label": "Limited palette" },
+                { "label": "Fixed color only" }
+              ]
+            },
+            { "label": "Palette colors" },
             { "label": "Default brush size (px)" }
           ]
         }
