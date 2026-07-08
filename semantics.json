@@ -128,18 +128,93 @@
         "importance": "medium",
         "expanded": true,
         "fields": [
-          { "name": "pencil", "type": "boolean", "label": "Pencil", "default": true },
-          { "name": "brush", "type": "boolean", "label": "Brush", "default": true },
-          { "name": "eraser", "type": "boolean", "label": "Eraser", "default": true },
-          { "name": "line", "type": "boolean", "label": "Line", "default": true },
-          { "name": "rect", "type": "boolean", "label": "Rectangle", "default": true },
-          { "name": "ellipse", "type": "boolean", "label": "Ellipse", "default": true },
-          { "name": "text", "type": "boolean", "label": "Text", "default": true },
-          { "name": "color", "type": "boolean", "label": "Color picker", "default": true },
-          { "name": "size", "type": "boolean", "label": "Brush size", "default": true },
-          { "name": "undo", "type": "boolean", "label": "Undo", "default": true },
-          { "name": "redo", "type": "boolean", "label": "Redo", "default": true },
-          { "name": "clear", "type": "boolean", "label": "Clear", "default": true }
+          {
+            "name": "preset",
+            "type": "select",
+            "label": "Tool preset",
+            "description": "Quick configurations for common exercise types. Choose Custom to pick individual tools.",
+            "default": "full",
+            "options": [
+              { "value": "full", "label": "Full toolkit" },
+              { "value": "sketch", "label": "Sketch only" },
+              { "value": "annotate", "label": "Annotate" },
+              { "value": "shapes", "label": "Shapes and text" },
+              { "value": "custom", "label": "Custom" }
+            ]
+          },
+          {
+            "name": "defaultTool",
+            "type": "select",
+            "label": "Default active tool",
+            "description": "Tool selected when the learner opens the activity (must be enabled in the preset or custom list).",
+            "default": "pencil",
+            "options": [
+              { "value": "pencil", "label": "Pencil" },
+              { "value": "brush", "label": "Brush" },
+              { "value": "eraser", "label": "Eraser" },
+              { "value": "line", "label": "Line" },
+              { "value": "rect", "label": "Rectangle" },
+              { "value": "ellipse", "label": "Ellipse" },
+              { "value": "text", "label": "Text" }
+            ]
+          },
+          {
+            "name": "drawing",
+            "type": "group",
+            "label": "Drawing tools",
+            "importance": "medium",
+            "expanded": true,
+            "widget": "showWhen",
+            "showWhen": {
+              "rules": [
+                { "field": "preset", "equals": "custom" }
+              ]
+            },
+            "fields": [
+              { "name": "pencil", "type": "boolean", "label": "Pencil", "default": true },
+              { "name": "brush", "type": "boolean", "label": "Brush", "default": true },
+              { "name": "eraser", "type": "boolean", "label": "Eraser", "default": true },
+              { "name": "line", "type": "boolean", "label": "Line", "default": true },
+              { "name": "rect", "type": "boolean", "label": "Rectangle", "default": true },
+              { "name": "ellipse", "type": "boolean", "label": "Ellipse", "default": true },
+              { "name": "text", "type": "boolean", "label": "Text", "default": true }
+            ]
+          },
+          {
+            "name": "controls",
+            "type": "group",
+            "label": "Toolbar controls",
+            "importance": "medium",
+            "expanded": true,
+            "widget": "showWhen",
+            "showWhen": {
+              "rules": [
+                { "field": "preset", "equals": "custom" }
+              ]
+            },
+            "fields": [
+              { "name": "color", "type": "boolean", "label": "Color picker", "default": true },
+              { "name": "size", "type": "boolean", "label": "Brush size", "default": true }
+            ]
+          },
+          {
+            "name": "actions",
+            "type": "group",
+            "label": "Actions",
+            "importance": "medium",
+            "expanded": true,
+            "widget": "showWhen",
+            "showWhen": {
+              "rules": [
+                { "field": "preset", "equals": "custom" }
+              ]
+            },
+            "fields": [
+              { "name": "undo", "type": "boolean", "label": "Undo", "default": true },
+              { "name": "redo", "type": "boolean", "label": "Redo", "default": true },
+              { "name": "clear", "type": "boolean", "label": "Clear", "default": true }
+            ]
+          }
         ]
       },
       {

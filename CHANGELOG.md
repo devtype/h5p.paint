@@ -3,6 +3,29 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.0] - 2026-07-08
+
+### Added
+
+- **Tool presets** in the editor: Full toolkit, Sketch only, Annotate, Shapes and
+  text, or Custom (grouped checkboxes for drawing tools, controls, and actions).
+- **Default active tool** author setting (`canvas.tools.defaultTool`).
+- [`docs/QUICKSTART.md`](docs/QUICKSTART.md) walkthrough and
+  [`examples/mock-grader/`](examples/mock-grader/) for local AI scoring tests.
+- Unit tests for xAPI `decorate()` and toolbar rendering (`test/xapi.test.mjs`,
+  `test/toolbar.test.mjs`).
+
+### Changed
+
+- ESLint 9 flat config; `"type": "module"` in `package.json`;
+  `webpack.config.cjs` with production `usedExports` tuning.
+- Sass loader modern API; webpack bundle ~315 KB (Fabric 7 ESM floor for current
+  feature set).
+
+### Removed
+
+- COMPATIBILITY checklist row for 0.5.x Fabric upgrade (greenfield 0.6.x+ only).
+
 ## [0.6.2] - 2026-07-07
 
 ### Fixed

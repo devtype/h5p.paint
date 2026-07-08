@@ -53,18 +53,57 @@
           "label": "Outils disponibles",
           "description": "Choisissez les outils visibles pour les apprenants. Activez au moins un outil de dessin.",
           "fields": [
-            { "label": "Crayon" },
-            { "label": "Pinceau" },
-            { "label": "Gomme" },
-            { "label": "Ligne" },
-            { "label": "Rectangle" },
-            { "label": "Ellipse" },
-            { "label": "Texte" },
-            { "label": "Sélecteur de couleur" },
-            { "label": "Taille du pinceau" },
-            { "label": "Annuler" },
-            { "label": "Rétablir" },
-            { "label": "Effacer" }
+            {
+              "label": "Préréglage d'outils",
+              "description": "Configurations rapides pour les types d'exercices courants. Choisissez Personnalisé pour sélectionner individuellement.",
+              "options": [
+                { "label": "Boîte à outils complète" },
+                { "label": "Esquisse uniquement" },
+                { "label": "Annoter" },
+                { "label": "Formes et texte" },
+                { "label": "Personnalisé" }
+              ]
+            },
+            {
+              "label": "Outil actif par défaut",
+              "description": "Outil sélectionné à l'ouverture (doit être activé dans le préréglage ou la liste personnalisée).",
+              "options": [
+                { "label": "Crayon" },
+                { "label": "Pinceau" },
+                { "label": "Gomme" },
+                { "label": "Ligne" },
+                { "label": "Rectangle" },
+                { "label": "Ellipse" },
+                { "label": "Texte" }
+              ]
+            },
+            {
+              "label": "Outils de dessin",
+              "fields": [
+                { "label": "Crayon" },
+                { "label": "Pinceau" },
+                { "label": "Gomme" },
+                { "label": "Ligne" },
+                { "label": "Rectangle" },
+                { "label": "Ellipse" },
+                { "label": "Texte" }
+              ]
+            },
+            {
+              "label": "Contrôles de la barre d'outils",
+              "fields": [
+                { "label": "Sélecteur de couleur" },
+                { "label": "Taille du pinceau" }
+              ]
+            },
+            {
+              "label": "Actions",
+              "fields": [
+                { "label": "Annuler" },
+                { "label": "Rétablir" },
+                { "label": "Effacer" }
+              ]
+            }
           ]
         },
         {

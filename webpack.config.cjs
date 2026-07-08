@@ -14,6 +14,10 @@ module.exports = (env, argv) => {
       clean: true
     },
     devtool: isProduction ? false : 'source-map',
+    optimization: {
+      usedExports: isProduction,
+      sideEffects: true
+    },
     module: {
       rules: [
         {
@@ -28,7 +32,12 @@ module.exports = (env, argv) => {
           use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
-            'sass-loader'
+            {
+              loader: 'sass-loader',
+              options: {
+                api: 'modern'
+              }
+            }
           ]
         }
       ]

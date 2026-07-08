@@ -11,18 +11,8 @@
       "color": "#f0f4f8"
     },
     "tools": {
-      "pencil": true,
-      "brush": true,
-      "eraser": true,
-      "line": true,
-      "rect": false,
-      "ellipse": false,
-      "text": true,
-      "color": true,
-      "size": true,
-      "undo": true,
-      "redo": true,
-      "clear": true
+      "preset": "annotate",
+      "defaultTool": "pencil"
     },
     "brushDefaults": {
       "defaultColor": "#dc2626",

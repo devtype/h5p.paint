@@ -48,7 +48,9 @@ or maintained by H5P Group AS.
 | `media.referenceImage` | Optional image revealed via _Show solution_. |
 | `media.alternativeText` | Screen-reader description of the canvas. |
 | `canvas.width` / `canvas.aspectRatio` | Base size of the drawing surface. |
-| `canvas.tools` | Per-tool checkboxes in the editor (`pencil`, `brush`, `eraser`, `line`, `rect`, `ellipse`, `text`, `color`, `size`, `undo`, `redo`, `clear`). Only checked tools appear in the learner toolbar. Legacy JSON arrays are still accepted at runtime. When color or size are unchecked, learners use `canvas.brushDefaults` instead. See [`examples/content-blank.json`](examples/content-blank.json). |
+| `canvas.tools.preset` | `full`, `sketch`, `annotate`, `shapes`, or `custom`. Custom reveals grouped checkboxes (drawing / controls / actions). |
+| `canvas.tools.defaultTool` | Drawing tool selected when the learner opens the activity. |
+| `canvas.tools` (legacy) | Flat boolean object or string array (0.6.x) still accepted at runtime. |
 | `canvas.brushDefaults.defaultColor` / `canvas.brushDefaults.defaultBrushSize` | Toolbar defaults. |
 | `behaviour.enableSubmit` / `enableSolution` / `enableRetry` | Show / hide buttons. |
 | `behaviour.lockAfterSubmit` | Freeze the canvas after submit until retry. |
@@ -58,8 +60,8 @@ or maintained by H5P Group AS.
 
 **Legacy content:** packages that still use `media.backgroundImage`,
 `canvas.backgroundColor`, flat `canvas.defaultColor` / `canvas.defaultBrushSize`,
-or a `canvas.tools` **string array** (pre-0.6.1) are mapped automatically at
-runtime to the new model.
+or a flat `canvas.tools` boolean object / string array (0.6.x) are mapped
+automatically at runtime.
 
 All UI strings are translatable via the `l10n` and `a11y` groups in `semantics.json`.
 Editor form labels are provided in [`language/en.json`](language/en.json),
@@ -111,20 +113,24 @@ When `behaviour.scoringMode` is `completion`, the statement also includes
 
 ## Quick start
 
+See **[`docs/QUICKSTART.md`](docs/QUICKSTART.md)** for a step-by-step guide (install,
+create content, Question Set, AI mock grader).
+
 1. **Install the library** — download `H5P.Paint.h5p` from
    [GitHub Releases](https://github.com/devtype/h5p.paint/releases) or run
    `npm run pack` locally, then upload the file in your H5P admin UI
    (Drupal, Moodle, WordPress, Lumi, etc.).
-2. **Create content** — add a new **Paint** activity, write the task
-   description, and configure canvas options.
+2. **Create content** — add a new **Paint** activity, pick a **tool preset**
+   (or Custom), and configure canvas options.
 3. **Embed in a question flow** — add the Paint content to a **Question Set**
    (or use it standalone). Test submit, retry, and resume.
 
-Example content payloads live in [`examples/`](examples/) (`content.json`,
-`content-blank.json`, `content-annotate.json`, `content-reference.json`,
-`content-ai.json`).
+Example content payloads live in [`examples/`](examples/) (`content-blank.json`
+= sketch preset, `content-reference.json` = custom tools, `content-ai.json` =
+AI scoring).
 
-H5P Hub listing is optional and not required to use this library.
+**Local AI testing:** `npm run mock-grader` — see
+[`examples/mock-grader/README.md`](examples/mock-grader/README.md).
 
 ## Generic host integration
 
@@ -241,8 +247,9 @@ npm install
 npm run watch       # rebuild on change
 npm run build       # production build
 npm run lint
-npm test            # unit tests (export, AI grader, scoring)
+npm test            # unit tests (export, AI, scoring, tools, xapi, toolbar)
 npm run pack        # build + create H5P.Paint.h5p
+npm run mock-grader # local AI grading endpoint for development
 ```
 
 The build emits `dist/h5p-paint.js` and `dist/h5p-paint.css`, which are the two
@@ -254,7 +261,7 @@ After `npm run build` (production, minified):
 
 | Artifact | Typical size |
 | -------- | ------------ |
-| `dist/h5p-paint.js` | ~313 KB (Fabric.js is the bulk) |
+| `dist/h5p-paint.js` | ~315 KB (Fabric 7 ESM; floor for current tools) |
 | `dist/h5p-paint.css` | ~3.5 KB |
 | `H5P.Paint.h5p` (`npm run pack`) | ~110 KB (runtime allowlist only) |
 
@@ -295,6 +302,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 |-- language/de.json       # Editor translations (German) + learner UI defaults
 |-- language/fr.json       # Editor translations (French) + learner UI defaults
 |-- docs/COMPATIBILITY.md  # Manual QA checklist for generic H5P hosts
+|-- docs/QUICKSTART.md     # Install and first Question Set walkthrough
 |-- CHANGELOG.md           # Version history
 |-- examples/              # Demo content JSON presets
 |-- src/
@@ -302,6 +310,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 |   |-- scripts/
 |   |   |-- h5p-paint.js                 # Main class extending H5P.Question
 |   |   |-- canvas/paint-canvas.js       # Fabric.js wrapper
+|   |   |-- canvas/tool-config.js          # Tool presets and normalization
 |   |   |-- canvas/tools.js              # Tool definitions and brushes
 |   |   |-- ui/toolbar.js                # Accessible toolbar
 |   |   |-- ui/solution-overlay.js       # Reference image overlay

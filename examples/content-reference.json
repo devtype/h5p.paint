@@ -11,18 +11,26 @@
       "color": "#ffffff"
     },
     "tools": {
-      "pencil": true,
-      "brush": false,
-      "eraser": true,
-      "line": true,
-      "rect": true,
-      "ellipse": false,
-      "text": false,
-      "color": true,
-      "size": true,
-      "undo": true,
-      "redo": true,
-      "clear": true
+      "preset": "custom",
+      "defaultTool": "line",
+      "drawing": {
+        "pencil": true,
+        "brush": false,
+        "eraser": true,
+        "line": true,
+        "rect": true,
+        "ellipse": false,
+        "text": false
+      },
+      "controls": {
+        "color": true,
+        "size": true
+      },
+      "actions": {
+        "undo": true,
+        "redo": true,
+        "clear": true
+      }
     },
     "brushDefaults": {
       "defaultColor": "#1f6feb",
@@ -36,15 +44,5 @@
     "lockAfterSubmit": true,
     "scoringMode": "completion",
     "maxScore": 1
-  },
-  "l10n": {
-    "submit": "Submit",
-    "showSolution": "Show reference",
-    "hideSolution": "Hide reference",
-    "retry": "Try again",
-    "submitted": "Your drawing has been submitted.",
-    "noDrawing": "Please draw something before submitting.",
-    "solutionTitle": "Reference drawing",
-    "yourDrawingTitle": "Your drawing"
   }
 }

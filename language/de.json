@@ -53,18 +53,57 @@
           "label": "Verfügbare Werkzeuge",
           "description": "Wählen Sie, welche Werkzeuge Lernende in der Symbolleiste sehen. Mindestens ein Zeichenwerkzeug sollte aktiv sein.",
           "fields": [
-            { "label": "Stift" },
-            { "label": "Pinsel" },
-            { "label": "Radierer" },
-            { "label": "Linie" },
-            { "label": "Rechteck" },
-            { "label": "Ellipse" },
-            { "label": "Text" },
-            { "label": "Farbauswahl" },
-            { "label": "Strichstärke" },
-            { "label": "Rückgängig" },
-            { "label": "Wiederholen" },
-            { "label": "Löschen" }
+            {
+              "label": "Werkzeug-Voreinstellung",
+              "description": "Schnelle Konfigurationen für häufige Aufgabentypen. „Benutzerdefiniert“ für einzelne Werkzeuge.",
+              "options": [
+                { "label": "Volles Werkzeugset" },
+                { "label": "Nur Skizze" },
+                { "label": "Annotieren" },
+                { "label": "Formen und Text" },
+                { "label": "Benutzerdefiniert" }
+              ]
+            },
+            {
+              "label": "Standard-Werkzeug",
+              "description": "Werkzeug beim Öffnen der Aktivität (muss in der Voreinstellung oder Liste aktiv sein).",
+              "options": [
+                { "label": "Stift" },
+                { "label": "Pinsel" },
+                { "label": "Radierer" },
+                { "label": "Linie" },
+                { "label": "Rechteck" },
+                { "label": "Ellipse" },
+                { "label": "Text" }
+              ]
+            },
+            {
+              "label": "Zeichenwerkzeuge",
+              "fields": [
+                { "label": "Stift" },
+                { "label": "Pinsel" },
+                { "label": "Radierer" },
+                { "label": "Linie" },
+                { "label": "Rechteck" },
+                { "label": "Ellipse" },
+                { "label": "Text" }
+              ]
+            },
+            {
+              "label": "Symbolleisten-Steuerung",
+              "fields": [
+                { "label": "Farbauswahl" },
+                { "label": "Strichstärke" }
+              ]
+            },
+            {
+              "label": "Aktionen",
+              "fields": [
+                { "label": "Rückgängig" },
+                { "label": "Wiederholen" },
+                { "label": "Löschen" }
+              ]
+            }
           ]
         },
         {

@@ -53,18 +53,57 @@
           "label": "Herramientas disponibles",
           "description": "Elija qué herramientas ven los estudiantes en la barra. Active al menos una herramienta de dibujo.",
           "fields": [
-            { "label": "Lápiz" },
-            { "label": "Pincel" },
-            { "label": "Goma" },
-            { "label": "Línea" },
-            { "label": "Rectángulo" },
-            { "label": "Elipse" },
-            { "label": "Texto" },
-            { "label": "Selector de color" },
-            { "label": "Tamaño del pincel" },
-            { "label": "Deshacer" },
-            { "label": "Rehacer" },
-            { "label": "Borrar" }
+            {
+              "label": "Preajuste de herramientas",
+              "description": "Configuraciones rápidas para tipos de ejercicio comunes. Elija Personalizado para elegir individualmente.",
+              "options": [
+                { "label": "Kit completo" },
+                { "label": "Solo boceto" },
+                { "label": "Anotar" },
+                { "label": "Formas y texto" },
+                { "label": "Personalizado" }
+              ]
+            },
+            {
+              "label": "Herramienta activa predeterminada",
+              "description": "Herramienta seleccionada al abrir la actividad (debe estar habilitada en el preajuste o lista).",
+              "options": [
+                { "label": "Lápiz" },
+                { "label": "Pincel" },
+                { "label": "Goma" },
+                { "label": "Línea" },
+                { "label": "Rectángulo" },
+                { "label": "Elipse" },
+                { "label": "Texto" }
+              ]
+            },
+            {
+              "label": "Herramientas de dibujo",
+              "fields": [
+                { "label": "Lápiz" },
+                { "label": "Pincel" },
+                { "label": "Goma" },
+                { "label": "Línea" },
+                { "label": "Rectángulo" },
+                { "label": "Elipse" },
+                { "label": "Texto" }
+              ]
+            },
+            {
+              "label": "Controles de la barra",
+              "fields": [
+                { "label": "Selector de color" },
+                { "label": "Tamaño del pincel" }
+              ]
+            },
+            {
+              "label": "Acciones",
+              "fields": [
+                { "label": "Deshacer" },
+                { "label": "Rehacer" },
+                { "label": "Borrar" }
+              ]
+            }
           ]
         },
         {

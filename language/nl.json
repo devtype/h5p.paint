@@ -53,18 +53,57 @@
           "label": "Beschikbare gereedschappen",
           "description": "Kies welke gereedschappen leerlingen in de werkbalk zien. Schakel minstens één tekengereedschap in.",
           "fields": [
-            { "label": "Potlood" },
-            { "label": "Penseel" },
-            { "label": "Gum" },
-            { "label": "Lijn" },
-            { "label": "Rechthoek" },
-            { "label": "Ellips" },
-            { "label": "Tekst" },
-            { "label": "Kleurkiezer" },
-            { "label": "Penseelgrootte" },
-            { "label": "Ongedaan maken" },
-            { "label": "Opnieuw" },
-            { "label": "Wissen" }
+            {
+              "label": "Gereedschapsvoorinstelling",
+              "description": "Snelle configuraties voor veelvoorkomende opgavetypen. Kies Aangepast voor individuele keuze.",
+              "options": [
+                { "label": "Volledige werkbalk" },
+                { "label": "Alleen schetsen" },
+                { "label": "Annoteren" },
+                { "label": "Vormen en tekst" },
+                { "label": "Aangepast" }
+              ]
+            },
+            {
+              "label": "Standaard actief gereedschap",
+              "description": "Gereedschap bij openen van de activiteit (moet in voorinstelling of lijst ingeschakeld zijn).",
+              "options": [
+                { "label": "Potlood" },
+                { "label": "Penseel" },
+                { "label": "Gum" },
+                { "label": "Lijn" },
+                { "label": "Rechthoek" },
+                { "label": "Ellips" },
+                { "label": "Tekst" }
+              ]
+            },
+            {
+              "label": "Tekengereedschappen",
+              "fields": [
+                { "label": "Potlood" },
+                { "label": "Penseel" },
+                { "label": "Gum" },
+                { "label": "Lijn" },
+                { "label": "Rechthoek" },
+                { "label": "Ellips" },
+                { "label": "Tekst" }
+              ]
+            },
+            {
+              "label": "Werkbalkbesturing",
+              "fields": [
+                { "label": "Kleurkiezer" },
+                { "label": "Penseelgrootte" }
+              ]
+            },
+            {
+              "label": "Acties",
+              "fields": [
+                { "label": "Ongedaan maken" },
+                { "label": "Opnieuw" },
+                { "label": "Wissen" }
+              ]
+            }
           ]
         },
         {

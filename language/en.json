@@ -52,18 +52,57 @@
           "label": "Available tools",
           "description": "Choose which tools learners see in the toolbar. Enable at least one drawing tool.",
           "fields": [
-            { "label": "Pencil" },
-            { "label": "Brush" },
-            { "label": "Eraser" },
-            { "label": "Line" },
-            { "label": "Rectangle" },
-            { "label": "Ellipse" },
-            { "label": "Text" },
-            { "label": "Color picker" },
-            { "label": "Brush size" },
-            { "label": "Undo" },
-            { "label": "Redo" },
-            { "label": "Clear" }
+            {
+              "label": "Tool preset",
+              "description": "Quick configurations for common exercise types. Choose Custom to pick individual tools.",
+              "options": [
+                { "label": "Full toolkit" },
+                { "label": "Sketch only" },
+                { "label": "Annotate" },
+                { "label": "Shapes and text" },
+                { "label": "Custom" }
+              ]
+            },
+            {
+              "label": "Default active tool",
+              "description": "Tool selected when the learner opens the activity (must be enabled in the preset or custom list).",
+              "options": [
+                { "label": "Pencil" },
+                { "label": "Brush" },
+                { "label": "Eraser" },
+                { "label": "Line" },
+                { "label": "Rectangle" },
+                { "label": "Ellipse" },
+                { "label": "Text" }
+              ]
+            },
+            {
+              "label": "Drawing tools",
+              "fields": [
+                { "label": "Pencil" },
+                { "label": "Brush" },
+                { "label": "Eraser" },
+                { "label": "Line" },
+                { "label": "Rectangle" },
+                { "label": "Ellipse" },
+                { "label": "Text" }
+              ]
+            },
+            {
+              "label": "Toolbar controls",
+              "fields": [
+                { "label": "Color picker" },
+                { "label": "Brush size" }
+              ]
+            },
+            {
+              "label": "Actions",
+              "fields": [
+                { "label": "Undo" },
+                { "label": "Redo" },
+                { "label": "Clear" }
+              ]
+            }
           ]
         },
         {

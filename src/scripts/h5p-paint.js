@@ -5,7 +5,7 @@ import StateService from './services/state.js';
 import XapiService from './services/xapi.js';
 import AiGrader from './services/ai-grader.js';
 import {
-  DEFAULT_TOOLS_OBJECT,
+  defaultToolsSemantics,
   resolveInitialDrawingTool,
   resolveTools
 } from './canvas/tool-config.js';
@@ -29,7 +29,7 @@ const DEFAULTS = {
       color: '#ffffff',
       image: null
     },
-    tools: { ...DEFAULT_TOOLS_OBJECT },
+    tools: defaultToolsSemantics(),
     brushDefaults: {
       defaultColor: '#222222',
       defaultBrushSize: 4
@@ -175,7 +175,10 @@ function Paint(params, contentId, extras) {
   self.params = mergeDefaults(params || {}, DEFAULTS);
   const authorTools = params?.canvas?.tools ?? self.params.canvas.tools;
   self.resolvedTools = resolveTools(authorTools);
-  self.initialTool = resolveInitialDrawingTool(self.resolvedTools);
+  self.initialTool = resolveInitialDrawingTool(
+    self.resolvedTools,
+    authorTools?.defaultTool
+  );
   self.params.canvas.tools = self.resolvedTools;
   self.contentId = contentId;
   self.extras = extras;
