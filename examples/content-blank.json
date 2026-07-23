@@ -18,13 +18,13 @@
       "defaultColor": "#222222",
       "defaultBrushSize": 4,
       "colorMode": "palette",
-      "paletteColors": {
-        "color1": "#e11d48",
-        "color2": "#ea580c",
-        "color3": "#ca8a04",
-        "color4": "#16a34a",
-        "color5": "#2563eb"
-      }
+      "paletteColors": [
+        "#e11d48",
+        "#ea580c",
+        "#ca8a04",
+        "#16a34a",
+        "#2563eb"
+      ]
     }
   },
   "behaviour": {

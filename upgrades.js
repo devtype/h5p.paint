@@ -59,6 +59,43 @@ H5PUpgrades['H5P.Paint'] = (function () {
     return trimmed;
   }
 
+  /**
+   * Convert color1–color5 group (or legacy list of objects) to a string list
+   * for H5P list + text/colorSelector fields.
+   *
+   * @param {object|Array} paletteColors
+   * @returns {string[]}
+   */
+  function toColorList(paletteColors) {
+    var colors = [];
+    var index;
+    var color;
+
+    if (Array.isArray(paletteColors)) {
+      for (index = 0; index < paletteColors.length && colors.length < 5; index++) {
+        var entry = paletteColors[index];
+        color = normalizeHexColor(
+          typeof entry === 'string' ? entry : entry && entry.color
+        );
+        if (color) {
+          colors.push(color);
+        }
+      }
+      return colors;
+    }
+
+    if (paletteColors && typeof paletteColors === 'object') {
+      for (index = 1; index <= 5; index++) {
+        color = normalizeHexColor(paletteColors['color' + index]);
+        if (color) {
+          colors.push(color);
+        }
+      }
+    }
+
+    return colors;
+  }
+
   return [
     {
       version: { major: 0, minor: 7, patch: 2 },
@@ -80,6 +117,19 @@ H5PUpgrades['H5P.Paint'] = (function () {
         var brushDefaults = parameters.canvas && parameters.canvas.brushDefaults;
         if (brushDefaults && brushDefaults.colorMode === 'palette' && brushDefaults.paletteColors) {
           brushDefaults.paletteColors = trimPaletteGroup(brushDefaults.paletteColors);
+        }
+        finished(null, parameters);
+      }
+    },
+    {
+      version: { major: 0, minor: 7, patch: 5 },
+      up: function (parameters, finished) {
+        var brushDefaults = parameters.canvas && parameters.canvas.brushDefaults;
+        if (brushDefaults && brushDefaults.paletteColors) {
+          var list = toColorList(brushDefaults.paletteColors);
+          if (list.length) {
+            brushDefaults.paletteColors = list;
+          }
         }
         finished(null, parameters);
       }

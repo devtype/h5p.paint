@@ -121,14 +121,11 @@
             },
             {
               "label": "Couleurs de la palette",
-              "description": "Choisissez jusqu'à cinq couleurs. La couleur par défaut est toujours affichée en premier.",
-              "fields": [
-                { "label": "Couleur 1" },
-                { "label": "Couleur 2" },
-                { "label": "Couleur 3" },
-                { "label": "Couleur 4" },
-                { "label": "Couleur 5" }
-              ]
+              "description": "Ajoutez ou retirez des couleurs (1–5). La couleur par défaut est toujours affichée en premier. Ouvrez une couleur pour saisir une valeur HEX (#RRGGBB).",
+              "entity": "Couleur",
+              "field": {
+                "label": "Couleur"
+              }
             },
             { "label": "Taille du pinceau par défaut (px)" }
           ]

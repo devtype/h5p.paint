@@ -229,7 +229,11 @@
             "type": "text",
             "label": "Default brush color",
             "default": "#222222",
-            "widget": "colorSelector"
+            "widget": "colorSelector",
+            "spectrum": {
+              "showInput": true,
+              "preferredFormat": "hex"
+            }
           },
           {
             "name": "colorMode",
@@ -245,54 +249,31 @@
           },
           {
             "name": "paletteColors",
-            "type": "group",
+            "type": "list",
             "label": "Palette colors",
-            "description": "Pick up to five colors. The default brush color is always shown first to learners.",
+            "description": "Add or remove colors (1–5). The default brush color is always shown first to learners. Open a color to type a HEX value (#RRGGBB).",
             "importance": "medium",
-            "expanded": true,
+            "entity": "Color",
+            "min": 1,
+            "max": 5,
+            "defaultNum": 5,
             "widget": "showWhen",
             "showWhen": {
               "rules": [
                 { "field": "colorMode", "equals": "palette" }
               ]
             },
-            "fields": [
-              {
-                "name": "color1",
-                "type": "text",
-                "label": "Color 1",
-                "default": "#e11d48",
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color2",
-                "type": "text",
-                "label": "Color 2",
-                "default": "#ea580c",
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color3",
-                "type": "text",
-                "label": "Color 3",
-                "default": "#ca8a04",
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color4",
-                "type": "text",
-                "label": "Color 4",
-                "default": "#16a34a",
-                "widget": "colorSelector"
-              },
-              {
-                "name": "color5",
-                "type": "text",
-                "label": "Color 5",
-                "default": "#2563eb",
-                "widget": "colorSelector"
+            "field": {
+              "name": "color",
+              "type": "text",
+              "label": "Color",
+              "default": "#e11d48",
+              "widget": "colorSelector",
+              "spectrum": {
+                "showInput": true,
+                "preferredFormat": "hex"
               }
-            ]
+            }
           },
           {
             "name": "defaultBrushSize",

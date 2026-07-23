@@ -121,14 +121,11 @@
             },
             {
               "label": "Palet kleuren",
-              "description": "Kies maximaal vijf kleuren. De standaard penseelkleur staat altijd eerst voor leerlingen.",
-              "fields": [
-                { "label": "Kleur 1" },
-                { "label": "Kleur 2" },
-                { "label": "Kleur 3" },
-                { "label": "Kleur 4" },
-                { "label": "Kleur 5" }
-              ]
+              "description": "Kleuren toevoegen of verwijderen (1–5). De standaard penseelkleur staat altijd eerst voor leerlingen. Open een kleur om een HEX-waarde (#RRGGBB) in te typen.",
+              "entity": "Kleur",
+              "field": {
+                "label": "Kleur"
+              }
             },
             { "label": "Standaard penseelgrootte (px)" }
           ]

@@ -14,7 +14,31 @@ test('normalizePaletteColors returns defaults for empty input', () => {
   assert.deepEqual(normalizePaletteColors([]), DEFAULT_PALETTE_COLORS);
 });
 
-test('normalizePaletteColors reads five group colors', () => {
+test('normalizePaletteColors reads string list colors', () => {
+  assert.deepEqual(
+    normalizePaletteColors([
+      '#ff0000',
+      '#00ff00',
+      '#0000ff',
+      '#ffff00',
+      '000000'
+    ]),
+    ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#000000']
+  );
+});
+
+test('normalizePaletteColors reads object list colors', () => {
+  assert.deepEqual(
+    normalizePaletteColors([
+      { color: '#ff0000' },
+      { color: '#00ff00' },
+      { color: '#0000ff' }
+    ]),
+    ['#ff0000', '#00ff00', '#0000ff']
+  );
+});
+
+test('normalizePaletteColors reads legacy group colors', () => {
   assert.deepEqual(
     normalizePaletteColors({
       color1: '#ff0000',
@@ -43,27 +67,30 @@ test('normalizePaletteColors ignores extra legacy group slots', () => {
   );
 });
 
-test('normalizePaletteColors maps legacy list items to hex array', () => {
+test('normalizePaletteColors truncates lists longer than five', () => {
   assert.deepEqual(
     normalizePaletteColors([
-      { color: '#ff0000' },
-      { color: '#00ff00' },
-      { color: '#0000ff' }
+      '#111111',
+      '#222222',
+      '#333333',
+      '#444444',
+      '#555555',
+      '#666666'
     ]),
-    ['#ff0000', '#00ff00', '#0000ff']
+    ['#111111', '#222222', '#333333', '#444444', '#555555']
   );
 });
 
-test('normalizePaletteColors fills empty legacy list slots from defaults', () => {
-  assert.deepEqual(
-    normalizePaletteColors([{}, {}, {}]),
-    DEFAULT_PALETTE_COLORS.slice(0, 3)
-  );
-});
-
-test('normalizePaletteColors falls back when fewer than two valid colors', () => {
+test('normalizePaletteColors accepts a single valid color', () => {
   assert.deepEqual(
     normalizePaletteColors([{ color: '#ff0000' }]),
+    ['#ff0000']
+  );
+});
+
+test('normalizePaletteColors falls back when no valid colors', () => {
+  assert.deepEqual(
+    normalizePaletteColors([{}, {}, {}]),
     DEFAULT_PALETTE_COLORS
   );
 });
@@ -91,11 +118,7 @@ test('resolveBrushDefaults always puts default color first in palette mode', () 
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
-      paletteColors: {
-        color1: '#ff0000',
-        color2: '#00ff00',
-        color3: '#0000ff'
-      }
+      paletteColors: ['#ff0000', '#00ff00', '#0000ff']
     }
   });
 
@@ -108,11 +131,7 @@ test('resolveBrushDefaults dedupes default color from author palette', () => {
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
-      paletteColors: {
-        color1: '#ff0000',
-        color2: '#000000',
-        color3: '#00ff00'
-      }
+      paletteColors: ['#ff0000', '#000000', '#00ff00']
     }
   });
 
@@ -124,18 +143,33 @@ test('resolveBrushDefaults limits author palette to five colors', () => {
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
-      paletteColors: {
-        color1: '#111111',
-        color2: '#333333',
-        color3: '#444444',
-        color4: '#555555',
-        color5: '#666666',
-        color6: '#777777'
-      }
+      paletteColors: [
+        '#111111',
+        '#333333',
+        '#444444',
+        '#555555',
+        '#666666',
+        '#777777'
+      ]
     }
   });
 
   assert.equal(brush.paletteColors.length, AUTHOR_PALETTE_SIZE + 1);
   assert.equal(brush.paletteColors[0], '#000000');
   assert.equal(brush.paletteColors[5], '#666666');
+});
+
+test('resolveBrushDefaults still reads legacy color1-color5 group', () => {
+  const brush = resolveBrushDefaults({
+    brushDefaults: {
+      defaultColor: '#000000',
+      colorMode: 'palette',
+      paletteColors: {
+        color1: '#ff0000',
+        color2: '#00ff00'
+      }
+    }
+  });
+
+  assert.deepEqual(brush.paletteColors, ['#000000', '#ff0000', '#00ff00']);
 });

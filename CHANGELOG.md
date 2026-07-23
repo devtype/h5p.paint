@@ -3,6 +3,16 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.5] - 2026-07-23
+
+### Changed
+
+- **Palette colors:** Replace the fixed `color1`–`color5` group with an H5P list
+  (min 1, max 5) so authors can add and remove colors. Existing group-format
+  palettes migrate via `upgrades.js`.
+- Enable Spectrum `showInput` on default brush color and palette color pickers
+  so authors can type precise HEX values (`#RRGGBB`) in the ColorSelector.
+
 ## [0.7.4] - 2026-07-08
 
 ### Changed

@@ -121,14 +121,11 @@
             },
             {
               "label": "Palettenfarben",
-              "description": "Bis zu fünf Farben wählen. Die Standard-Stiftfarbe wird Lernenden immer zuerst angezeigt.",
-              "fields": [
-                { "label": "Farbe 1" },
-                { "label": "Farbe 2" },
-                { "label": "Farbe 3" },
-                { "label": "Farbe 4" },
-                { "label": "Farbe 5" }
-              ]
+              "description": "Farben hinzufügen oder entfernen (1–5). Die Standard-Stiftfarbe wird Lernenden immer zuerst angezeigt. Farbe öffnen, um einen HEX-Wert (#RRGGBB) einzugeben.",
+              "entity": "Farbe",
+              "field": {
+                "label": "Farbe"
+              }
             },
             { "label": "Standard-Strichstärke (px)" }
           ]

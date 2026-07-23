@@ -48,14 +48,11 @@ export function normalizeHexColor(value) {
 export function extractPaletteColors(raw) {
   if (Array.isArray(raw)) {
     return raw
-      .map((entry, index) => {
+      .map((entry) => {
         const color = typeof entry === 'string' ? entry : entry?.color;
-        const normalized = normalizeHexColor(color);
-        if (normalized) {
-          return normalized;
-        }
-        return DEFAULT_PALETTE_COLORS[index % DEFAULT_PALETTE_COLORS.length];
+        return normalizeHexColor(color);
       })
+      .filter(Boolean)
       .slice(0, AUTHOR_PALETTE_SIZE);
   }
 
@@ -74,7 +71,7 @@ export function extractPaletteColors(raw) {
  */
 export function normalizePaletteColors(raw) {
   const colors = extractPaletteColors(raw);
-  if (colors.length >= 2) {
+  if (colors.length >= 1) {
     return colors.slice(0, AUTHOR_PALETTE_SIZE);
   }
   return [...DEFAULT_PALETTE_COLORS];

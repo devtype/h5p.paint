@@ -121,14 +121,11 @@
             },
             {
               "label": "Colores de la paleta",
-              "description": "Elija hasta cinco colores. El color predeterminado del pincel siempre se muestra primero.",
-              "fields": [
-                { "label": "Color 1" },
-                { "label": "Color 2" },
-                { "label": "Color 3" },
-                { "label": "Color 4" },
-                { "label": "Color 5" }
-              ]
+              "description": "Añada o quite colores (1–5). El color predeterminado del pincel siempre se muestra primero. Abra un color para escribir un valor HEX (#RRGGBB).",
+              "entity": "Color",
+              "field": {
+                "label": "Color"
+              }
             },
             { "label": "Tamaño del pincel predeterminado (px)" }
           ]
