@@ -3,6 +3,16 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.7] - 2026-07-30
+
+### Fixed
+
+- **Palette colors black in editor:** Mark each palette list item group as
+  `isSubContent` so H5P does not flatten single-child groups. Without that,
+  ColorSelector received `{ color: "#…" }` objects instead of hex strings,
+  Spectrum rendered black swatches, and ListEditor remove/reorder controls
+  could fail to attach on existing content.
+
 ## [0.7.6] - 2026-07-30
 
 ### Fixed

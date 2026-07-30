@@ -267,6 +267,7 @@
               "name": "item",
               "type": "group",
               "label": "Color",
+              "isSubContent": true,
               "fields": [
                 {
                   "name": "color",
