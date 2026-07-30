@@ -118,7 +118,11 @@ test('resolveBrushDefaults always puts default color first in palette mode', () 
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
-      paletteColors: ['#ff0000', '#00ff00', '#0000ff']
+      paletteColors: [
+        { color: '#ff0000' },
+        { color: '#00ff00' },
+        { color: '#0000ff' }
+      ]
     }
   });
 
@@ -131,7 +135,11 @@ test('resolveBrushDefaults dedupes default color from author palette', () => {
     brushDefaults: {
       defaultColor: '#000000',
       colorMode: 'palette',
-      paletteColors: ['#ff0000', '#000000', '#00ff00']
+      paletteColors: [
+        { color: '#ff0000' },
+        { color: '#000000' },
+        { color: '#00ff00' }
+      ]
     }
   });
 
@@ -144,12 +152,12 @@ test('resolveBrushDefaults limits author palette to five colors', () => {
       defaultColor: '#000000',
       colorMode: 'palette',
       paletteColors: [
-        '#111111',
-        '#333333',
-        '#444444',
-        '#555555',
-        '#666666',
-        '#777777'
+        { color: '#111111' },
+        { color: '#333333' },
+        { color: '#444444' },
+        { color: '#555555' },
+        { color: '#666666' },
+        { color: '#777777' }
       ]
     }
   });
@@ -157,6 +165,18 @@ test('resolveBrushDefaults limits author palette to five colors', () => {
   assert.equal(brush.paletteColors.length, AUTHOR_PALETTE_SIZE + 1);
   assert.equal(brush.paletteColors[0], '#000000');
   assert.equal(brush.paletteColors[5], '#666666');
+});
+
+test('resolveBrushDefaults still reads 0.7.5 string list palette', () => {
+  const brush = resolveBrushDefaults({
+    brushDefaults: {
+      defaultColor: '#000000',
+      colorMode: 'palette',
+      paletteColors: ['#ff0000', '#00ff00', '#0000ff']
+    }
+  });
+
+  assert.deepEqual(brush.paletteColors, ['#000000', '#ff0000', '#00ff00', '#0000ff']);
 });
 
 test('resolveBrushDefaults still reads legacy color1-color5 group', () => {

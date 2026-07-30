@@ -3,6 +3,15 @@
 All notable changes to H5P.Paint are documented here. Version numbers follow
 [`library.json`](library.json) (`majorVersion.minorVersion.patchVersion`).
 
+## [0.7.6] - 2026-07-30
+
+### Fixed
+
+- **Palette list remove/reorder controls:** Wrap each palette color in a group so
+  H5P ListEditor shows remove and reorder actions (list + bare ColorSelector
+  left empty gray bars without controls). Migrate 0.7.5 string lists to
+  `[{ "color": "#…" }, …]` via `upgrades.js`.
+
 ## [0.7.5] - 2026-07-23
 
 ### Changed

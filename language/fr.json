@@ -124,7 +124,10 @@
               "description": "Ajoutez ou retirez des couleurs (1–5). La couleur par défaut est toujours affichée en premier. Ouvrez une couleur pour saisir une valeur HEX (#RRGGBB).",
               "entity": "Couleur",
               "field": {
-                "label": "Couleur"
+                "label": "Couleur",
+                "fields": [
+                  { "label": "Couleur" }
+                ]
               }
             },
             { "label": "Taille du pinceau par défaut (px)" }

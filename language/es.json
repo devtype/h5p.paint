@@ -124,7 +124,10 @@
               "description": "Añada o quite colores (1–5). El color predeterminado del pincel siempre se muestra primero. Abra un color para escribir un valor HEX (#RRGGBB).",
               "entity": "Color",
               "field": {
-                "label": "Color"
+                "label": "Color",
+                "fields": [
+                  { "label": "Color" }
+                ]
               }
             },
             { "label": "Tamaño del pincel predeterminado (px)" }

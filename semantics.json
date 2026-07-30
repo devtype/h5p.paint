@@ -264,15 +264,22 @@
               ]
             },
             "field": {
-              "name": "color",
-              "type": "text",
+              "name": "item",
+              "type": "group",
               "label": "Color",
-              "default": "#e11d48",
-              "widget": "colorSelector",
-              "spectrum": {
-                "showInput": true,
-                "preferredFormat": "hex"
-              }
+              "fields": [
+                {
+                  "name": "color",
+                  "type": "text",
+                  "label": "Color",
+                  "default": "#e11d48",
+                  "widget": "colorSelector",
+                  "spectrum": {
+                    "showInput": true,
+                    "preferredFormat": "hex"
+                  }
+                }
+              ]
             }
           },
           {

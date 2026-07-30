@@ -124,7 +124,10 @@
               "description": "Kleuren toevoegen of verwijderen (1–5). De standaard penseelkleur staat altijd eerst voor leerlingen. Open een kleur om een HEX-waarde (#RRGGBB) in te typen.",
               "entity": "Kleur",
               "field": {
-                "label": "Kleur"
+                "label": "Kleur",
+                "fields": [
+                  { "label": "Kleur" }
+                ]
               }
             },
             { "label": "Standaard penseelgrootte (px)" }
